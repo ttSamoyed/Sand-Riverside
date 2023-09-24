@@ -1,4 +1,4 @@
-# vue-project
+# 沙河畔-电子科技大学校园论坛
 
 This template should help get you started developing with Vue 3 in Vite.
 
