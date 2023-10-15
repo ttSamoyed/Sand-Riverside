@@ -1,28 +1,29 @@
-# vue-project
+# 沙河畔-电子科技大学校园论坛
 
-This template should help get you started developing with Vue 3 in Vite.
+* 于2023年9月创建，目前主要存放正在开发的前端页面
+* 灵感来源：[清水河畔](https://bbs.uestc.edu.cn/)
 
-## Recommended IDE Setup
+## 建议使用的IDE
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Customize configuration
+## 环境配置
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+见 [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## Project Setup
+## 工程创建
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 编译和实时开发
 
 ```sh
 npm run dev
 ```
 
-### Compile and Minify for Production
+### 编译最小化以部署
 
 ```sh
 npm run build
