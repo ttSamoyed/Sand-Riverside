@@ -6,48 +6,46 @@
           @open="handleOpen"
           @close="handleClose"
         >
-          <el-sub-menu index="1">
-            <template #title>
+          <el-sub-menu index="1" class="title">
+            <template #title class="title">
               <el-icon><School /></el-icon>
-              <span>学院论坛</span>
+              <span>成电校园</span>
             </template>
               <el-menu-item index="1-1">
-                <el-icon><School /></el-icon>
-                计算机学院</el-menu-item>
+                <el-icon><Help /></el-icon>
+                水手之家</el-menu-item>
               <el-menu-item index="1-2">
                 <el-icon><School /></el-icon>
-                电子学院</el-menu-item>
+                校园热点</el-menu-item>
               <el-menu-item index="1-3">
-                <el-icon><School /></el-icon>
-                集成电路学院</el-menu-item>
-              <el-menu-item index="1-4">
-                <el-icon><School /></el-icon>
-                外国语学院</el-menu-item>
-              <el-menu-item index="1-5">
-                <el-icon><School /></el-icon>
-                经管学院</el-menu-item>
+                <el-icon><TrophyBase /></el-icon>
+                校园活动</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
-                <el-icon><ShoppingCart /></el-icon>
-                <span>二手交易</span>
+                <el-icon><Star /></el-icon>
+                <span>生活信息</span>
             </template>
-              <el-menu-item index="2-1"> <el-icon><Iphone /></el-icon>电子设备</el-menu-item>
-              <el-menu-item index="2-2"> <el-icon><Notebook /></el-icon>书籍教材</el-menu-item>
-              <el-menu-item index="2-3"> <el-icon><Coin /></el-icon>卡卷虚拟</el-menu-item>
-              <el-menu-item index="2-4"> <el-icon><Van /></el-icon>交通工具</el-menu-item>
-              <el-menu-item index="2-5"> <el-icon><Wallet /></el-icon>票务服务</el-menu-item>
+              <el-menu-item index="2-1"> <el-icon><Notebook /></el-icon>失物招领</el-menu-item>
+              <el-menu-item index="2-2"> <el-icon><Iphone /></el-icon>二手买卖</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="3">
             <template #title>
                 <el-icon><ShoppingCart /></el-icon>
-                <span>生活社区</span>
+                <span>情感专区</span>
             </template>
-              <el-menu-item index="3-1"> <el-icon><Iphone /></el-icon>体育交流</el-menu-item>
-              <el-menu-item index="3-2"> <el-icon><Notebook /></el-icon>文化交流</el-menu-item>
-              <el-menu-item index="3-3"> <el-icon><Coin /></el-icon>心理健康</el-menu-item>
+              <el-menu-item index="3-1"> <el-icon><Connection /></el-icon>鹊桥</el-menu-item>
+              <el-menu-item index="3-2"> <el-icon><ChatDotRound /></el-icon>话心</el-menu-item>
           </el-sub-menu>
-
+          <el-sub-menu index="4">
+            <template #title>
+              <el-icon><Guide /></el-icon>
+                <span>未来可期</span>
+            </template>
+              <el-menu-item index="4-1"> <el-icon><Suitcase /></el-icon>就业创业</el-menu-item>
+              <el-menu-item index="4-2"> <el-icon><Ship /></el-icon>出国留学</el-menu-item>
+              <el-menu-item index="4-3"> <el-icon><Aim /></el-icon> 保研考研</el-menu-item>
+          </el-sub-menu>
         </el-menu>
       </el-col>
   </template>
@@ -69,7 +67,7 @@
 .menu{
     width: 250px;
     height:100%;
-    border-right: 2px solid #b4b2b251;
+    border-right: 1px solid #b4b2b251;
 }
 .el-menu-vertical-demo{
   width: 105%;
@@ -78,21 +76,23 @@
   border:none;
   font-weight: 400;
 }
+
 .el-menu-item {
     height: 35px !important;
     margin-top: 5px;
     border-radius: 5px;
-    font-size: 16px;
-    font-weight: 300;
+    color: #73767a;
+    font-family: 'PingFang SC';
 }
  
 .el-menu-item:hover {
     border: none;
-    background-color: rgba(255, 192, 203, 0.477) !important;
+    color: #409EFF !important;
+    background-color:transparent;
 }
 
 .el-menu-item.is-active {
-  color: rgb(251, 167, 181) !important;;
-}
+  color: #409EFF !important;
+  background-color: rgba(0, 117, 251, 0.086)}
 
 </style>

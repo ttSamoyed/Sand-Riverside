@@ -23,24 +23,56 @@
       <div class="dark">
         <Dark></Dark>
       </div>
+      <div class="message">
+        <el-button text @click="drawer = true">
+          <el-icon size="large"><ChatDotSquare /></el-icon>
+        </el-button>
+      </div>
       <div class="user" >
         <el-avatar @click="handleAvatarClick" :size="30" :icon="UserFilled" shape="square"/>
       </div>
     </div>
+    <el-drawer
+      v-model="drawer"
+      title="消息"
+      :direction="rtl"
+      size="22%"
+    >
+    <!-- <el-text>还没有新消息，去参与互动吧 🥳</el-text> -->
+    <message></message>
+    <message></message>
+    <message></message>
+    <message></message>
+  </el-drawer>
 </template>
 
 <script setup>
 import Dark from './dark.vue'
 import { ref } from 'vue';
-import { Search,UserFilled } from '@element-plus/icons-vue'
-const isLogin = false
+import { Search, UserFilled } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus'
+import message from '../home/message.vue'
+const router = useRouter();
+const isLogin = ref(false)
 const search = ref('')
-const handleAvatarClick=()=>{
-    if(isLogin.valueOf){
-        router.push({path:'/MyPage'})
-    }else{
-        router.push({path:'/login'})
-    }
+const drawer = ref(false)
+const handleAvatarClick = () => {
+  if (isLogin.value) {
+    not_login()
+    router.push({path:'/mypage'})
+  }
+  else {
+    not_login()
+    router.push({path:'/login'})
+  }
+}
+
+const not_login = () => {
+  ElMessage({
+    message: '您未登录，请先登录',
+    type: 'error',
+  })
 }
 </script>
 
@@ -62,7 +94,7 @@ const handleAvatarClick=()=>{
     justify-content: space-between;
     align-items:center;
     padding: 0 20px;
-    border-bottom: 2px solid #b4b2b251;
+    border-bottom: 1px solid #b4b2b251;
     font-family: Arial, sans-serif;
     font-size: 14px;
   }
@@ -114,11 +146,18 @@ const handleAvatarClick=()=>{
     flex-grow: 1; /* 让 spacer 元素占据剩余宽度 */
   }
 
+  .message {
+    padding-left: 20px;
+    margin-right:20px;
+    order: 2;
+  }
+
   .dark{
     margin-left: 40px;
     padding-left: 20px;
     margin-right:-10px;
     order: 2;
-    border-left: 2px solid #b4b2b251;
+    border-left: 1px solid #b4b2b251;
   }
+
 </style>

@@ -3,6 +3,7 @@ import loginView from '../views/loginView.vue'
 import homeView from '../views/homeView.vue'
 import hotView from '../views/hotView.vue'
 import postView from '../views/postView.vue'
+import mypageView from '../views/mypageView.vue'
 const routes = [
     {
         path: '/',
@@ -23,6 +24,11 @@ const routes = [
         path: '/post',
         name: 'post',
         component: postView,
+    },
+    {
+        path: '/mypage',
+        name: 'mypage',
+        component:mypageView,
     }
 ]
 const router = createRouter({

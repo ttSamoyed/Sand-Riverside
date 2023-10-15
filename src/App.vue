@@ -35,7 +35,7 @@ import topBar from "@/components/home/topBar.vue"
 }
 
 .foot {
-  border-top: 2px solid #b4b2b251;
+  border-top: 1px solid #b4b2b251;
   height: 40px;
   width: 100%;
   display: flex;
