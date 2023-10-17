@@ -66,9 +66,12 @@ const input2 = ref('')
 <style scoped>
 
 .welcome{
-    font-size: 45px;
-    font-weight: 500;
-    font-family:monospace;
+    font-size: 50px;
+    font-weight: 800;
+    background: linear-gradient(80deg, rgb(118,188,250), rgb(171,70,246));
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
 }
 .main{
     margin-top: -20px;

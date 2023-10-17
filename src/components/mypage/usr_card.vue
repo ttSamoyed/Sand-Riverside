@@ -8,9 +8,9 @@
                     <div style="padding-left: 20px;">
                         <el-row>
                         <el-space wrap size="small">
-                            <span class="usrname">ShpUsr</span>
+                            <span class="usrname">ShpUsr <el-icon style="color: rgb(27, 76, 253);"><Male /></el-icon></span>
                             <el-divider direction="vertical"></el-divider>
-                            <el-text style="zoom:0.9; font-weight: 400;">Be Strong, be humble.</el-text>
+                            <el-text type="info" class="sign">Be Strong, be humble.</el-text>
                         </el-space>
                         </el-row>
                         <el-row>
@@ -30,8 +30,8 @@
                         </el-row>
                         <el-row>
                             <el-space wrap>
-                                <el-text size="small" type="info">2023-9-10</el-text>
-                                <el-text size="small" type="info">加入沙河畔</el-text>
+                                <el-text size="small" style="color: rgb(85, 159, 243);">2023-9-10</el-text>
+                                <el-text size="small" style="color: rgb(85, 159, 243);">加入沙河畔</el-text>
                             </el-space>
                         </el-row>
                     </div>
@@ -56,6 +56,13 @@ const AvatarUrl = ref("https://img0.baidu.com/it/u=2050198963,701666245&fm=253&f
 
 <style scoped>
 
+.sign{
+    zoom:0.9; 
+    font-weight: 600;
+    background: linear-gradient(40deg, rgb(160, 70, 211), rgb(58,103,237),  rgb(85, 159, 243));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .center{
     width: 100%;
     display: flex;
@@ -74,8 +81,11 @@ const AvatarUrl = ref("https://img0.baidu.com/it/u=2050198963,701666245&fm=253&f
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 800;
     font-family: PingFang SC;
+    /* background: linear-gradient(40deg, rgb(160, 70, 211), rgb(58,103,237),  rgb(85, 159, 243));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
 }
 
 </style>

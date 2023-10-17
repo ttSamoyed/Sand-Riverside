@@ -6,7 +6,7 @@
     </div>
     <div class="center">
         <el-row>
-            <top_nav @post="label='1'" @interaction="label='2'"></top_nav>
+            <top_nav @post="label='1'" @interaction="label='2'" @settings="label='3'"></top_nav>
         </el-row>
     </div>
     <div class="center">
@@ -25,6 +25,9 @@
                     <message_card></message_card>
                     <message_card></message_card>
                 </div>
+                <div v-if="label=='3'">
+                    <setting_card></setting_card>
+                </div>
             </ul>
         </div>
     </div>
@@ -35,6 +38,7 @@ import usr_card from '../components/mypage/usr_card.vue';
 import top_nav from '../components/mypage/top_nav.vue'
 import post_card from '../components/mypage/post_card.vue';
 import message_card from '../components/mypage/message_card.vue';
+import setting_card from "../components/mypage/setting_card.vue";
 import { ref } from 'vue';
 const label = ref('1')
 

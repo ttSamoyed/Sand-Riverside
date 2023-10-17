@@ -62,6 +62,7 @@
 .title{
     margin-top: 10px;
     font-weight: 500;
+
 }
 
 .image {

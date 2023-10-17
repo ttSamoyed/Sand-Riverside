@@ -66,7 +66,7 @@
 }
 .menu{
     width: 250px;
-    height:100%;
+    height:98%;
     border-right: 1px solid #b4b2b251;
 }
 .el-menu-vertical-demo{

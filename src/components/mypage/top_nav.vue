@@ -12,7 +12,7 @@
   
   <script lang="ts" setup>
   import { defineEmits,defineProps } from 'vue'
-  const emit = defineEmits(['Post', 'Interaction']);
+  const emit = defineEmits(['Post', 'Interaction','Settings']);
   const props=defineProps({
     pos:{
       type:String,
@@ -27,6 +27,8 @@
       case '2':
         emit('Interaction');
         break;
+      case '3':
+        emit('Settings');
     }
   }
   </script>
