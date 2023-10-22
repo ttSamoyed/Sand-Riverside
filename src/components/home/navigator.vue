@@ -3,6 +3,7 @@
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
+          default-openeds="1,2,3,4"
           @open="handleOpen"
           @close="handleClose"
         >
@@ -68,6 +69,7 @@
     width: 250px;
     height:98%;
     border-right: 1px solid #b4b2b251;
+    margin-top: 20px;
 }
 .el-menu-vertical-demo{
   width: 105%;
@@ -93,6 +95,6 @@
 
 .el-menu-item.is-active {
   color: #409EFF !important;
-  background-color: rgba(0, 117, 251, 0.086)}
-
+  background-color: rgba(98, 213, 242, 0.158)
+}
 </style>
