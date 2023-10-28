@@ -19,7 +19,7 @@
                       <div class="info">
                         <el-row>
                           <span class="smalltitle">水手之家</span>
-                          <el-icon size="33" style="margin-top: 3px; margin-left: 10px;"><Help /></el-icon> 
+                          <el-icon size="28" style="margin-top: 2px; margin-left: 10px;"><Help /></el-icon> 
                         </el-row>
                         <el-row style="margin-top: 3px;">
                           <el-space>
@@ -66,7 +66,7 @@ const index = ref('2')
 
 .info{
   margin-left: 20px;
-  padding-left: 30px;
+  padding-left: 20px;
   margin-top: 20px;
   padding-top: 1px;
   padding-bottom: 3px;
@@ -74,7 +74,11 @@ const index = ref('2')
 }
 .smalltitle{
   font-weight: 500;
-  font-size: 28px; 
+  font-size: 24px; 
+}
+
+.banzhu{
+  font-size: 12px;
 }
 
 </style>

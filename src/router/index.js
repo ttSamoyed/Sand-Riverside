@@ -4,6 +4,7 @@ import homeView from '../views/homeView.vue'
 import hotView from '../views/hotView.vue'
 import postView from '../views/postView.vue'
 import mypageView from '../views/mypageView.vue'
+import registerView from '../views/registerView.vue'
 const routes = [
     {
         path: '/',
@@ -29,7 +30,12 @@ const routes = [
         path: '/mypage',
         name: 'mypage',
         component:mypageView,
-    }
+    },
+    {
+        path: '/userRegister',
+        name: 'userRegister',
+        component: registerView
+    },
 ]
 const router = createRouter({
     history: createWebHashHistory(),

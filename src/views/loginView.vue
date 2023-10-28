@@ -1,133 +1,159 @@
 <template>
-    <div class="main">
-        <el-row>
-        <div class="logo-main">
-            <div class="dec-line">
-                <img class="icon" src="@/assets/shpicon.png">
-                <img class="logo" src="@/assets/shplogo.png">
-            </div>
-        </div>
-        </el-row>
-        <el-row class="center">
-            <el-text class="welcome">Welcome back, UESTCer</el-text>
-        </el-row>
-
-        <div class="center">
-            <div class="input-square">
-                <el-row gutter='30' class="padding-bottom">
-                    <el-col span='4'>
-                        <el-text>用户名</el-text>
-                    </el-col>   
-                    <el-col span="20">
-                        <el-input
-                        v-model="input1"
-                        style="width: 260px;"
-                        placeholder="Username"
-                        :prefix-icon="Search"
-                        />
-                    </el-col>
-                </el-row>
-
-                <el-row gutter='45' class="padding-bottom">
-                    <el-col span='4'>
-                        <el-text>密码</el-text>
-                    </el-col>   
-                    <el-col span="20">
-                        <el-input
-                        v-model="input2"
-                        style="width: 260px;"
-                        placeholder="Password"
-                        :prefix-icon="Search"
-                        />
-                    </el-col>
-                </el-row>
-
-                <el-row>
-                    <div class="center">
-                        <el-button class="button" type="primary" size="large" circle>
-                            <el-icon><Avatar /></el-icon>
-                        </el-button>
-                    </div>
-                </el-row>
-        </div>
-
-        </div>
+    <div style="height: 100%;
+        background-image: url('src/assets/poster.png');
+        height: 100%;
+        width: 100%;
+        background-size:cover;
+        top: 0;
+        left: 0;
+        position: absolute;
+        margin-top: 66px;
+        ">
+    <div style="
+            position: absolute;
+            background-color: #3a425a78;
+            height:100%;
+            width: 100%;
+        ">
+        <el-row style="align-items: center; justify-content: center; height:100% width:100%;">
+        <el-col :span="15" >
         
+        </el-col>
+        <el-col :span="9">
+            <el-form
+            v-loading='loading'
+                element-loading-text="Loading..."
+                label-position="top"
+                label-width="80px"
+                element-loading-background="rgba(122, 122, 122, 0.1)"
+                style="width: 330px !important; margin-top: 23vh;"
+            >
+                <h2 class="login_title">账号登录</h2>
+                <el-form-item>
+                    <el-input v-model="username" placeholder="请输入个人账号"></el-input>
+                </el-form-item>
+                <el-form-item >
+                    <el-input  v-model="password" placeholder="请输入密码"></el-input>
+                </el-form-item>
+                <el-form-item >
+                    <el-col :span="24" style="text-align: center;margin-top: 10px;">
+                    <el-button circle plain type="info" @click="submit" size="large">→</el-button>
+                    </el-col>
+                </el-form-item>
+            <div class="login_register">
+                <el-space>
+                    <p>还没有沙河畔账号？</p>
+                    <router-link to="/userRegister" style="color:rgb(47,110,195);">注册一个</router-link>
+                </el-space>
+                </div>
+            </el-form>
+        </el-col>
+        </el-row>
+        </div>
+
     </div>
     
 </template>
 
 <script setup>
 import { ref } from 'vue'
-const input1 = ref('')
-const input2 = ref('')
+// import DataService from '@/components/services/DataService'
+import { ElNotification } from 'element-plus'
+import {useStore} from 'vuex'
+import router from '@/router'
+const store=useStore()
+const password = ref('')
+const username = ref('')
+const loading = ref(false)
+const submit = async () => {
+  loading.value = true;
+  const response=await DataService.isInputRight(username.value,password.value)
+  console.log(response.data)
+  if (response.data.isRight === false) {
+    loading.value = false;
+    ElNotification({
+    title: '登录失败',
+    message: '用户名或密码错误',
+  })
+  } else {
+    loading.value = false;
+    store.commit("setUser",response.data.user)
+    router.push({path:'/mypage'})
+  }
+}
 </script>
 
 <style scoped>
-
-.welcome{
-    font-size: 50px;
-    font-weight: 800;
-    background: linear-gradient(80deg, rgb(118,188,250), rgb(171,70,246));
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-}
-.main{
-    margin-top: -20px;
-    margin-bottom: -20px;
-    height: 106%;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+form {
+    opacity: 1;
+    padding: 20px;
+    margin: 50px;
+    margin-top: 150px;
+    border-radius: 5px;
+    width: 400px !important;
+    /* border: 1px solid rgba(193, 186, 186, 0.621); */
+    background-color: rgba(249, 251, 252, 0.936);
 }
 
-.dec-line{
-    padding-left: 45px;
-    padding-right: 45px;
-    padding-bottom: 20px;
-    border-bottom: 2.5px solid rgb(47,102,233);
-}
-
-.center{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.logo-main{
-    margin-top: 110px;
+.login_title {
+    color: #4d4b4b;
+    opacity: 1;
+    font-size: 20px;
+    font-family:  'San Francisco';
+    font-weight: 450;
+    text-align: center;
     margin-bottom: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
-  .logo {
-    width: 85px;
+input[type="submit"] {
+    opacity: 1;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: rgb(150, 150, 150);
+    background-color: white;
+    border-radius: 50%; /* 将按钮变为圆形 */
+    width: 40px; /* 设置按钮宽度和高度相等 */
+    height: 40px;
+    font-size: 12px; /* 设置字体大小 */
+    border: 1.5px solid rgb(190, 190, 190);
+    transition: background-color 0.2s ease-in-out;
+  }
+  input[type="submit"]:hover{
+    opacity: 1;
+    background-color: rgb(190, 190, 190);
+    color: white;
+  }
+
+::placeholder {
+    opacity: 1;
+    font-family:  'San Francisco';
+    color: #999;
+  }
+.login_register{
+    opacity: 1;
+    font-family:  'San Francisco';
+    font-size: 10px;
+    color: rgb(150, 150, 150);
+    text-align: center;
+    margin-top: 10px;
+}
+
+.logo {
+    opacity: 1;
+    width: 80px;
     height:auto;
-    padding-bottom: 4.5px;
-    padding-left: 5px;
+    padding-bottom: 6px;
+    padding-left: 10px;
   }
 
   
   .icon {
-    width: 38px;
+    opacity: 1;
+    width: 40px;
     height:auto;
     padding-top:3px;
     padding-bottom: 3px;
-    padding-right: 5px;
-    border-right: 2px solid #b4b2b251;
-  }
-
-  .input-square{
-    width: fit-content;
-    /* border: 2.5px solid rgba(47, 103, 233, 0.555); */
-    border-radius: 10px;
-    padding: 60px 20px;
-  }
-
-  .padding-bottom{
-    padding-bottom: 30px;
-  }
-  .button{
-    margin-top: 20px;
+    padding-right: 14px;
+    border-right: 3px solid rgba(36, 88, 231, 0.871)
   }
 </style>
