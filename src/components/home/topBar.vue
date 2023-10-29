@@ -8,7 +8,6 @@
       <div class="nav-links">
         <router-link to="/"><el-link>主页</el-link></router-link>
         <router-link to="/hot"><el-link>热门</el-link></router-link>
-        <router-link to="/"><el-link>最新</el-link></router-link>
         <router-link to="/"><el-link>精华</el-link></router-link>
         <router-link to="/login"><el-link>登录</el-link></router-link>
       </div>

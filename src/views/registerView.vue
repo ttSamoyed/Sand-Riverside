@@ -11,7 +11,7 @@
         ">
     <div style="
             position: absolute;
-            background-color: #3a425a78;
+            background-color: #4f505478;
             height:100%;
             width: 100%;
         ">

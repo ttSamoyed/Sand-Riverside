@@ -1,40 +1,16 @@
 <template>
     <el-row :gutter="30" class="page">
+        <!-- 左侧导航栏 -->
         <el-col :span="4">
-            <navigator></navigator>
+            <navigator @itemSelected="handleItemSelected"></navigator>
         </el-col>
+        <!-- 右侧板块 -->
         <el-col :span="20">
-          <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto; height: 696px;">
-
-              <aboutShp v-if="index=='1'"></aboutShp>
-              <div class="post_list" v-if="index!='1'">
-                <el-row>
-                  <el-col :span="19" style="padding-left: 45px;">
-                    <post_card></post_card>
-                    <post_card></post_card>
-                    <post_card></post_card>
-                    <post_card></post_card>
-                  </el-col>
-                  <el-col :span="5">
-                      <div class="info">
-                        <el-row>
-                          <span class="smalltitle">水手之家</span>
-                          <el-icon size="28" style="margin-top: 2px; margin-left: 10px;"><Help /></el-icon> 
-                        </el-row>
-                        <el-row style="margin-top: 3px;">
-                          <el-space>
-                            <el-text class="banzhu">本板块由</el-text>
-                            <el-avatar :size="20" shape="square">
-                              <el-icon><UserFilled /></el-icon>
-                            </el-avatar>
-                            <el-text class="banzhu">杨波</el-text>
-                            <el-text class="banzhu">管理</el-text>
-                          </el-space>
-                        </el-row>
-                      </div>
-                  </el-col>
-                </el-row>
-              </div>
+          <ul class="infinite-list" style="overflow: auto; height: 696px;">
+              <!-- 沙河畔主页 -->
+              <aboutShp v-if="index=='0'"></aboutShp>
+              <!-- 按板块查看帖子列表 -->
+              <partView v-if="index!='0'" :p=index></partView>
           </ul>
         </el-col>
     </el-row>
@@ -43,11 +19,13 @@
 <script setup>
 import navigator from "@/components/home/navigator.vue"
 import aboutShp from "@/components/home/aboutShp.vue"
-import post_card from "@/components/home/post_card.vue"
+import partView from "../components/home/partView.vue";
 import { ref } from "vue";
 
-const name = 'HomeView';
-const index = ref('2')
+const index = ref('0')
+const handleItemSelected = (newIndex) => {
+  index.value = newIndex; // 更新父组件的selectedIndex
+};
 </script>
 
 <style scoped>

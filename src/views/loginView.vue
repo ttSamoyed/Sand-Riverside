@@ -1,7 +1,7 @@
 <template>
     <div style="height: 100%;
         background-image: url('src/assets/poster.png');
-        height: 100%;
+        height: 93%;
         width: 100%;
         background-size:cover;
         top: 0;
@@ -11,7 +11,7 @@
         ">
     <div style="
             position: absolute;
-            background-color: #3a425a78;
+            background-color: #4f505478;
             height:100%;
             width: 100%;
         ">
