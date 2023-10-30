@@ -25,7 +25,7 @@
                         <el-text class="author">
                              post.user_name 
                         </el-text>
-                        <!--编辑博文和删除博文-->
+                        <!--编辑帖子和删除帖子-->
                         <div v-if="true">
                           <el-button
                             circle
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </template>
-            <!-- 博文内容，用v-md-editor -->
+            <!-- 帖子内容，用v-md-editor -->
             <v-md-editor :model-value="post.content" mode="preview"></v-md-editor>
 
             <div style="padding: 25px">
@@ -178,7 +178,7 @@
     </el-dialog>
   
     <el-dialog v-model="showDeleteBox" title="提示" width="350px">
-      <span>您确认要删除这篇博文吗？</span>
+      <span>您确认要删除这篇帖子吗？</span>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="showDeleteBox = false">取消</el-button>
@@ -187,7 +187,7 @@
       </template>
     </el-dialog>
   
-    <el-dialog v-model="showEditBox" title="编辑博文" width="90%">
+    <el-dialog v-model="showEditBox" title="编辑帖子" width="90%">
       <writepost
         :post_id="Number(postId)"
         :user_id="user_id"

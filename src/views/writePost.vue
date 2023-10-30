@@ -1,42 +1,43 @@
 <template>
-  <div class="blog-editor">
-    <el-form ref="form" :model="blog" label-width="40px">
+  <div class="post-editor">
+    <el-form ref="form" :model="post" label-width="40px">
       <el-form-item label="标题">
         <el-input
           :rows="1"
           type="textarea"
           placeholder="请输入标题"
-          v-model="blog.title"
+          v-model="post.title"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="摘要">
+      <el-form-item label="封面">
         <el-input
-          :rows="3"
+          :rows="1"
           type="textarea"
-          placeholder="请输入摘要，不超过100字"
-          v-model="blog.description"
+          placeholder="请输入帖子封面照片的url"
+          v-model="post.cover"
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="分类">
-        <el-radio-group v-model="blog.type" size="default">
-          <el-radio-button label="原创" />
-          <el-radio-button label="翻译" />
-          <el-radio-button label="转载" />
+      <el-form-item label="版块">
+        <el-radio-group v-model="post.type" size="default">
+          <el-radio-button label="成电校园" />
+          <el-radio-button label="生活信息" />
+          <el-radio-button label="情感专区" />
+          <el-radio-button label="未来可期" />
         </el-radio-group>
       </el-form-item>
 
       <el-form-item label="内容">
         <v-md-editor
           ref="editor"
-          v-model="blog.content"
+          v-model="post.content"
           height="450px"
         ></v-md-editor>
       </el-form-item>
 
       <el-form-item style="margin-left: 44%">
-        <el-button type="primary" round @click="submitBlog">发布</el-button>
+        <el-button type="primary" round @click="submitpost">发布</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -47,7 +48,7 @@
 import { ref } from "vue";
 import { defineProps } from "vue";
 const params = defineProps({
-  blog_id: {
+  post_id: {
     type: Number,
     default: -1,
   },
@@ -59,7 +60,7 @@ const params = defineProps({
     type: String,
     default: "",
   },
-  description: {
+  cover: {
     type: String,
     default: "",
   },
@@ -69,24 +70,24 @@ const params = defineProps({
   },
   type: {
     type: String,
-    default: "原创",
+    default: "成电校园",
   },
   onClose: Function,
 });
-const blog = ref({
+const post = ref({
   title: params.title,
-  description: params.description,
+  cover: params.cover,
   content: params.content,
   type: params.type,
 });
-const submitBlog = async () => {
-  console.log(blog.value);
+const submitpost = async () => {
+  console.log(post.value);
   await submit();
   console.log("submit ok");
-  // if (params.blog_id === -1) {
-  //   router.push({path:'/blog',query:{content:''}})
+  // if (params.post_id === -1) {
+  //   router.push({path:'/post',query:{content:''}})
   // }else{
-  //   router.push({name:'BlogPresent',params: {blogId:params.blog_id}})
+  //   router.push({name:'postPresent',params: {postId:params.post_id}})
   // }
   params.onClose();
   // 将博客内容转换为Markdown格式存储
@@ -94,45 +95,45 @@ const submitBlog = async () => {
   // ...
 };
 const submit = async () => {
-  if (params.blog_id === -1) {
-    const responce = await DataService.insertBlog(
+  if (params.post_id === -1) {
+    const responce = await DataService.insertpost(
       params.user_id,
-      blog.value.type,
-      blog.value.description,
-      blog.value.title,
-      blog.value.content
+      post.value.type,
+      post.value.cover,
+      post.value.title,
+      post.value.content
     );
     console.log(responce.data);
   } else {
-    if (blog.value.content !== params.content) {
-      const responce = await DataService.Update_blog_Content(
-        params.blog_id,
+    if (post.value.content !== params.content) {
+      const responce = await DataService.Update_post_Content(
+        params.post_id,
         params.user_id,
-        blog.value.content
+        post.value.content
       );
       console.log(responce.data);
     }
-    if (blog.value.title !== params.title) {
-      const responce = await DataService.Update_blog_Title(
-        params.blog_id,
+    if (post.value.title !== params.title) {
+      const responce = await DataService.Update_post_Title(
+        params.post_id,
         params.user_id,
-        blog.value.title
+        post.value.title
       );
       console.log(responce.data);
     }
-    if (blog.value.description !== params.description) {
-      const responce = await DataService.Update_blog_Description(
-        params.blog_id,
+    if (post.value.cover !== params.cover) {
+      const responce = await DataService.Update_post_cover(
+        params.post_id,
         params.user_id,
-        blog.value.description
+        post.value.cover
       );
       console.log(responce.data);
     }
-    if (blog.value.type !== params.type) {
-      const responce = await DataService.Update_blog_Type(
-        params.blog_id,
+    if (post.value.type !== params.type) {
+      const responce = await DataService.Update_post_Type(
+        params.post_id,
         params.user_id,
-        blog.value.type
+        post.value.type
       );
       console.log(responce.data);
     }
@@ -142,7 +143,7 @@ const submit = async () => {
 
   
 <style scoped>
-.blog-editor {
+.post-editor {
   width: 80%;
   height: 90%;
   margin: 0 auto;
