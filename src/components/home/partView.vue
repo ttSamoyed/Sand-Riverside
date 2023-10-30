@@ -39,7 +39,7 @@ const click = () => {
 }
 </script>
 
-<style>
+<style scoped>
 .center{
     width: 100%;
     display: flex;

@@ -8,7 +8,7 @@
       <div class="nav-links">
         <router-link to="/"><el-link>主页</el-link></router-link>
         <router-link to="/hot"><el-link>热门</el-link></router-link>
-        <router-link to="/"><el-link>精华</el-link></router-link>
+        <router-link to="/perfect"><el-link>精华</el-link></router-link>
         <router-link to="/login"><el-link>登录</el-link></router-link>
       </div>
       <div class="search-box">
@@ -23,8 +23,14 @@
         <Dark></Dark>
       </div>
       <div class="message">
+
+        <el-button text>
+          <router-link to="/writePost">
+            <el-icon size="large" style="margin-top:2.5px;color: var(--el-color-primary);"><Edit /></el-icon>
+          </router-link>
+        </el-button>
         <el-button text @click="drawer = true">
-          <el-icon size="large"><ChatDotSquare /></el-icon>
+          <el-icon size="large" style="color: var(--el-color-success);"><ChatDotSquare /></el-icon>
         </el-button>
       </div>
       <div class="user" >
@@ -146,8 +152,8 @@ const not_login = () => {
   }
 
   .message {
-    padding-left: 20px;
-    margin-right:20px;
+    padding-left: 10px;
+    margin-right:10px;
     order: 2;
   }
 

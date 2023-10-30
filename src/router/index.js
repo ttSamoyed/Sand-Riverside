@@ -6,6 +6,7 @@ import perfectView from '../views/perfectView.vue'
 import postView from '../views/postView.vue'
 import mypageView from '../views/mypageView.vue'
 import registerView from '../views/registerView.vue'
+import writePost from '../views/writePost.vue'
 const routes = [
     {
         path: '/',
@@ -40,8 +41,13 @@ const routes = [
     {
         path: '/userRegister',
         name: 'userRegister',
-        component: registerView
+        component: registerView,
     },
+    {
+        path: '/writePost',
+        name: 'writePost',
+        component:writePost,
+    }
 ]
 const router = createRouter({
     history: createWebHashHistory(),

@@ -54,17 +54,21 @@
                     </div>
                 </div>
             </template>
+            <!-- 博文内容，用v-md-editor -->
             <v-md-editor :model-value="post.content" mode="preview"></v-md-editor>
 
-            <div style="padding: 14px">
-            <span>Yummy hamburger</span>
+            <div style="padding: 25px">
+            <el-text>电子科技大学第四轮学科评估结果：电子科学与技术和信息与通信工程均为A+, 计算机科学与技术A， 光学工程A-，B+学科5个。
+电子科技大学2023届各学院保研率统计分析：数学科学学院保研率最高达34.96%，格拉斯哥学院保研率最低为18%。，计算机科学与工程学院整体保研率29%，信息与通信工程学院整体保研率26.88%。电子科技大学医学院保研率23%。
+电子科技大学医学院2023届保研情况：2023届护理学专业毕业生11人，2人保研。</el-text>
             <div class="bottom">
-                <time class="time"> currentDate </time>
-                <el-button text class="button">Operating</el-button>
+                <time class="time"> 2023-10-30 </time>
+                <el-button text class="button">测试</el-button>
             </div>
             </div>
         </el-card>
-        </div>
+    </div>
+    <!-- 评论 -->
     <div class="box-card">
       <el-card
         v-loading="loading"
@@ -72,6 +76,7 @@
         :element-loading-spinner="svg"
         element-loading-svg-view-box="-10, -10, 50, 50"
       >
+        <!-- 评论头 展示点赞、评论按钮 -->
         <template #header>
           <div class="card-header">
             <h3>
@@ -131,7 +136,18 @@
         </template>
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul class="list" :infinite-scroll-disabled="disabled">
+            <postComment
+                :message='写得好'
+                :user_name='杨波'
+                :avatar='h'
+              ></postComment>
+              <postComment
+                :message='写得好'
+                :user_name='杨波'
+                :avatar='h'
+              ></postComment>
             <div v-for="(comment, id) in post.comments" :key="id">
+              <!-- 调用评论子模块 -->
               <postComment
                 :message="comment.content"
                 :user_name="comment.user_name"
@@ -190,7 +206,7 @@ import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 // import DataService from "@/components/services/DataService";
-//import postComment from "@/components/postComment.vue";
+import postComment from "../components/post/postComment.vue";
 //import writepost from "@/components/writepost.vue";
 import { useStore } from "vuex";
 

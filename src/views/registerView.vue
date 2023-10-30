@@ -116,17 +116,17 @@ const submit=(() => {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 form {
-    background-color: #ffffffe0;
+    background-color: var(--el-fill-color);
+    opacity: 0.9;
     padding: 20px;
     margin: 50px;
     border-radius: 10px;
     width: 500px;
-    border: 2px solid rgb(193, 186, 186);
     margin-top: 16vh;
 }
 .register_title {
   font-size: 25px;
-  color: rgb(73, 73, 73);
+  color: var(--el-text-color);
   font-family:  'San Francisco';
   font-weight: 450;
   text-align: center;
