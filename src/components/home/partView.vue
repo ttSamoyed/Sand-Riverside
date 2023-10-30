@@ -14,11 +14,11 @@
                 </el-row>
                 <el-row style="margin-top: 3px;">
                 <el-space>
-                    <el-text class="banzhu" @click="click">本板块由</el-text>
+                    <el-text class="banzhu" @click="click">板块由</el-text>
                     <el-avatar :size="20" shape="square">
                     <el-icon><UserFilled /></el-icon>
                     </el-avatar>
-                    <el-text class="banzhu">杨波</el-text>
+                    <el-text class="banzhu">李华</el-text>
                     <el-text class="banzhu">管理</el-text>
                 </el-space>
                 </el-row>
@@ -53,15 +53,15 @@ const click = () => {
   margin-top: 20px;
   padding-top: 1px;
   padding-bottom: 3px;
-  border-left: 3px solid dodgerblue;
+  border-left: 2.5px solid var(--el-color-primary);
 }
 .smalltitle{
   font-weight: 500;
-  font-size: 24px; 
+  font-size: 20px; 
 }
 
 .banzhu{
-  font-size: 12px;
+  zoom: 0.8;
 }
 
 </style>

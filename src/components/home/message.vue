@@ -7,7 +7,7 @@
         <el-col :span="20">
             <el-row>
             <el-space wrap>
-                <span style="zoom:0.8;font-weight: 500;">杨波</span>
+                <span style="zoom:0.8;font-weight: 500;">熊磊</span>
                 <el-divider direction="vertical"></el-divider>
                 <el-text style="zoom:0.8; font-weight: 400;">Be Strong, be humble.</el-text>
             </el-space>

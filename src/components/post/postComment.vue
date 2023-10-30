@@ -40,8 +40,9 @@ const props = defineProps({
 .comment_group {
     display: flex;
     flex-direction: column;
-    border-bottom: 2px solid #e3e3e3;
-    margin-top: 20px;
+    border-bottom: 1px solid var(--el-border-color);
+    margin-top: 8px;
+    margin-bottom: 10px;
     margin-left: -35px !important;
 }
 .info {

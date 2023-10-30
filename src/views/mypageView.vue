@@ -6,7 +6,7 @@
     </div>
     <div class="center">
         <el-row>
-            <top_nav @post="label='1'" @interaction="label='2'" @settings="label='3'"></top_nav>
+            <top_nav @post="label='1'" @interaction="label='2'" @settings="label='3'" @manage="label='4'"></top_nav>
         </el-row>
     </div>
     <div class="center">
@@ -27,6 +27,11 @@
                 </div>
                 <div v-if="label=='3'">
                     <setting_card></setting_card>
+                </div>
+                <div v-if="label=='4'">
+                    <div class="center">
+                        <el-text style="padding-top:50px;font-size: 15px;">你不是沙河畔版主 请联系河畔管理员以获得管理权限</el-text>
+                    </div>
                 </div>
             </ul>
         </div>
