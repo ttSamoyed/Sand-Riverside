@@ -4,7 +4,7 @@ import axios from 'axios';
 // 创建一个 axios 实例，用于发送请求
 const apiClient = axios.create({
   // 设置后端 API 的基础 URL
-  baseURL: "http://8.130.84.162:8180/api",
+  baseURL: "http://124.222.42.111:8000/api",
   // 设置请求头
   headers: {
     Accept: "application/json",
@@ -20,8 +20,8 @@ export default {
   Select_Conditional_Blogs(title){
     return apiClient.post('/SCB',{title:title});
   },
-  isInputRight(name,password){
-    return apiClient.post('/Login_Judge',{name,password});
+  Login(username,password){
+    return apiClient.post('/login',{username,password});
   },
   SelectBlog(user_id,blog_id){
     return apiClient.post('/SB',{user_id:user_id,blog_id:blog_id});

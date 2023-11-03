@@ -114,7 +114,6 @@
 </template>
 <script setup>
 import statistics from "@/components/home/statistics.vue"
-// import carousel from "@/components/home/carousel.vue"
 const name = 'HomeView';
 </script>
 <style scoped>

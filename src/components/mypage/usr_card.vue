@@ -2,35 +2,34 @@
     <div class="usr_card">
             <el-row>
                 <el-col :span="4">
-                    <el-avatar :size="150" :src="AvatarUrl" shape="square"/>
+                    <el-avatar :size="150" :src="user.useravatar" shape="square"/>
                 </el-col>
                 <el-col :span="17">
                     <div style="padding-left: 20px;">
                         <el-row>
                         <el-space wrap size="small">
-                            <span class="usrname">ShpUsr <el-icon style="color: rgb(27, 76, 253);"><Male /></el-icon></span>
+                            <span class="usrname">{{ user.username }} 
+                                <el-icon v-if="0" style="color: var(--el-color-primary);"><Male /></el-icon>
+                                <el-icon v-if="1" style="color: rgb(253, 165, 180);"><Female /></el-icon>
+                            </span>
                             <el-divider direction="vertical"></el-divider>
-                            <el-text type="info" class="sign">Be Strong, be humble.</el-text>
+                            <el-text type="info" class="sign">{{ user.usersign }}</el-text>
                         </el-space>
                         </el-row>
                         <el-row>
                         <el-space wrap>
-                            <el-text size="small" style="space"> 计算机科学与工程学院 </el-text>
+                            <el-text size="small" style="space">{{ user.userschool }}</el-text>
                             <el-text size="small">  @ UESTC </el-text>
                         </el-space>
                         </el-row>
                         <el-row>
                             <el-space wrap size="1"> 
-                                <el-text size="small"> 中国 </el-text>
-                                <el-text size="small"> · </el-text>
-                                <el-text size="small"> 四川 </el-text>
-                                <el-text size="small"> · </el-text>
-                                <el-text size="small"> 成都 </el-text>
+                                <el-text size="small"> {{ user.userhome }} </el-text>
                             </el-space>
                         </el-row>
                         <el-row>
                             <el-space wrap>
-                                <el-text size="small" style="color: rgb(85, 159, 243);">2023-9-10</el-text>
+                                <el-text size="small" style="color: rgb(85, 159, 243);">{{ user.userdate }}</el-text>
                                 <el-text size="small" style="color: rgb(85, 159, 243);">加入沙河畔</el-text>
                             </el-space>
                         </el-row>
@@ -38,12 +37,14 @@
                 </el-col>
                 <el-col :span="3">
                     <div style="padding-top: 45px;"></div>
-                    <el-row class="center">
-                        <el-icon size="30"><UserFilled /></el-icon>
-                    </el-row>
-                    <el-row class="center" style="margin-top: 10px;">
-                        <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">普通用户</el-text>
-                    </el-row>
+                    <div v-if="user.userrole==1">
+                        <el-row class="center">
+                            <el-icon size="30"><UserFilled /></el-icon>
+                        </el-row>
+                        <el-row class="center" style="margin-top: 10px;">
+                            <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">普通用户</el-text>
+                        </el-row>
+                    </div>
                 </el-col>
             </el-row>
         </div>
@@ -51,7 +52,19 @@
 
 <script setup>
 import { ref } from 'vue'
-const AvatarUrl = ref("https://img0.baidu.com/it/u=2050198963,701666245&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=501")
+
+const user = ref({
+    username: '用户名',
+    useravatar: 'https://img2.baidu.com/it/u=3513073338,239101075&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+    usersex: 1,
+    userhome: '中国·四川·成都',
+    usersign: '此用户很懒，还没有设置签名',
+    userschool: '计算机科学与工程学院',
+    userrole: 1,
+    userdate: '2023-9-1',
+})
+
+
 </script>
 
 <style scoped>

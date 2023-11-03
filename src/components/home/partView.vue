@@ -14,11 +14,11 @@
                 </el-row>
                 <el-row style="margin-top: 3px;">
                 <el-space>
-                    <el-text class="banzhu" @click="click">板块由</el-text>
+                    <el-text class="banzhu">板块由</el-text>
                     <el-avatar :size="20" shape="square">
                     <el-icon><UserFilled /></el-icon>
                     </el-avatar>
-                    <el-text class="banzhu">李华</el-text>
+                    <el-text class="banzhu">{{ admin }}</el-text>
                     <el-text class="banzhu">管理</el-text>
                 </el-space>
                 </el-row>
@@ -34,9 +34,7 @@ import { defineProps } from 'vue';
 import { ref } from "vue";
 const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']
 const index = defineProps(['p']);
-const click = () => {
-    alert('index=',index["p"]);
-}
+const admin = ref('管理员')
 </script>
 
 <style scoped>

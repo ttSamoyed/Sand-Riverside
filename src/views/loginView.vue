@@ -57,33 +57,35 @@
 
 <script setup>
 import { ref } from 'vue'
-// import DataService from '@/components/services/DataService'
+import DataService from '@/components/services/DataService'
 import { ElNotification } from 'element-plus'
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
 import router from '@/router'
 const store=useStore()
 const password = ref('')
 const username = ref('')
 const loading = ref(false)
+
 const submit = async () => {
-  loading.value = true;
-  if (username.value == 'test' && password.value == '123') {
+    loading.value = true;
+
+    if (username.value == 'test' && password.value == '123') {
     loading.value = false;
     router.push({ path: '/mypage' });
-  }
-  const response=await DataService.isInputRight(username.value,password.value)
-  console.log(response.data)
-  if (response.data.isRight === false) {
+    }
+    const response = await DataService.Login(username.value, password.value)
     loading.value = false;
-    ElNotification({
-    title: '登录失败',
-    message: '用户名或密码错误',
-  })
-  } else {
-    loading.value = false;
-    store.commit("setUser", response.data.user);
-    router.push({ path: '/mypage' });
-  }
+    console.log(response.data)
+    if (response.data.status === false) {
+        ElNotification({
+        title: '登录失败',
+        message: '用户名或密码错误',
+    })
+    }
+    else {
+        store.commit("setUser", response.data.user);
+        router.push({ path: '/mypage' });
+    }
 }
 </script>
 
