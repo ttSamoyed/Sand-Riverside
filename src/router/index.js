@@ -29,7 +29,7 @@ const routes = [
         component: perfectView,
     },
     {
-        path: '/post',
+        path: '/post:postid',
         name: 'post',
         component: postView,
     },
