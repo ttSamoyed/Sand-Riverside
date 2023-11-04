@@ -60,7 +60,9 @@ import { ref } from 'vue'
 import DataService from '@/components/services/DataService'
 import { ElNotification } from 'element-plus'
 import { useStore } from 'vuex'
-import router from '@/router'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const store=useStore()
 const password = ref('')
 const username = ref('')
@@ -68,24 +70,26 @@ const loading = ref(false)
 
 const submit = async () => {
     loading.value = true;
-
     if (username.value == 'test' && password.value == '123') {
     loading.value = false;
     router.push({ path: '/mypage' });
     }
     const response = await DataService.Login(username.value, password.value)
-    loading.value = false;
     console.log(response.data)
-    if (response.data.status === false) {
-        ElNotification({
-        title: '登录失败',
-        message: '用户名或密码错误',
+
+    if (response.data.status === 'failed') {
+    loading.value = false;
+    ElNotification({
+    title: '登录失败',
+    message: '用户名或密码错误',
     })
+    } else {
+    loading.value = false;
+        store.commit("setUser", response.data.user_info)
+    console.log(response.data.user_info)
+    router.push({path:'/mypage'})
     }
-    else {
-        store.commit("setUser", response.data.user);
-        router.push({ path: '/mypage' });
-    }
+
 }
 </script>
 

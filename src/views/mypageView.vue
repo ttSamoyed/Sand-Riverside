@@ -11,7 +11,7 @@
     </div>
     <div class="center">
         <div class="main">
-            <ul v-infinite-scroll="load" class="infinite-list" style="overflow: auto">
+            <ul class="infinite-list" style="overflow: auto">
                 <div v-if="label=='1'">
                     <post_card></post_card>
                     <post_card></post_card>

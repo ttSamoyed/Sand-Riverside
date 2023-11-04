@@ -14,15 +14,24 @@ const apiClient = axios.create({
 
 // 定义一个用于获取数据的函数
 export default {
+  // 登录
+  Login(username,password){
+    return apiClient.post('/login/',{username,password});
+  },
+  // 修改个人信息
+  Update_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
+  const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
+  return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone });
+},
+
+
   Select_All_Blogs() {
     return apiClient.get('/SAB');
   },
   Select_Conditional_Blogs(title){
     return apiClient.post('/SCB',{title:title});
   },
-  Login(username,password){
-    return apiClient.post('/login',{username,password});
-  },
+
   SelectBlog(user_id,blog_id){
     return apiClient.post('/SB',{user_id:user_id,blog_id:blog_id});
   },

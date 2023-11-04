@@ -1,16 +1,16 @@
 <template>
-    <div class="usr_card">
+    <div v-loading='loading' class="usr_card">
             <el-row>
                 <el-col :span="4">
-                    <el-avatar :size="150" :src="user.useravatar" shape="square"/>
+                    <el-avatar :size="150" :src="user.avatar" shape="square"/>
                 </el-col>
                 <el-col :span="17">
                     <div style="padding-left: 20px;">
                         <el-row>
                         <el-space wrap size="small">
                             <span class="usrname">{{ user.username }} 
-                                <el-icon v-if="0" style="color: var(--el-color-primary);"><Male /></el-icon>
-                                <el-icon v-if="1" style="color: rgb(253, 165, 180);"><Female /></el-icon>
+                                <el-icon v-if="user.sex==0" style="color: var(--el-color-primary);"><Male /></el-icon>
+                                <el-icon v-if="user.sex==1" style="color: rgb(253, 165, 180);"><Female /></el-icon>
                             </span>
                             <el-divider direction="vertical"></el-divider>
                             <el-text type="info" class="sign">{{ user.usersign }}</el-text>
@@ -18,18 +18,18 @@
                         </el-row>
                         <el-row>
                         <el-space wrap>
-                            <el-text size="small" style="space">{{ user.userschool }}</el-text>
-                            <el-text size="small">  @ UESTC </el-text>
+                            <el-text size="small" style="space">{{ user.major }}</el-text>
+                            <el-text size="small">  @ {{ user.college }} </el-text>
                         </el-space>
                         </el-row>
                         <el-row>
                             <el-space wrap size="1"> 
-                                <el-text size="small"> {{ user.userhome }} </el-text>
+                                <el-text size="small"> {{ user.address }} </el-text>
                             </el-space>
                         </el-row>
                         <el-row>
                             <el-space wrap>
-                                <el-text size="small" style="color: rgb(85, 159, 243);">{{ user.userdate }}</el-text>
+                                <el-text size="small" style="color: rgb(85, 159, 243);">{{ user.date_joined }}</el-text>
                                 <el-text size="small" style="color: rgb(85, 159, 243);">加入沙河畔</el-text>
                             </el-space>
                         </el-row>
@@ -37,12 +37,20 @@
                 </el-col>
                 <el-col :span="3">
                     <div style="padding-top: 45px;"></div>
-                    <div v-if="user.userrole==1">
+                    <div v-if="user.is_superuser!=1">
                         <el-row class="center">
                             <el-icon size="30"><UserFilled /></el-icon>
                         </el-row>
                         <el-row class="center" style="margin-top: 10px;">
                             <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">普通用户</el-text>
+                        </el-row>
+                    </div>
+                    <div v-if="user.is_superuser==1">
+                        <el-row class="center">
+                            <el-icon size="30"><UserFilled /></el-icon>
+                        </el-row>
+                        <el-row class="center" style="margin-top: 10px;">
+                            <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">河畔管理员</el-text>
                         </el-row>
                     </div>
                 </el-col>
@@ -51,20 +59,46 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
+import { onMounted, ref } from 'vue'
+import { ElMessage } from 'element-plus'
+import { useStore } from 'vuex';
+const state = useStore().state
+const loading = ref(true)
 const user = ref({
-    username: '用户名',
-    useravatar: 'https://img2.baidu.com/it/u=3513073338,239101075&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-    usersex: 1,
-    userhome: '中国·四川·成都',
-    usersign: '此用户很懒，还没有设置签名',
-    userschool: '计算机科学与工程学院',
-    userrole: 1,
-    userdate: '2023-9-1',
+    address: null,
+    avatar: null,
+    birth_date: null,
+    college: null,
+    date_joined: null,
+    email: null,
+    groups: null,
+    is_active: null,
+    is_superuser: false,
+    last_login: null,
+    major: null,
+    phone: null,
+    sex: null,
+    status: null,
+    stuID: null,
+    userID: null,
+    username: null,
+    usersign: '此用户很懒，没有设置签名',
 })
+const getPersonalInfo = async () => {
+    const id = state.user.userID;
+    console.log('id=',id)
+    if (id === null) {
+        ElMessage.error('您还没有登录，请先登录！');
+        return;
+    }
 
-
+    else {
+            console.log('userinfo:',user)
+            user.value = state.user;
+        loading.value = false
+    }
+};
+onMounted(getPersonalInfo)
 </script>
 
 <style scoped>
