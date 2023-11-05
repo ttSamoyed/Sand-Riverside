@@ -2,7 +2,7 @@
 <div class="post">
     <el-row>
         <span class="title">
-            机器学习，深度学习，神经网络，深度神经网络之间有何区别？
+            {{ post.title }}
         </span>
     </el-row>
     <el-row style="margin-top: 10px;">
@@ -21,7 +21,7 @@
                 </el-row>
                 <el-row style="margin-top: 10px;width: 100%;">
                     <el-text size="large">
-                    按照个人的理解，先说个人观点：机器学习>神经网络>深度学习≈深度神经网络。深度学习是基于深度神经网络的，深度神经网络和浅层神经网络都是神经网络，而机器学习是包括神经网络在内的算法。下面答主就来分解一下这几个概念。
+                        {{ post.introduction }}
                     </el-text>
                 </el-row>
         </el-col>
@@ -45,7 +45,15 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 
+const post = {
+    'title':'帖子名',
+    'introduction':'简介',
+    'likes':1234,
+    'comments':666,
+    'view':999,
+}
 </script>
 
 <style scoped>

@@ -22,7 +22,9 @@ export default createStore({
       userID: null,
       username: null,
     },
-    isLogin:false
+    isLogin: false,
+    access_token: null,
+    fresh_token: null,
   },
   getters: {
   },
@@ -40,6 +42,10 @@ export default createStore({
     },
     setUser_name(state,user_name){
       state.user.user_name=user_name
+    },
+    setToken(state, access_token, fresh_token) {
+      state.access_token = access_token
+      state.fresh_token = fresh_token
     }
   },
   actions: {
