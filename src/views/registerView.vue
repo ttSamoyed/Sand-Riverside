@@ -41,7 +41,7 @@
             </el-form-item>
             <el-form-item >
               <el-col :span="24" style="text-align: center;">
-                <el-button round plain type="info" size="large" @click="submit(form)" >注册</el-button>
+                <el-button round plain type="info" size="large" @click="submit" >注册</el-button>
               </el-col>
             </el-form-item>
           </el-form>
@@ -55,9 +55,10 @@
 
 <script setup>
 import { ref } from 'vue'
-// import DataService from '@/components/services/DataService'
+import DataService from '@/components/services/DataService'
 import { useStore} from 'vuex'
-import router from '@/router';
+//import router from '@/router';
+import { useRouter } from 'vue-router'
 const form=ref(null)
 const rules = {
   username: [
@@ -86,30 +87,41 @@ const rules = {
   ]
 }
 const store=useStore()
+const router = useRouter()
 const password=ref('')
 const username=ref('')
 const email=ref('')
 const confirmpassword=ref('')
-const postData=async()=>{
-  const response=await DataService.Register(username.value,password.value,email.value)
-  console.log(response.data)
-  store.commit("Register",response.data)
-  router.push({path:'/MyPage'})
-}
-const submit=(() => {
-  console.log("click")
-  console.log(form.value)
-  if (form.value===null) return
-  form.value.validate((valid) => {
-    if (valid) {
-      postData()
-      console.log('submit!')
-    } else {
-      console.log('error submit!!')
-      return false
-    }
-  })
-})
+const userData = {
+    "username": username.value,
+    "password": password.value,
+    "email": email.value,
+  };
+const postData = async () => {
+  try {
+    console.log(userData);
+    const response = await DataService.Register(userData);
+    console.log(response.data);
+    store.commit("Register", response.data);
+    router.push({ path: '/login' });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const submit = () => {
+  if (!username.value || !password.value || !email.value) {
+    console.log('Please fill in all the required fields');
+    return;
+  }
+
+  if (password.value !== confirmpassword.value) {
+    console.log('Password and Confirm Password do not match');
+    return;
+  }
+//  console.log(userData);
+  postData();
+};
 </script>
 
 <style scoped>

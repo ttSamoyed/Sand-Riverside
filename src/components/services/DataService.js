@@ -7,7 +7,7 @@ const state = useStore().state;
 // 创建一个 axios 实例，用于发送请求
 const apiClient = axios.create({
   // 设置后端 API 的基础 URL
-  baseURL: "http://8.130.84.162:8180/api",
+  baseURL: "http://124.222.42.111:8000/api",
   // 设置请求头
   headers: {
     Accept: "application/json",
@@ -18,7 +18,7 @@ const apiClient = axios.create({
 
 const Login_apiClient = axios.create({
   // 设置后端 API 的基础 URL
-  baseURL: "http://8.130.84.162:8180/api",
+  baseURL: "http://124.222.42.111:8000/api",
   // 设置请求头
   headers: {
     Accept: "application/json",
@@ -28,9 +28,23 @@ const Login_apiClient = axios.create({
 
 // 定义一个用于获取数据的函数
 export default {
-  Select_All_Blogs() {
-    return apiClient.get('/SAB');
+  // 登录
+  Login(username,password){
+    return apiClient.post('/login/',{username,password});
   },
+  // 修改个人信息
+  Update_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
+    const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
+    return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone});
+  },
+  Select_All_My_Blogs() {
+    
+  },
+
+  Select_All_Blogs() {
+    return apiClient.get('/post/list/');
+  },
+
   Select_Conditional_Blogs(title){
     return apiClient.post('/SCB',{title:title});
   },
@@ -46,9 +60,7 @@ export default {
   insertComment(user_id,blog_id,content){
     return apiClient.post('/IC',{user_id:user_id,blog_id:blog_id,content:content});
   },
-  Register(user_name,password,email){
-    return apiClient.post('/Register_Judge',{user_name:user_name,password:password,email:email});
-  },
+  
   Update_Likes(user_id,blog_id,user_like){
     return apiClient.post('/UL',{user_id:user_id,blog_id:blog_id,user_like:user_like});
   },

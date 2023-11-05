@@ -14,11 +14,11 @@
                 </el-row>
                 <el-row style="margin-top: 3px;">
                 <el-space>
-                    <el-text class="banzhu" @click="click">板块由</el-text>
+                    <el-text class="banzhu">板块由</el-text>
                     <el-avatar :size="20" shape="square">
                     <el-icon><UserFilled /></el-icon>
                     </el-avatar>
-                    <el-text class="banzhu">李华</el-text>
+                    <el-text class="banzhu">{{ admin }}</el-text>
                     <el-text class="banzhu">管理</el-text>
                 </el-space>
                 </el-row>
@@ -29,14 +29,34 @@
 </template>
 
 <script setup>
+import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';
+import { ref, onMounted } from 'vue';
+import DataService from '@/components/services/DataService';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import post_card from "@/components/home/post_card.vue"
 import { defineProps } from 'vue';
-import { ref } from "vue";
+
+const loading = ref(true)
 const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']
 const index = defineProps(['p']);
-const click = () => {
-    alert('index=',index["p"]);
-}
+const admin = ref('管理员')
+
+onMounted(async () => {
+    try {
+      loading.value = true;
+      let response;
+      response = await DataService.Select_All_Blogs();
+      console.log(response);
+      loading.value = false;
+      blogs.value = response.data;
+    } catch (error) {      
+      loading.value = false;
+      ElMessage.error('Failed to fetch data. Please try again.');
+      console.error(error);
+    }
+  });
+
 </script>
 
 <style scoped>

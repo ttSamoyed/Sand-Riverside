@@ -13,7 +13,7 @@
       </div>
       <div class="search-box">
         <el-input
-          v-model="search"
+          v-model="content"
           size="default"
           placeholder="搜一搜，发现校园新鲜事"
           :prefix-icon="Search"
@@ -53,31 +53,47 @@
 
 <script setup>
 import Dark from './dark.vue'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus'
+import { useStore } from 'vuex';
 import message from '../home/message.vue'
 const router = useRouter();
-const isLogin = ref(false)
-const search = ref('')
+
+const state = useStore().state
+// console.log(store.state)
+// const state=computed(()=>useStore().state)
+const isLogin = state.isLogin;
+const avatar = state.user.avatar;
+
+const content = ref('')
+
 const drawer = ref(false)
+
+console.log('>>>', state.isLogin);
+console.log('>>>', isLogin);
+console.log('>>>user', state.user);
+
 const handleAvatarClick = () => {
-  if (isLogin.value) {
-    not_login()
-    router.push({path:'/mypage'})
-  }
-  else {
-    not_login()
-    router.push({path:'/login'})
-  }
+  if (state.isLogin) {
+    console.log('state=', state)
+    console.log('>>> user=', state.user);
+      console.log('跳转到mypage')
+      router.push({path:'/mypage'})
+  } else {
+    console.log('state=', state)
+    console.log('跳转到登录')
+    console.log('>>> islogin=', state.isLogin);
+      router.push({path:'/login'})
+    }
 }
 
-const not_login = () => {
-  ElMessage({
-    message: '您未登录，请先登录',
-    type: 'error',
-  })
+// const searchByblur=()=>{
+//     search()
+// }
+const search=()=>{
+    router.push({name:'blog',query:{content:content.value}})
+    content.value=''
 }
 </script>
 

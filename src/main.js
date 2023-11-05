@@ -1,4 +1,5 @@
 import router from './router'
+import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { createApp } from 'vue'
@@ -47,9 +48,10 @@ const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
 const app = createApp(App)
+
+
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
-  
-app.use(ElementPlus).use(router).use(VMdEditor)
-app.mount('#app')
+
+app.use(ElementPlus).provide('store',store).use(router).use(VMdEditor).mount('#app')
