@@ -23,7 +23,10 @@ export default {
   const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
   return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone });
 },
-
+  //注册
+  Register(userData){
+    return apiClient.post('/register/',{userData});
+  },
 
   Select_All_Blogs() {
     return apiClient.get('/SAB');
@@ -41,9 +44,7 @@ export default {
   insertComment(user_id,blog_id,content){
     return apiClient.post('/IC',{user_id:user_id,blog_id:blog_id,content:content});
   },
-  Register(user_name,password,email){
-    return apiClient.post('/Register_Judge',{user_name:user_name,password:password,email:email});
-  },
+  
   Update_Likes(user_id,blog_id,user_like){
     return apiClient.post('/UL',{user_id:user_id,blog_id:blog_id,user_like:user_like});
   },
