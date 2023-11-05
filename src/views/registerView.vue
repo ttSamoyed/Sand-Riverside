@@ -92,15 +92,10 @@ const password=ref('')
 const username=ref('')
 const email=ref('')
 const confirmpassword=ref('')
-const userData = {
-    "username": username.value,
-    "password": password.value,
-    "email": email.value,
-  };
+
 const postData = async () => {
   try {
-    console.log(userData);
-    const response = await DataService.Register(userData);
+    const response = await DataService.Register(username.value,password.value,email.value);
     console.log(response.data);
     store.commit("Register", response.data);
     router.push({ path: '/login' });
