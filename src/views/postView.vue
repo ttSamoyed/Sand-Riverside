@@ -187,7 +187,7 @@
     </el-dialog>
   
     <el-dialog v-model="showEditBox" title="编辑帖子" width="90%">
-      <writepost
+      <writePost
         :post_id="Number(postId)"
         :user_id="user_id"
         :title="post.title"
@@ -195,7 +195,7 @@
         :content="post.content"
         :type="post.type_name"
         :onClose="handleChildClose"
-      ></writepost>
+      ></writePost>
     </el-dialog>
 </template>
 
@@ -206,7 +206,7 @@ import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 // import DataService from "@/components/services/DataService";
 import postComment from "../components/post/postComment.vue";
-//import writepost from "@/components/writepost.vue";
+import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
 
 const router = useRouter();

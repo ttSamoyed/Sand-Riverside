@@ -6,10 +6,10 @@
             class="image"
           />
           <div style="padding: 10px">
-            <span style="font-weight: 300;">2023各学院保研情况</span>
+            <el-text style="font-size: 17px; font-weight: 500;">{{post.title}}</el-text>
             <div class="bottom">
-              <time class="time">2023年9月13日</time>
-              <el-button type="primary" class="button" @click="router.push({name:'post'})" round plain>浏览</el-button>
+              <el-text type="info" style="zoom: 0.9;">{{post.createdtime}}</el-text>
+              <el-button type="primary" class="button" @click="router.push({name:'post',params: {postid:post.id}})" round plain>浏览</el-button>
             </div>
           </div>
         </el-card>
@@ -19,7 +19,14 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import {ref}  from 'vue';
 const router = useRouter();
+const post=ref({
+  title:'标题',
+  createdtime:'创建时间',
+  id:1,
+})
+
 </script>
 
 <style scoped>

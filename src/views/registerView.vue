@@ -94,17 +94,18 @@ const postData=async()=>{
   const response=await DataService.Register(username.value,password.value,email.value)
   console.log(response.data)
   store.commit("Register",response.data)
-  router.push({path:'/MyPage'})
+  router.push({path:'/mypage'})
 }
+
 const submit=(() => {
-  console.log("click")
   console.log(form.value)
   if (form.value===null) return
   form.value.validate((valid) => {
     if (valid) {
       postData()
       console.log('submit!')
-    } else {
+    }
+    else {
       console.log('error submit!!')
       return false
     }

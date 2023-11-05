@@ -1,7 +1,8 @@
 <template>
   <div class="post-editor">
     <el-form ref="form" :model="post" label-width="40px">
-      <el-form-item label="标题">
+      <el-form-item>
+        <el-text>标题</el-text>
         <el-input
           :rows="1"
           type="textarea"
@@ -10,16 +11,51 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="封面">
-        <el-input
+      <el-form-item>
+        <el-text>封面</el-text>
+        <el-divider direction="vertical"></el-divider>
+
+        <el-upload action="#" list-type="picture-card" :auto-upload="false">
+          <el-icon><Plus /></el-icon>
+          <template #file="{ file }">
+            <div>
+              <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+              <span class="el-upload-list__item-actions">
+                <span
+                  class="el-upload-list__item-preview"
+                  @click="handlePictureCardPreview(file)"
+                >
+                  <el-icon><zoom-in /></el-icon>
+                </span>
+                <span
+                  v-if="!disabled"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+                >
+                  <el-icon><Delete /></el-icon>
+                </span>
+              </span>
+            </div>
+          </template>
+        </el-upload>
+
+        <el-dialog v-model="dialogVisible">
+          <el-text>预览图片</el-text>
+          <img w-full :src="dialogImageUrl" alt="Preview Image" style="max-width: 100%;"/>
+        </el-dialog>
+
+        <!-- <el-input
           :rows="1"
           type="textarea"
           placeholder="请输入帖子封面照片的url"
           v-model="post.cover"
-        ></el-input>
+        ></el-input> -->
+
       </el-form-item>
 
-      <el-form-item label="版块">
+      <el-form-item>
+        <el-text>板块</el-text>
+        <el-divider direction="vertical"></el-divider>
         <el-radio-group v-model="post.type" size="default">
           <el-radio-button label="成电校园" />
           <el-radio-button label="生活信息" />
@@ -28,7 +64,8 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="内容">
+      <el-form-item>
+        <el-text>内容</el-text>
         <v-md-editor
           ref="editor"
           v-model="post.content"
@@ -43,10 +80,28 @@
   </div>
 </template>
   
-<script setup>
+<script lang="ts" setup>
 // import DataService from "@/components/services/DataService";
 import { ref } from "vue";
 import { defineProps } from "vue";
+import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
+
+import type { UploadFile } from 'element-plus'
+
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const disabled = ref(false)
+
+const handleRemove = (file: UploadFile) => {
+  console.log(file)
+}
+
+const handlePictureCardPreview = (file: UploadFile) => {
+  dialogImageUrl.value = file.url!
+  dialogVisible.value = true
+}
+
+
 const params = defineProps({
   post_id: {
     type: Number,
@@ -144,7 +199,7 @@ const submit = async () => {
   
 <style scoped>
 .post-editor {
-  width: 80%;
+  width: 100%;
   height: 90%;
   margin: 0 auto;
 }

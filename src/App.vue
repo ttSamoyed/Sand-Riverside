@@ -8,7 +8,9 @@
         </el-header>
 
         <el-main class="main">
-           <router-view :key=$route.path></router-view>
+          <keep-alive>
+            <router-view :key=$route.fullPath></router-view>
+          </keep-alive>
         </el-main>
 
         <el-footer v-show="$route.fullPath != '/login'" class="foot">
