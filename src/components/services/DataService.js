@@ -262,6 +262,135 @@ export default {
     });
   },
 
+  /**
+   * 获取博客详情
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回博客详情
+   */
+  Get_Blog(blogid) {
+    const url = '/post/detail/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 获取博客评论
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回博客评论
+   */
+  Get_Blog_Comments(blogid) {
+    const url = '/post/comment/list/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 发表博客
+   * @param {String} title - 标题
+   * @param {String} content - 内容
+   * @param {String} plate - 板块
+   * @param {String} tags - 标签
+   * @returns {JSON} - 返回发表博客结果
+   */
+  Publish_Blog(title, content, plate, tags) {
+    const url = 'post/create/';
+    return apiClient.post(url, { title, content, plate, tags });
+  },
+
+  /**
+   * 修改博客
+   * @param {Number} blogid - 博客ID
+   * @param {String} title - 标题
+   * @param {String} content - 内容
+   * @param {String} plate - 板块
+   * @param {String} tags - 标签
+   * @returns {JSON} - 返回修改博客结果
+   */
+  Update_Blog(blogid, title, content, plate, tags) {
+    const url = 'post/action/' + blogid + '/';
+    return apiClient.patch(url, { title, content, plate, tags });
+  },
+
+  /**
+   * 删除博客
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回删除博客结果
+   */
+  Delete_Blog(blogid) {
+    const url = 'post/action/' + blogid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 点赞博客
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回点赞博客结果
+   */
+  Like_Blog(blogid) {
+    const url = 'post/like/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 取消点赞博客
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回取消点赞博客结果
+   */
+  Unlike_Blog(blogid) {
+    const url = 'post/like/' + blogid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 收藏博客
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回收藏博客结果
+   */
+  Collect_Blog(blogid) {
+    const url = 'post/collect/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 取消收藏博客
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回取消收藏博客结果
+   */
+  Uncollect_Blog(blogid) {
+    const url = 'post/collect/' + blogid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 博客封面获取
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回博客封面获取结果
+   */
+  Get_Blog_Cover(blogid) {
+    const url = 'post/coverImg/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 博客封面上传及修改
+   * @param {Number} blogid - 博客ID
+   * @param {File} coverImg - 封面
+   * @returns {JSON} - 返回博客封面上传结果
+   * @description 上传成功后, 会返回封面的 URL
+   */
+  Upload_Blog_Cover(blogid, cover) {
+    const url = 'post/coverImg/' + blogid + '/';
+    return apiClient.post(url, { cover });
+  },
+
+  /**
+   * 博客封面删除
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回博客封面删除结果
+   */
+  Delete_Blog_Cover(blogid) {
+    const url = 'post/coverImg/' + blogid + '/';
+    return apiClient.delete(url);
+  },
+
   //#region 博客
 
 
@@ -269,7 +398,7 @@ export default {
 
 
 
-
+  //===================================================================================================
   // 以下是原有的函数, 待修改后删除
   Select_All_My_Blogs() {
     return apiClient.get('/post/list/');
