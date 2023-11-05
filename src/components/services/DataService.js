@@ -12,7 +12,6 @@ const apiClient = axios.create({
 // 发送请求前的拦截器
 apiClient.interceptors.request.use(config => {
   const accessToken = localStorage.getItem('access_token');
-  print(accessToken);
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;  // 设置 Authorization 头部
   }
