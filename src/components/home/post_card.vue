@@ -1,66 +1,52 @@
 <template>
 <div class="post" @click="router.push({name:'post',params: {postid:post.id}})">
     <el-row>
-        <span class="title">
-            {{ post.title }}
-        </span>
+      <span class="title">{{ p.title }}</span>
     </el-row>
     <el-row style="margin-top: 10px;">
-        <el-col :span="6">
-            <img src="@/assets/login3.png" class="image"/>
-        </el-col>
-        <el-col :span="18">
-                <el-row>
-                    <el-space wrag>
-                        <el-avatar :size="20" shape="square">
-                            <el-icon><UserFilled /></el-icon>
-                        </el-avatar>
-                        <el-text type="info">{{ post.author }}</el-text>
-                    </el-space>
-                    
-                </el-row>
-                <el-row style="margin-top: 10px;width: 100%;">
-                    <el-text size="large">
-                      {{post.introduction}}
-                    </el-text>
-                </el-row>
-        </el-col>
+      <el-col :span="6">
+        <img :src="p.coverImg" class="image" />
+      </el-col>
+      <el-col :span="18">
+        <el-row>
+          <el-space wrap>
+            <el-avatar :size="20" shape="square">
+              <el-icon><UserFilled /></el-icon>
+            </el-avatar>
+            <el-text type="info">{{ p.author.username }}</el-text>
+          </el-space>
+        </el-row>
+        <el-row style="margin-top: 10px; width: 100%;">
+          <el-text size="large">{{ p.content }}</el-text>
+        </el-row>
+      </el-col>
     </el-row>
     <el-row style="margin-top: 10px;">
-        <el-button  plain >
-            <el-icon size="16"><CaretTop /></el-icon>
-            {{post.likes}}
-        </el-button>
-        <el-button  plain>
-            <el-icon size="16"><Collection /></el-icon>
-        </el-button>
-        <span class="view_com">
-            <el-space wrag>
-                <el-icon><ChatRound /></el-icon>{{post.comments}}
-                <el-icon style="margin-left: 10px;"><View></View></el-icon>{{ post.view }}
-            </el-space>
-        </span>
+      <el-button plain>
+        <el-icon size="16"><CaretTop /></el-icon>
+        {{ p.like_count }}
+      </el-button>
+      <el-button plain>
+        <el-icon size="16"><Collection /></el-icon>
+      </el-button>
+      <span class="view_com">
+        <el-space wrap>
+          <el-icon><ChatRound /></el-icon>{{ p.comments }}
+          <el-icon style="margin-left: 10px;"><View></View></el-icon>{{ p.views }}
+        </el-space>
+      </span>
     </el-row>
-</div>
+  </div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import {useRouter} from 'vue-router'
-import {defineProps} from 'vue'
+import { defineProps } from 'vue';
 
-const post = defineProps(['p'])
-const router =useRouter()
-// const post = ref({
-//     'title':'帖子名',
-//     'introduction':'简介',
-//     'likes':1234,
-//     'comments':666,
-//     'view':999,
-//     'author':'作者',
-//     'id':1,
-// }
-// )
+const props = defineProps({
+  p: Object, // 指定p属性的类型
+});
+
+const { p } = props;
 </script>
 
 <style scoped>

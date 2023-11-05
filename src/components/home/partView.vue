@@ -2,10 +2,7 @@
     <div class="post_list" >
         <el-row>
         <el-col :span="19" style="padding-left: 45px;">
-            <post_card :p=post></post_card>
-            <post_card></post_card>
-            <post_card></post_card>
-            <post_card></post_card>
+            <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
         </el-col>
         <el-col :span="5">
             <div class="info">
@@ -41,23 +38,24 @@ const loading = ref(true)
 const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']
 const index = defineProps(['p']);
 const admin = ref('管理员')
-
-const posts=ref({'author':'aaa'})
+const posts = ref({})
 
 onMounted(async () => {
     try {
       loading.value = true;
       let response;
       response = await DataService.Select_All_Blogs();
-      console.log(response);
+      console.log('response=',response);
       loading.value = false;
-      posts.value = response.data;
-    } catch (error) {      
+      posts.value = response.data.results;
+      console.log('posts=',posts.value)
+    }
+    catch (error) {      
       loading.value = false;
       ElMessage.error('Failed to fetch data. Please try again.');
       console.error(error);
     }
-  });
+});
 
 </script>
 

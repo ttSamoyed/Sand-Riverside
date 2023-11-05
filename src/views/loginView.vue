@@ -86,10 +86,15 @@ const submit = async () => {
     } else {
     loading.value = false;
         store.commit("setUser", response.data.user_info)
+        store.commit("setToken", response.data.access_token, response.data.fresh_token)
     console.log(response.data.user_info)
+
+    localStorage.setItem('user', JSON.stringify(response.data.user_info))
+    localStorage.setItem('access_token', response.data.access_token)
+    localStorage.setItem('refresh_token', response.data.refresh_token)
+
     router.push({path:'/mypage'})
     }
-
 }
 </script>
 
