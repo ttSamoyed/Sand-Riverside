@@ -11,19 +11,19 @@
                     <div class="card-header1">
                     <div class="title">
                         <el-row class="row">
-                        <h2>2023年各学院保研情况</h2>
+                        <h2>{{ post.title }}</h2>
                         </el-row>
                         <el-row style="margin-top: -10px;">
                             
                         <el-text>分类：</el-text>
-                        <el-tag effect="plain"><el-icon><Flag /></el-icon> 原创 </el-tag>
+                        <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.type }} </el-tag>
                         <el-text style="margin-left: 10px;">创建时间：</el-text>
-                        <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> 2023-9-13 </el-tag>
+                        <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.createdtime}}</el-tag>
                         </el-row>
                         <el-row class="row">
-                        <el-avatar :size="30"> u </el-avatar>
+                        <el-avatar :size="30" :src="user.useravatar"></el-avatar>
                         <el-text class="author">
-                             post.user_name 
+                             {{user.username}}
                         </el-text>
                         <!--编辑帖子和删除帖子-->
                         <div v-if="true">
@@ -44,12 +44,13 @@
                             ><el-icon><Delete /></el-icon
                           ></el-button>
                         </div>
+
                         </el-row>
                     </div>
                     <div class="info">
-                        <span><el-icon><ArrowUpBold /></el-icon>  12 </span>
-                        <span><el-icon><ChatRound /></el-icon> 10 </span>
-                        <span style="border: none;"><el-icon><View /></el-icon>  100 </span>
+                        <span><el-icon><ArrowUpBold /></el-icon> {{ post.likes }}  </span>
+                        <span><el-icon><ChatRound /></el-icon> {{ post.comments }} </span>
+                        <span style="border: none;"><el-icon><View /></el-icon>  {{ post.view }} </span>
                     </div>
                     </div>
                 </div>
@@ -58,9 +59,7 @@
             <v-md-editor :model-value="post.content" mode="preview"></v-md-editor>
 
             <div style="padding: 25px">
-            <el-text>电子科技大学第四轮学科评估结果：电子科学与技术和信息与通信工程均为A+, 计算机科学与技术A， 光学工程A-，B+学科5个。
-电子科技大学2023届各学院保研率统计分析：数学科学学院保研率最高达34.96%，格拉斯哥学院保研率最低为18%。，计算机科学与工程学院整体保研率29%，信息与通信工程学院整体保研率26.88%。电子科技大学医学院保研率23%。
-电子科技大学医学院2023届保研情况：2023届护理学专业毕业生11人，2人保研。</el-text>
+            <el-text></el-text>
             <div class="bottom">
                 <time class="time"> 2023-10-30 </time>
                 <el-button text class="button">测试</el-button>
@@ -216,7 +215,32 @@ const router = useRouter();
 // const user_id = computed(() => state.value.user.id);
 const route = useRoute();
 const postId = ref(route.params.postId);
-const post = ref({});
+
+const post=ref({
+  title:'标题',
+  type:'文章类别',
+  part:'水手之家',
+  createdtime:'创建时间',
+  content:'  电子科技大学第四轮学科评估结果：电子科学与技术和信息与通信工程均为A+, 计算机科学与技术A， 光学工程A-，B+学科5个。电子科技大学2023届各学院保研率统计分析：数学科学学院保研率最高达34.96%，格拉斯哥学院保研率最低为18%。，计算机科学与工程学院整体保研率29%，信息与通信工程学院整体保研率26.88%。电子科技大学医学院保研率23%。电子科技大学医学院2023届保研情况：2023届护理学专业毕业生11人，2人保研。',
+  id:1,
+  'title':'帖子名',
+  'introduction':'简介',
+  'likes':1234,
+  'comments':666,
+  'view':999,
+})
+
+const user = ref({
+    username: '用户名',
+    useravatar: 'https://img2.baidu.com/it/u=3513073338,239101075&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+    usersex: 1,
+    userhome: '中国·四川·成都',
+    usersign: '此用户很懒，还没有设置签名',
+    userschool: '计算机科学与工程学院',
+    userrole: 1,
+    userdate: '2023-9-1',
+})
+
 const isActive = ref(false);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
@@ -225,16 +249,6 @@ const loading = ref(false);
 const disabled = computed(() => loading.value);
 const newComment = ref("");
 const commentNumber = ref(0);
-const svg = `
-        <path class="path" d="
-          M 30 15
-          L 28 17
-          M 25.61 25.61
-          A 15 15, 0, 0, 1, 15 30
-          A 15 15, 0, 1, 1, 27.99 7.5
-          L 15 15
-        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-      `;
 //console.log([user_id.value, state.value]);
 //评论功能
 const submitComment = async () => {
@@ -381,7 +395,7 @@ const handleCommentClick = () => {
   margin-bottom: 5px;
   color: grey;
   /* border-bottom: 2px solid rgba(150, 149, 149, 0.478); */
-
+}
   .infinite-list-wrapper {
     height: 300px;
     text-align: center;
@@ -403,7 +417,7 @@ const handleCommentClick = () => {
   .infinite-list-wrapper .list-item + .list-item {
     margin-top: 10px;
   }
-}
+
 
 .info span i {
   margin-top: 5px;

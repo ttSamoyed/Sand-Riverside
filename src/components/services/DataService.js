@@ -20,17 +20,17 @@ export default {
   },
   // 修改个人信息
   Update_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
-  const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
-  return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone });
-},
-  //注册
-  Register(userData){
-    return apiClient.post('/register/',{userData});
+    const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
+    return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone});
+  },
+  Select_All_My_Blogs() {
+    
   },
 
   Select_All_Blogs() {
-    return apiClient.get('/SAB');
+    return apiClient.get('/post/list/');
   },
+
   Select_Conditional_Blogs(title){
     return apiClient.post('/SCB',{title:title});
   },
