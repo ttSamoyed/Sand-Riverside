@@ -81,7 +81,7 @@
 </template>
   
 <script lang="ts" setup>
-// import DataService from "@/components/services/DataService";
+import DataService from '@/components/services/DataService'
 import { ref } from "vue";
 import { defineProps } from "vue";
 import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
@@ -144,7 +144,7 @@ const submitpost = async () => {
   // }else{
   //   router.push({name:'postPresent',params: {postId:params.post_id}})
   // }
-  params.onClose();
+ // params.onClose();
   // 将博客内容转换为Markdown格式存储
   // 提交博客数据到后台
   // ...

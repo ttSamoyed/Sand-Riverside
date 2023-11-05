@@ -2,7 +2,7 @@
     <div class="post_list" >
         <el-row>
         <el-col :span="19" style="padding-left: 45px;">
-            <post_card></post_card>
+            <post_card :p=post></post_card>
             <post_card></post_card>
             <post_card></post_card>
             <post_card></post_card>
@@ -42,6 +42,8 @@ const name = ['','水手之家','校园热点','校园活动','失物招领','�
 const index = defineProps(['p']);
 const admin = ref('管理员')
 
+const posts=ref({'author':'aaa'})
+
 onMounted(async () => {
     try {
       loading.value = true;
@@ -49,7 +51,7 @@ onMounted(async () => {
       response = await DataService.Select_All_Blogs();
       console.log(response);
       loading.value = false;
-      blogs.value = response.data;
+      posts.value = response.data;
     } catch (error) {      
       loading.value = false;
       ElMessage.error('Failed to fetch data. Please try again.');

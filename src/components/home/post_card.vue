@@ -1,5 +1,5 @@
 <template>
-<div class="post">
+<div class="post" @click="router.push({name:'post',params: {postid:post.id}})">
     <el-row>
         <span class="title">
             {{ post.title }}
@@ -15,7 +15,7 @@
                         <el-avatar :size="20" shape="square">
                             <el-icon><UserFilled /></el-icon>
                         </el-avatar>
-                        <el-text type="info">{{ post.username }}</el-text>
+                        <el-text type="info">{{ post.author }}</el-text>
                     </el-space>
                     
                 </el-row>
@@ -46,13 +46,21 @@
 
 <script setup>
 import {ref} from 'vue';
-const post = {
-    'title':'帖子名',
-    'introduction':'简介',
-    'likes':1234,
-    'comments':666,
-    'view':999,
-}
+import {useRouter} from 'vue-router'
+import {defineProps} from 'vue'
+
+const post = defineProps(['p'])
+const router =useRouter()
+// const post = ref({
+//     'title':'帖子名',
+//     'introduction':'简介',
+//     'likes':1234,
+//     'comments':666,
+//     'view':999,
+//     'author':'作者',
+//     'id':1,
+// }
+// )
 </script>
 
 <style scoped>

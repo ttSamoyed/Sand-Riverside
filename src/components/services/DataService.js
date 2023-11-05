@@ -23,6 +23,10 @@ export default {
     const url = '/profile/' + userid + '/'; // 使用字符串拼接构建URL
     return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone});
   },
+   // 注册
+  Register(username,password,email) {
+    return apiClient.post('/register/',{username,password,email});
+  },
   Select_All_My_Blogs() {
     
   },
