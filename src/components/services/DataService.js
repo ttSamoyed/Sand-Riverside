@@ -41,10 +41,15 @@ export default {
   },
   Select_All_My_Blogs() {
     
+    
   },
 
   Select_All_Blogs() {
     return apiClient.get('/post/list/');
+  },
+
+  Select_Blogs_By_Part(partname) {
+    return;
   },
 
   Select_Conditional_Blogs(title){

@@ -55,7 +55,7 @@ onMounted(async () => {
       ElMessage.error('Failed to fetch data. Please try again.');
       console.error(error);
     }
-  });
+});
 
 </script>
 
