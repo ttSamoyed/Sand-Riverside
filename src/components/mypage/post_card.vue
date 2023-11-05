@@ -15,7 +15,7 @@
                         <el-avatar :size="20" shape="square">
                             <el-icon><UserFilled /></el-icon>
                         </el-avatar>
-                        <el-text type="info">王思雨</el-text>
+                        <el-text type="info">{{ post.author }}</el-text>
                     </el-space>
                     
                 </el-row>
@@ -29,15 +29,15 @@
     <el-row style="margin-top: 10px;">
         <el-button  plain >
             <el-icon size="16"><CaretTop /></el-icon>
-            赞同 3084
+            赞同 {{ post.likes }}
         </el-button>
         <el-button  plain>
             <el-icon size="16"><Collection /></el-icon>
         </el-button>
         <span class="view_com">
             <el-space wrag>
-                <el-icon><ChatRound /></el-icon>18
-                <el-icon style="margin-left: 10px;"><View></View></el-icon>20
+                <el-icon><ChatRound /></el-icon>{{ post.comments }}
+                <el-icon style="margin-left: 10px;"><View></View></el-icon> {{ post.view }}
             </el-space>
         </span>
     </el-row>
@@ -53,7 +53,9 @@ const post = {
     'likes':1234,
     'comments':666,
     'view':999,
+    'author':'作者'
 }
+
 </script>
 
 <style scoped>
