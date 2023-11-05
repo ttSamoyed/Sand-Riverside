@@ -1,8 +1,22 @@
 // 导入 axios
 import axios from 'axios';
+import {useStore} from "vuex";
+
+const state = useStore().state;
 
 // 创建一个 axios 实例，用于发送请求
 const apiClient = axios.create({
+  // 设置后端 API 的基础 URL
+  baseURL: "http://8.130.84.162:8180/api",
+  // 设置请求头
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "Authentication": "Bearer " + state.access_token,
+  },
+});
+
+const Login_apiClient = axios.create({
   // 设置后端 API 的基础 URL
   baseURL: "http://8.130.84.162:8180/api",
   // 设置请求头
@@ -21,7 +35,7 @@ export default {
     return apiClient.post('/SCB',{title:title});
   },
   isInputRight(name,password){
-    return apiClient.post('/Login_Judge',{name,password});
+    return Login_apiClient.post('/Login_Judge',{name,password});
   },
   SelectBlog(user_id,blog_id){
     return apiClient.post('/SB',{user_id:user_id,blog_id:blog_id});
