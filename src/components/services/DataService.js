@@ -313,7 +313,7 @@ export default {
 
   /**
    * 搜索博客
-   * @param {string} postID - 博客ID关键字
+   * @param {string} post_id - 博客ID关键字
    * @param {string} title - 标题关键字
    * @param {string} content - 内容关键字
    * @param {string} author__userID - 作者用户ID关键字
@@ -326,7 +326,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs(postID, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page = 1, page_size = 10) {
+  Search_Blogs( plate__plateID,postID, title, content, author__userID, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -349,16 +349,6 @@ export default {
    */
   Get_Blog_Detail(blogid) {
     const url = '/post/detail/' + blogid + '/';
-    return apiClient.get(url);
-  },
-
-  /**
-   * 获取对单个博客状态 (是否点赞, 是否收藏)
-   * @param {Number} blogid - 博客ID
-   * @returns {JSON} - 返回对博客状态
-   */
-  Get_Blog_Status(blogid) {
-    const url = '/post/status/' + blogid + '/';
     return apiClient.get(url);
   },
 
@@ -766,15 +756,15 @@ export default {
     return apiClient.get('/post/list/');
   },
 
-  Select_Blogs_By_Part(plate__plateID) {
-    return apiClient.get('/post/list/', { plate__plateID });
+  Select_Blogs_By_Part(plate) {
+    return  apiClient.get('/post/list/',{plate});
   },
 
-  Select_Conditional_Blogs(title) {
-    return apiClient.post('/SCB', { title: title });
+  Select_Conditional_Blogs(title){
+    return apiClient.post('/SCB',{title:title});
   },
-  isInputRight(name, password) {
-    return Login_apiClient.post('/Login_Judge', { name, password });
+  isInputRight(name,password){
+    return Login_apiClient.post('/Login_Judge',{name,password});
   },
   SelectBlog(user_id, blog_id) {
     return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });
