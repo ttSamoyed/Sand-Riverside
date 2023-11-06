@@ -71,7 +71,7 @@ export default {
   },
 
 
-  //#region 个人账户
+  //#region 个人账户 ====================
 
   /**
    * 获取个人详细信息
@@ -207,10 +207,10 @@ export default {
     return apiClient.delete(url);
   },
 
-  //#region 个人账户
+  //#region 个人账户 ====================
 
 
-  //#region 博客
+  //#region 博客 ====================
 
 
   /**
@@ -405,10 +405,10 @@ export default {
     return apiClient.delete(url);
   },
 
-  //#region 博客
+  //#region 博客 ====================
 
 
-  //#region 板块
+  //#region 板块 ====================
 
 
   /**
@@ -562,7 +562,128 @@ export default {
     return apiClient.delete(url);
   },
 
-  //#region 板块
+  //#region 板块 ====================
+
+
+
+  //#region 评论 ====================
+
+  /**
+   * 获取评论列表, 可搜索
+   * @param {Number} blogid - 博客ID
+   * @param {Number} author - 作者用户ID
+   * @param {Number} parent - 父评论ID
+   * @param {Number} reply_to - 回复评论ID
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回评论列表
+   * @description 评论列表按时间倒序排列
+   */
+  Get_Comment_List(blogid, author, parent, reply_to, page = 1, page_size = 10) {
+    return apiClient.post('/post/comment/list/' + blogid + '/', {
+      params: {
+        post: blogid,
+        author: author,
+        parent: parent,
+        reply_to: reply_to,
+        page: page,
+        page_size: page_size
+      }
+    });
+  },
+
+  /**
+   * 评论博客和回复评论
+   * @param {Number} blogid - 博客ID
+   * @param {String} content - 评论内容
+   * @param {Number} parent - 父评论ID
+   * @returns {JSON} - 返回评论博客和回复评论结果
+   * @description 评论博客时, parent 为 null
+   * @description 回复评论时, parent 为被回复的评论ID, 超过两级回复时, parent 为最上层的评论ID
+   */
+  Comment_Blog(blogid, content, parent) {
+    const url = '/comment/create/';
+    return apiClient.post(url, { 
+      post: blogid,
+      content: content,
+      parent: parent
+    });
+  },
+
+  /**
+   * 获取评论详情
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回评论详情
+   */
+  Get_Comment_Detail(commentid) {
+    const url = '/comment/detail/' + commentid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 修改评论
+   * @param {Number} commentid - 评论ID
+   * @param {String} content - 评论内容
+   * @returns {JSON} - 返回修改评论结果
+   */
+  Update_Comment(commentid, content) {
+    const url = '/comment/action/' + commentid + '/';
+    return apiClient.patch(url, { content });
+  },
+
+  /**
+   * 删除评论
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回删除评论结果
+   * @description 删除根评论后, 会自动删除其下的所有回复评论
+   */
+  Delete_Comment(commentid) {
+    const url = '/comment/action/' + commentid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 点赞评论
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回点赞评论结果
+   */
+  Like_Comment(commentid) {
+    const url = '/comment/like/' + commentid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 取消点赞评论
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回取消点赞评论结果
+   */
+  Unlike_Comment(commentid) {
+    const url = '/comment/like/' + commentid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 收藏评论
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回收藏评论结果
+   */
+  Collect_Comment(commentid) {
+    const url = '/comment/collect/' + commentid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 取消收藏评论
+   * @param {Number} commentid - 评论ID
+   * @returns {JSON} - 返回取消收藏评论结果
+   */
+  Uncollect_Comment(commentid) {
+    const url = '/comment/collect/' + commentid + '/';
+    return apiClient.delete(url);
+  },
+
+
+  //#region 评论 ====================
 
 
 
