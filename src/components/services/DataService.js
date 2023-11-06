@@ -257,6 +257,36 @@ export default {
   },
 
   /**
+   * 获取热门博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回热门博客列表
+   */
+  Get_Hot_Blogs(page = 1, page_size = 10) {
+    return apiClient.get('/post/hot/list/', {
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
+    });
+  },
+
+  /**
+   * 获取精华博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回精华博客列表
+   */
+  Get_Essence_Blogs(page = 1, page_size = 10) {
+    return apiClient.get('/post/essence/list/', {
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
+    });
+  },
+
+  /**
    * 获取我的博客列表
    * @param {Number} page - 页码
    * @param {Number} page_size - 每页数量
@@ -729,14 +759,14 @@ export default {
   },
 
   Select_Blogs_By_Part(plate__plateID) {
-    return  apiClient.get('/post/list/',{plate__plateID});
+    return apiClient.get('/post/list/', { plate__plateID });
   },
 
-  Select_Conditional_Blogs(title){
-    return apiClient.post('/SCB',{title:title});
+  Select_Conditional_Blogs(title) {
+    return apiClient.post('/SCB', { title: title });
   },
-  isInputRight(name,password){
-    return Login_apiClient.post('/Login_Judge',{name,password});
+  isInputRight(name, password) {
+    return Login_apiClient.post('/Login_Judge', { name, password });
   },
   SelectBlog(user_id, blog_id) {
     return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });
