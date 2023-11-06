@@ -125,17 +125,7 @@ const getPersonalInfo = async () => {
 const updateInfo = async () => {
     console.log('user=',user.value)
     console.log('userid=',user.value.userID)
-    const responce = await DataService.Update_Personal_Info(
-        user.value.userID,
-        user.value.sex,
-        user.value.status,
-        user.value.stuID,
-        user.value.college,
-        user.value.major,
-        user.value.birth_date,
-        user.value.address,
-        user.value.phone)
-        
+    const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
     console.log(responce);
     if (responce.status === 'success') {
         ElMessage.success('修改成功！')
