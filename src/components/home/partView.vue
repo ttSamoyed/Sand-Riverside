@@ -27,7 +27,7 @@
 
 <script setup>
 import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,watch } from 'vue';
 import DataService from '@/components/services/DataService';
 import { useRoute } from 'vue-router';
 import post_card from "@/components/home/post_card.vue"
@@ -40,8 +40,10 @@ const admin = ref('管理员')
 const posts = ref({})
 
 onMounted(async () => {
+  //初始化
     try {
       loading.value = true;
+      
       let response;
       // const i=defineProps(['p']);
       response = await DataService.Select_All_Blogs();
@@ -57,6 +59,24 @@ onMounted(async () => {
       console.error(error);
     }
 });
+ 
+//监听 sindex 变化
+watch(index["p"], async (newSindex, oldSindex) => {
+  try {
+    loading.value = true;
+    let response;
+    response = await DataService.Search_Blogs({plate__plateID:index["p"]});
+    console.log('response=', response);
+    loading.value = false;
+    posts.value = response.data.results;
+    console.log('posts=', posts.value);
+  } catch (error) {
+    loading.value = false;
+    ElMessage.error('Failed to fetch data. Please try again.');
+    console.error(error);
+  }
+});
+
 
 </script>
 
