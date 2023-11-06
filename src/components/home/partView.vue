@@ -43,10 +43,9 @@ onMounted(async () => {
     try {
       loading.value = true;
       let response;
-      const i=defineProps(['p']);
-//      response = await DataService.Select_All_Blogs();
-     
-      response = await DataService.Select_Blogs_By_Part(index);
+      // const i=defineProps(['p']);
+      response = await DataService.Select_All_Blogs();
+      // response = await DataService.Select_Blogs_By_Part(index);
       console.log('response=',response);
       loading.value = false;
       posts.value = response.data.results;

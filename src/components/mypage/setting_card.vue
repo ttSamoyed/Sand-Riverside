@@ -21,6 +21,13 @@
                 </el-col>
             </el-row>
             <el-divider></el-divider>
+                <el-col span="8">
+                    <el-text> 头像 </el-text>
+                </el-col>
+                <el-col span="16" style="margin-left: 80px;">
+                    <avatar_upload :userid="user.userID"></avatar_upload>
+                </el-col>
+            <el-divider></el-divider>
             <el-row>
                 <el-col span="8">
                     <el-text> 学院 </el-text>
@@ -66,6 +73,7 @@ import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex';
 import map_select from '../mypage/map_select.vue'
 import DataService from '@/components/services/DataService'
+import avatar_upload from './avatar_upload.vue';
 const state = useStore().state
 const loading = ref(true)
 const user = ref({
@@ -89,16 +97,28 @@ const user = ref({
 })
 
 const getPersonalInfo = async () => {
-    const id = state.user.userID;
-    console.log('id=',id)
-    if (id === null) {
-        ElMessage.error('您还没有登录，请先登录！');
+    const status = localStorage.getItem('status');
+    if (status) {
+        loading.value = false;
+        const u = JSON.parse(localStorage.getItem('user'));
+        console.log('userID:', u.userID)
+        const response = await DataService.Get_Personal_Info(u.userID);
+        if (response.data.status === 'failed') {
+            console.log('status=',response.data.status)
+            ElMessage.error('登录已经失效，请重新登录！');
+            router.push({path:'/login'})
+        }
+        else {
+            console.log('status=',response.data.status)
+            user.value = response.data.user_info;
+            console.log('userinfonew:', user.value)
+            console.log('username:',user.value.username)
+        }
         return;
     }
     else {
-        console.log('settings userinfo:',user)
-        user.value = state.user;
-        loading.value = false
+        ElMessage.error('您还没有登录，请先登录！');
+        router.push({path:'/login'})
     }
 };
 
@@ -114,6 +134,7 @@ const updateInfo = async () => {
 }
 
 onMounted(getPersonalInfo)
+
 </script>
 
 <style scoped>
