@@ -2,7 +2,8 @@
     <div v-loading='loading' class="usr_card">
             <el-row>
                 <el-col :span="4">
-                    <el-avatar :size="150" :src="user.avatar" shape="square"/>
+                    <el-avatar v-if="user.avatar" :size="150" :src="user.avatar" shape="square"/>
+                    <el-avatar v-else :size="150" shape="square"><el-icon :size="130"><Avatar /></el-icon></el-avatar>
                 </el-col>
                 <el-col :span="17">
                     <div style="padding-left: 20px;">
@@ -62,8 +63,11 @@
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex';
+import DataService from '../services/DataService';
+import { useRouter } from 'vue-router';
 const state = useStore().state
 const loading = ref(true)
+const router = useRouter()
 const user = ref({
     address: null,
     avatar: null,
@@ -84,20 +88,33 @@ const user = ref({
     username: null,
     usersign: '此用户很懒，没有设置签名',
 })
+
 const getPersonalInfo = async () => {
-    const id = state.user.userID;
-    console.log('id=',id)
-    if (id === null) {
-        ElMessage.error('您还没有登录，请先登录！');
+    const status = localStorage.getItem('status');
+    if (status) {
+        loading.value = false;
+        const u = JSON.parse(localStorage.getItem('user'));
+        console.log('userID:', u.userID)
+        const response = await DataService.Get_Personal_Info(u.userID);
+        if (response.data.status === 'failed') {
+            console.log('status=',response.data.status)
+            ElMessage.error('登录已经失效，请重新登录！');
+            router.push({path:'/login'})
+        }
+        else {
+            console.log('status=',response.data.status)
+            user.value = response.data.user_info;
+            console.log('userinfonew:', user.value)
+            console.log('username:',user.value.username)
+        }
         return;
     }
-
     else {
-            console.log('userinfo:',user)
-            user.value = state.user;
-        loading.value = false
+        ElMessage.error('您还没有登录，请先登录！');
+        router.push({path:'/login'})
     }
 };
+
 onMounted(getPersonalInfo)
 </script>
 

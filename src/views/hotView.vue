@@ -15,7 +15,16 @@
   </template>
   
   <script setup>
+  import {ref} from "vue"
   import cover_card from "@/components/post/cover_card.vue"
+  import DataService from "../components/services/DataService";
+  const loading = ref(true);
+
+  // const load = async () => {
+  //   loading.value = true;
+  //   const response = await DataService;
+  // }
+
   </script>
   
   <style>
