@@ -9,7 +9,6 @@
     >
       <img v-if="imageUrl" :src="imageUrl" class="avatar" />
       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-      <el-text>{{ headers }}</el-text>
     </el-upload>
   </template>
   
@@ -30,12 +29,10 @@
     const accessToken = localStorage.getItem('access_token');
     return {
           Authorization: `Bearer ${accessToken}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
     };
   });
   const url = computed(() => {
-  return "http://124.222.42.111:8000/api/profile/" + props.userid + '/'
+  return "http://124.222.42.111:8000/api/user/avatar/" + props.userid + '/'
     })
 
   
