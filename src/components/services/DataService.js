@@ -728,11 +728,15 @@ export default {
     return apiClient.get('/post/list/');
   },
 
-  // Select_Conditional_Blogs(title) {
-  //   return apiClient.post('/SCB', { title: title });
-  // },
-  isInputRight(name, password) {
-    return Login_apiClient.post('/Login_Judge', { name, password });
+  Select_Blogs_By_Part(plate__plateID) {
+    return  apiClient.get('/post/list/',{plate__plateID});
+  },
+
+  Select_Conditional_Blogs(title){
+    return apiClient.post('/SCB',{title:title});
+  },
+  isInputRight(name,password){
+    return Login_apiClient.post('/Login_Judge',{name,password});
   },
   SelectBlog(user_id, blog_id) {
     return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });

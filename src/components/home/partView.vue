@@ -30,7 +30,6 @@ import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';
 import { ref, onMounted } from 'vue';
 import DataService from '@/components/services/DataService';
 import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
 import post_card from "@/components/home/post_card.vue"
 import { defineProps } from 'vue';
 
@@ -44,7 +43,10 @@ onMounted(async () => {
     try {
       loading.value = true;
       let response;
-      response = await DataService.Select_All_Blogs();
+      const i=defineProps(['p']);
+//      response = await DataService.Select_All_Blogs();
+     
+      response = await DataService.Select_Blogs_By_Part(index);
       console.log('response=',response);
       loading.value = false;
       posts.value = response.data.results;

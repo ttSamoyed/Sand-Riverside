@@ -41,6 +41,8 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter();
 import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter()
