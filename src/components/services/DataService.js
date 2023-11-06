@@ -345,6 +345,16 @@ export default {
   },
 
   /**
+   * 获取对单个博客状态 (是否点赞, 是否收藏)
+   * @param {Number} blogid - 博客ID
+   * @returns {JSON} - 返回对博客状态
+   */
+  Get_Blog_Status(blogid) {
+    const url = '/post/status/' + blogid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
    * 获取博客评论
    * @param {Number} blogid - 博客ID
    * @returns {JSON} - 返回博客评论
