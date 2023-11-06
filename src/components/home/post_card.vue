@@ -1,5 +1,5 @@
 <template>
-<div class="post" @click="router.push({name:'post',params: {postid:post.id}})">
+<div class="post" @click="router.push({name:'post',params: {postid:p.postID}})">
     <el-row>
       <span class="title">{{ p.title }}</span>
     </el-row>
@@ -40,6 +40,8 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+const router = useRouter();
 import { defineProps } from 'vue';
 
 const props = defineProps({

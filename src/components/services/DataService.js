@@ -52,8 +52,8 @@ export default {
     return apiClient.get('/post/list/');
   },
 
-  Select_Blogs_By_Part(partname) {
-    return;
+  Select_Blogs_By_Part(plate__plateID) {
+    return  apiClient.get('/post/list/',{plate__plateID});
   },
 
   Select_Conditional_Blogs(title){
