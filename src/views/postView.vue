@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <div class="box-card">
+        <div class="box-card" v-loading="loading">
         <el-card :body-style="{ padding: '0px' }">
             <template #header>
                 <img v-if="post.coverImg" :src="post.coverImg" class="image"/>
@@ -67,8 +67,6 @@
       <el-card
         v-loading="loading"
         element-loading-text="Loading..."
-        :element-loading-spinner="svg"
-        element-loading-svg-view-box="-10, -10, 50, 50"
       >
         <!-- 评论头 展示点赞、评论按钮 -->
         <template #header>

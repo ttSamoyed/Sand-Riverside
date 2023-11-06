@@ -44,8 +44,6 @@
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
-const router = useRouter()
 const props = defineProps({
   p: Object, // 指定p属性的类型
 });
