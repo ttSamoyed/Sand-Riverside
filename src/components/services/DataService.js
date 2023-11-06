@@ -150,7 +150,19 @@ export default {
    */
   Manage_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
     const url = '/profile/' + userid + '/';
-    return apiClient.post(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active });
+    return apiClient.post(url, {
+      params: {
+        sex: sex,
+        avatar: avatar,
+        status: status,
+        stuID: stuID,
+        college: college,
+        major: major,
+        birth_date: birth_date,
+        address: address,
+        phone: phone
+      }
+    });
   },
 
 
