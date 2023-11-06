@@ -3,10 +3,8 @@
         <div class="box-card">
         <el-card :body-style="{ padding: '0px' }">
             <template #header>
-                <img
-                            src="@/assets/login3.png"
-                            class="image"
-                        />
+                <img v-if="post.coverImg" :src="post.coverImg" class="image"/>
+                <img v-else src="@/assets/login3.png" class="image"/>
                 <div class="card-header">
                     <div class="card-header1">
                     <div class="title">
@@ -16,14 +14,15 @@
                         <el-row style="margin-top: -10px;">
                             
                         <el-text>分类：</el-text>
-                        <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.type }} </el-tag>
+                        <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
                         <el-text style="margin-left: 10px;">创建时间：</el-text>
-                        <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.createdtime}}</el-tag>
+                        <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.created}}</el-tag>
                         </el-row>
                         <el-row class="row">
-                        <el-avatar :size="30" :src="user.useravatar"></el-avatar>
+                        <el-avatar v-if="post.author.avatar" :size="30" :src="post.author.avatar"></el-avatar>
+                        <el-avatar v-else :size="30"><el-icon><Avatar /></el-icon></el-avatar>
                         <el-text class="author">
-                             {{user.username}}
+                             {{post.author.username}}
                         </el-text>
                         <!--编辑帖子和删除帖子-->
                         <div v-if="true">
@@ -48,9 +47,9 @@
                         </el-row>
                     </div>
                     <div class="info">
-                        <span><el-icon><ArrowUpBold /></el-icon> {{ post.likes }}  </span>
-                        <span><el-icon><ChatRound /></el-icon> {{ post.comments }} </span>
-                        <span style="border: none;"><el-icon><View /></el-icon>  {{ post.view }} </span>
+                        <span><el-icon><ArrowUpBold /></el-icon> {{ post.like_count }}  </span>
+                        <span><el-icon><ChatRound /></el-icon> {{ post.comment }} </span>
+                        <span style="border: none;"><el-icon><View /></el-icon>  {{ post.views }} </span>
                     </div>
                     </div>
                 </div>
@@ -60,10 +59,6 @@
 
             <div style="padding: 25px">
             <el-text></el-text>
-            <div class="bottom">
-                <time class="time"> 2023-10-30 </time>
-                <el-button text class="button">测试</el-button>
-            </div>
             </div>
         </el-card>
     </div>
@@ -203,31 +198,29 @@
 import { ElMessage } from "element-plus";
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
-// import DataService from "@/components/services/DataService";
+import DataService from "@/components/services/DataService";
 import postComment from "../components/post/postComment.vue";
 import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
 
-const router = useRouter();
-
 // const state = computed(() => useStore().state);
 // const user_id = computed(() => state.value.user.id);
 const route = useRoute();
-const postId = ref(route.params.postId);
+const postId = ref(route.params.postid);
 
-const post=ref({
+const post = ref({
   title:'标题',
-  type:'文章类别',
-  part:'版块',
-  createdtime:'创建时间',
+  plate:{plateID:1,name:'水手之家'},
+  tags:[],
+  created:'创建时间',
   content:'内容',
-  id:1,
-  'title':'帖子名',
-  'introduction':'简介',
-  'likes':'点赞数',
-  'comments':'评论数',
-  'view':'浏览量',
+  postID: 1,
+  like_count: 0,
+  views: 0,
+  coverImg: null,
+  collect_count: 0,
+  is_essence: false,
+  author:{userID:1,username:'',avatar:'',status:''},
 })
 
 const user = ref({
@@ -250,6 +243,7 @@ const disabled = computed(() => loading.value);
 const newComment = ref("");
 const commentNumber = ref(0);
 //console.log([user_id.value, state.value]);
+
 //评论功能
 const submitComment = async () => {
   console.log(state);
@@ -311,17 +305,20 @@ const handleCommentClick = () => {
   }
 };
 
-// const loadpost = async () => {
-//   loading.value = true;
-//   const response = await DataService.Selectpost(user_id.value, postId.value);
-//   loading.value = false;
-//   post.value = response.data;
-//   commentNumber.value = post.value.comments.length;
-//   isActive.value = post.value.isActive;
-//   console.log(post.value);
-// };
+// 加载博文
+const loadpost = async () => {
+  loading.value = true;
+  const response = await DataService.Get_Blog_Detail(postId.value);
+  console.log('response=',response.data);
+  console.log('post=',response.data.post);
+  loading.value = false;
+  post.value = response.data.post;
+  // commentNumber.value = post.value.comments.length;
+  // isActive.value = post.value.isActive;
+};
 
-// onMounted(loadpost);
+onMounted(loadpost);
+
 // const deletepost = async () => {
 //   const responce = await DataService.delete_post(postId.value, user_id.value);
 //   console.log(responce.data);
