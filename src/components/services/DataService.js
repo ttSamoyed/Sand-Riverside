@@ -51,19 +51,20 @@ export default {
   },
 
   /**
-   * 刷新 Token
+   * 重新登录刷新 Token
    * @param {String} refresh_token
-   * @returns access_token
+   * @returns 登录结果和 Token
+   * @description 用于在 access_token 过期时, 通过 refresh_token 来获取新的 access_token. 会将新的 access_token 保存到本地.
    */
   Refresh_Token() {
     const refreshToken = localStorage.getItem('refresh_token');
-    return Login_apiClient.post('/refresh/', { refresh: refreshToken });
+    return Login_apiClient.post('/relogin/', { refresh_token: refreshToken });
   },
 
   /**
    * 登出
    * @returns 登出结果
-   * @description 登出后, 会清除本地的 access_token 和 refresh_token
+   * @description 登出后, 需要清除本地的 access_token 和 refresh_token
    */
   Logout() {
     return apiClient.post('/logout/');
@@ -71,8 +72,6 @@ export default {
 
 
   //#region 个人账户
-
-  // TODO: 其实我后端加了 /0/ 为对自己的账户操作, 前端需要对应修改吗
 
   /**
    * 获取个人详细信息
@@ -407,6 +406,163 @@ export default {
   },
 
   //#region 博客
+
+
+  //#region 板块
+
+
+  /**
+   * 获取板块列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回板块列表
+   */
+  Get_All_Plates(page = 1, page_size = 10) {
+    return apiClient.get('/plate/list/', {
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
+    });
+  },
+
+  /**
+   * 搜索板块
+   * @param {string} plateID - 板块ID关键字
+   * @param {string} name - 板块名称关键字
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回搜索结果
+   */
+  Search_Plates(plateID, name, page = 1, page_size = 10) {
+    return apiClient.post('/plate/list/', {
+      params: {
+        plateID: plateID,
+        name: name,
+        page: page,
+        page_size: page_size
+      }
+    });
+  },
+
+  /**
+   * 获取板块详情
+   * @param {Number} plateid - 板块ID
+   * @returns {JSON} - 返回板块详情
+   */
+  Get_Plate_Detail(plateid) {
+    const url = '/plate/' + plateid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 创建板块
+   * @param {String} name - 板块名称
+   * @param {String} description - 板块描述
+   * @returns {JSON} - 返回创建板块结果
+   */
+  Create_Plate(name, description) {
+    const url = 'plate/create/';
+    return apiClient.post(url, { name, description });
+  },
+
+  /**
+   * 修改板块
+   * @param {Number} plateid - 板块ID
+   * @param {String} name - 板块名称
+   * @param {String} description - 板块描述
+   * @returns {JSON} - 返回修改板块结果
+   * @description 板块ID不可修改
+   */
+  Update_Plate(plateid, name, description) {
+    const url = 'plate/action/' + plateid + '/';
+    return apiClient.patch(url, { name, description });
+  },
+
+  /**
+   * 删除板块
+   * @param {Number} plateid - 板块ID
+   * @returns {JSON} - 返回删除板块结果
+   */
+  Delete_Plate(plateid) {
+    const url = 'plate/action/' + plateid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 获取所有板块管理列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回所有板块管理列表
+   */
+  Get_All_Plate_Manage_List(page = 1, page_size = 10) {
+    return apiClient.get('/plate/manage/list/', {
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
+    });
+  },
+
+  /**
+   * 获取板块管理列表, 可搜索
+   * @param {Number} mpID - 管理记录ID
+   * @param {Number} plate__plateID - 板块ID
+   * @param {String} plate__name - 板块名称
+   * @param {Number} moderator__userID - 版主用户ID
+   * @param {String} moderator__username - 版主用户名
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回板块管理列表
+   */
+  Get_Plate_Manage_List(mpID, plate__plateID, plate__name, moderator__userID, moderator__username, page = 1, page_size = 10) {
+    return apiClient.post('/plate/manage/list/', {
+      params: {
+        mpID: mpID,
+        plate__plateID: plate__plateID,
+        plate__name: plate__name,
+        moderator__userID: moderator__userID,
+        moderator__username: moderator__username,
+        page: page,
+        page_size: page_size
+      }
+    });
+  },
+
+  /**
+   * 获取板块管理详情
+   * @param {Number} mpID - 管理记录ID
+   * @returns {JSON} - 返回板块管理详情
+   */
+  Get_Plate_Manage_Detail(mpID) {
+    const url = '/plate/manage/' + mpID + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 任命版主
+   * @param {Number} plateid - 板块ID
+   * @param {Number} userid - 用户ID
+   * @returns {JSON} - 返回任命版主结果
+   * @description 任命版主后, 会自动创建板块管理记录
+   * @description 任命版主后, 会自动将用户加入版主组
+   */
+  Appoint_Moderator(plateid, userid) {
+    const url = 'plate/manage/create/';
+    return apiClient.post(url, { plate: plateid, moderator: userid });
+  },
+
+  /**
+   * 取消任命版主
+   * @param {Number} mpID - 管理记录ID
+   * @returns {JSON} - 返回取消任命版主结果
+   */
+  Cancel_Moderator(mpID) {
+    const url = 'plate/manage/' + mpID + '/';
+    return apiClient.delete(url);
+  },
+
+  //#region 板块
 
 
 
