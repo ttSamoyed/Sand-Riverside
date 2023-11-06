@@ -47,7 +47,6 @@ const router = useRouter();
 const props = defineProps({
   p: Object, // 指定p属性的类型
 });
-
 const { p } = props;
 </script>
 

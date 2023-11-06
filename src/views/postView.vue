@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <div class="box-card">
+        <div class="box-card" v-loading="loading">
         <el-card :body-style="{ padding: '0px' }">
             <template #header>
                 <img v-if="post.coverImg" :src="post.coverImg" class="image"/>
@@ -67,8 +67,6 @@
       <el-card
         v-loading="loading"
         element-loading-text="Loading..."
-        :element-loading-spinner="svg"
-        element-loading-svg-view-box="-10, -10, 50, 50"
       >
         <!-- 评论头 展示点赞、评论按钮 -->
         <template #header>
@@ -242,6 +240,7 @@ const loading = ref(false);
 const disabled = computed(() => loading.value);
 const newComment = ref("");
 const commentNumber = ref(0);
+const coverImgAbs = ref('');
 //console.log([user_id.value, state.value]);
 
 //评论功能
@@ -309,10 +308,13 @@ const handleCommentClick = () => {
 const loadpost = async () => {
   loading.value = true;
   const response = await DataService.Get_Blog_Detail(postId.value);
-  console.log('response=',response.data);
-  console.log('post=',response.data.post);
-  loading.value = false;
-  post.value = response.data.post;
+  console.log('response=', response.data);
+  console.log('status=',response.data.status)
+  console.log('post=', response.data.post);
+  if (response.data.status != 'fail') {
+    loading.value = false;
+    post.value = response.data.post;
+  }
   // commentNumber.value = post.value.comments.length;
   // isActive.value = post.value.isActive;
 };
