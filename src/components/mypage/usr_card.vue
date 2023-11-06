@@ -2,8 +2,23 @@
     <div v-loading='loading' class="usr_card">
             <el-row>
                 <el-col :span="4">
-                    <el-avatar v-if="user.avatar" :size="150" :src="user.avatar" shape="square"/>
-                    <el-avatar v-else :size="150" shape="square"><el-icon :size="130"><Avatar /></el-icon></el-avatar>
+                    <el-tooltip content="点击更换头像" placement="top">
+                        <el-upload
+                        class="avatar_uploader"
+                        :action="url"
+                        :data="ImageData"
+                        :show-file-list="false" 
+                        :headers="headers"
+                        method="post"
+                        :auto-upload="true"
+                        :on-success="handleAvatarSuccess"
+                        :before-upload="beforeAvatarUpload"
+                        name="avatar"
+                        >
+                        <el-avatar v-if="user.avatar" :size="150" :src="user.avatar" shape="square"/>
+                        <el-avatar v-else :size="150" shape="square"><el-icon :size="130"><Avatar /></el-icon></el-avatar>
+                        </el-upload>
+                    </el-tooltip>
                 </el-col>
                 <el-col :span="17">
                     <div style="padding-left: 20px;">
@@ -60,12 +75,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useStore } from 'vuex';
 import DataService from '../services/DataService';
 import { useRouter } from 'vue-router';
-const state = useStore().state
 const loading = ref(true)
 const router = useRouter()
 const user = ref({
@@ -88,7 +101,15 @@ const user = ref({
     username: null,
     usersign: '此用户很懒，没有设置签名',
 })
-
+const headers = computed(() => {
+    const accessToken = localStorage.getItem('access_token');
+    return {
+          Authorization: `Bearer ${accessToken}`,
+    };
+  });
+const url = computed(() => {
+    return "http://124.222.42.111:8000/api/user/avatar/" + user.value.userID + '/'
+})
 const getPersonalInfo = async () => {
     const status = localStorage.getItem('status');
     if (status) {
@@ -114,6 +135,40 @@ const getPersonalInfo = async () => {
         router.push({path:'/login'})
     }
 };
+
+const ImageData = ref()
+ 
+ 
+// 上传之前
+const beforeAvatarUpload = async (rawFile) => {
+  if (rawFile.type !== "image/jpeg"&&rawFile.type !== "image/png"&&rawFile.type !== "image/jpg") {
+    ElMessage({
+      showClose:true,
+      message:'图片只能是JPG或PNG格式！',
+      type:'warning'
+    });
+    return;
+  }
+  if (rawFile.size / 1024 / 1024 > 5) {
+    ElMessage({
+      showClose:true,
+      message:'图片大小不能超过5MB！',
+      type:'warning'
+    });
+    return;
+  }
+  ImageData.value = new FormData();
+  // 'avatar'是修改后的字段名
+    ImageData.value.append('avatar', rawFile);
+    console.log('ImageData=',ImageData.value)
+    // const response = await DataService.Update_User_Avatar(user.value.userID,rawFile)
+};
+ 
+// 上传成功回调
+const handleAvatarSuccess = async (res, uploadFile) => {
+    user.value.avatar = URL.createObjectURL(uploadFile.raw);
+};
+
 
 onMounted(getPersonalInfo)
 </script>
