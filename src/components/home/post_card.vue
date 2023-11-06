@@ -1,11 +1,12 @@
 <template>
-<div class="post" @click="router.push({name:'post',params: {postid:post.id}})">
+<div class="post" @click="router.push({name:'post',params: {postid:p.postID}})">
     <el-row>
       <span class="title">{{ p.title }}</span>
     </el-row>
     <el-row style="margin-top: 10px;">
       <el-col :span="6">
-        <img :src="p.coverImg" class="image" />
+        <img v-if="p.coverImg" :src="p.coverImg" class="image" />
+        <img v-else src="@/assets/login3.png" class="image" />
       </el-col>
       <el-col :span="18">
         <el-row>
@@ -41,7 +42,8 @@
 
 <script setup>
 import { defineProps } from 'vue';
-
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const props = defineProps({
   p: Object, // 指定p属性的类型
 });
