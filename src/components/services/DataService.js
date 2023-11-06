@@ -19,9 +19,7 @@ apiClient.interceptors.request.use(config => {
 });
 
 const Login_apiClient = axios.create({
-  // 设置后端 API 的基础 URL
   baseURL: "http://124.222.42.111:8000/api",
-  // 设置请求头
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -46,7 +44,7 @@ export default {
    * @param {String} username
    * @param {String} password
    * @param {String} email
-   * @returns 注册结果和 Token
+   * @returns 注册结果
    */
   Register(username, password, email) {
     return Login_apiClient.post('/register/', { username, password, email });
@@ -147,7 +145,7 @@ export default {
    * @param {Number} page_size - 每页数量
    * @returns 所有用户列表及简略信息
    */
-  Get_All_Users(page, page_size) {
+  Get_All_Users(page = 1, page_size = 10) {
     return apiClient.get('/user/list/', {
       params: {
         page: page, // 页码
@@ -217,11 +215,28 @@ export default {
 
 
   /**
-   * 获取博客详情
+   * 获取博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
    * @returns {JSON} - 返回所有博客列表
    */
-  Get_All_Blogs() {
+  Get_All_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/list/', {
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
+    });
+  },
+
+  /**
+   * 获取我的博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回我的博客列表
+   */
+  Get_My_Blogs(page = 1, page_size = 10) {
+    return apiClient.get('/post/my/list/', {
       params: {
         page: page, // 页码
         page_size: page_size // 每页数量
@@ -244,8 +259,8 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs(post_id, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page, page_size) {
-    return apiClient.get('/post/list/', {
+  Search_Blogs(post_id, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page = 1, page_size = 10) {
+    return apiClient.post('/post/list/', {
       params: {
         post_id: post_id,
         title: title,
@@ -267,7 +282,7 @@ export default {
    * @param {Number} blogid - 博客ID
    * @returns {JSON} - 返回博客详情
    */
-  Get_Blog(blogid) {
+  Get_Blog_Detail(blogid) {
     const url = '/post/detail/' + blogid + '/';
     return apiClient.get(url);
   },
@@ -376,9 +391,9 @@ export default {
    * @returns {JSON} - 返回博客封面上传结果
    * @description 上传成功后, 会返回封面的 URL
    */
-  Upload_Blog_Cover(blogid, cover) {
+  Upload_Blog_Cover(blogid, coverImg) {
     const url = 'post/coverImg/' + blogid + '/';
-    return apiClient.post(url, { cover });
+    return apiClient.post(url, { coverImg });
   },
 
   /**
