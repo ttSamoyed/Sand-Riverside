@@ -303,7 +303,7 @@ export default {
 
   /**
    * 搜索博客
-   * @param {string} post_id - 博客ID关键字
+   * @param {string} postID - 博客ID关键字
    * @param {string} title - 标题关键字
    * @param {string} content - 内容关键字
    * @param {string} author__userID - 作者用户ID关键字
@@ -316,10 +316,10 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs(post_id, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page = 1, page_size = 10) {
+  Search_Blogs(postID, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       params: {
-        post_id: post_id,
+        postID: postID,
         title: title,
         content: content,
         author__userID: author__userID,
