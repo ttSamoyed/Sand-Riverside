@@ -18,13 +18,41 @@ apiClient.interceptors.request.use(config => {
   return config;
 });
 
-const Login_apiClient = axios.create({
-  baseURL: "http://124.222.42.111:8000/api",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-  },
+// 错误处理函数
+async function handleRequestError(error) {
+  const originalRequest = error.config;
+  if (error.response.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    localStorage.removeItem('access_token');
+    try {
+      const res = await Relogin();
+      if (res.status === 200) {
+        localStorage.setItem('access_token', res.data.access_token);
+        localStorage.setItem('refresh_token', res.data.refresh_token);
+        return apiClient(originalRequest);
+      } else {
+        console.log('刷新 Token 失败, 请重新登录');
+        localStorage.removeItem('refresh_token');
+        // 跳转到登录页
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      console.log('刷新 Token 失败:', error);
+      localStorage.removeItem('refresh_token');
+      // 跳转到登录页
+      window.location.href = '/login';
+    }
+  }
+  return Promise.reject(error);
+}
+
+// 响应拦截器
+apiClient.interceptors.response.use(response => {
+  return response;
+}, error => {
+  return handleRequestError(error);
 });
+
 
 // 定义一个用于获取数据的函数
 export default {
@@ -36,7 +64,7 @@ export default {
    * @description 登录成功后, 会将 access_token 和 refresh_token 保存到本地
    */
   Login(username, password) {
-    return Login_apiClient.post('/login/', { username, password });
+    return apiClient.post('/login/', { username, password });
   },
 
   /**
@@ -47,7 +75,7 @@ export default {
    * @returns 注册结果
    */
   Register(username, password, email) {
-    return Login_apiClient.post('/register/', { username, password, email });
+    return apiClient.post('/register/', { username, password, email });
   },
 
   /**
@@ -56,9 +84,9 @@ export default {
    * @returns 登录结果和 Token
    * @description 用于在 access_token 过期时, 通过 refresh_token 来获取新的 access_token. 会将新的 access_token 保存到本地.
    */
-  Refresh_Token() {
+  Relogin() {
     const refreshToken = localStorage.getItem('refresh_token');
-    return Login_apiClient.post('/relogin/', { refresh_token: refreshToken });
+    return apiClient.post('/relogin/', { refresh_token: refreshToken });
   },
 
   /**
@@ -603,7 +631,7 @@ export default {
    */
   Comment_Blog(blogid, content, parent) {
     const url = '/comment/create/';
-    return apiClient.post(url, { 
+    return apiClient.post(url, {
       post: blogid,
       content: content,
       parent: parent
