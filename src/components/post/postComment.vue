@@ -1,14 +1,14 @@
 <template>
     <div class="comment_group">
         <div class="info">
-            <el-avatar :size="30" :src="props.avatar">usr</el-avatar>
-            <p style="margin-left: 3px;">熊磊</p>
-            <p style="margin-left: 3px;">{{ props.user_name }}</p>
-            <el-text type="info" style="scale: 0.9;margin-left: 600px;">{{ time }}</el-text>
+            <el-avatar class="wide-avatar" :size="xl" :src="c.author.avatar">usr</el-avatar>
+            <!-- <p style="margin-left: 3px;">熊</p> -->
+            <p style="margin-left: 3px;">{{ c.author.username }}</p>
+            <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
         </div>
         <div class="comment_main">
-            <el-text style="margin-left: 3px;">很有帮助，谢谢</el-text>
-            <p>{{ props.message }}</p>
+            <!-- <el-text style="margin-left: 3px;">很有帮助，谢谢</el-text> -->
+            <p>{{ c.content }}</p>
         </div>
     </div>
     
@@ -18,20 +18,40 @@
 import { defineProps,ref } from 'vue';
 const time = ref('2023-9-20')
 
+// const props = defineProps({
+//   message: {
+//     type: String,
+//     required: true,
+//   },
+//   user_name: {
+//     type: String,
+//     required: true,
+//   },
+//   avatar: {
+//     type: String,
+//     required: true,
+//   },
+// });
+
 const props = defineProps({
-  message: {
-    type: String,
-    required: true,
-  },
-  user_name: {
-    type: String,
-    required: true,
-  },
-  avatar: {
-    type: String,
-    required: true,
-  },
+  c: Object, // 指定c属性的类型
 });
+const { c } = props;
+
+function formatTime(timestamp) {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const senconds = date.getMinutes().toString().padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${senconds}`;
+}
+
+const lastModified = c.last_modified;
+const formattedTime = formatTime(lastModified);
+
 
 </script>
 
@@ -67,4 +87,8 @@ const props = defineProps({
     text-align: start;
     font-size: 13px;
 }
+
+.wide-avatar {
+    width: 40px;
+  }
 </style>

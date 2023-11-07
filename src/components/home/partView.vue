@@ -1,7 +1,7 @@
 <template>
-    <div class="post_list" >
+    <div class="post_list">
         <el-row>
-        <el-col :span="19" style="padding-left: 45px;">
+        <el-col :span="19" style="padding-left: 45px;" v-loading="loading">
             <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
         </el-col>
         <el-col :span="5">
@@ -25,12 +25,11 @@
     </div>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,watch } from 'vue';
 import DataService from '@/components/services/DataService';
 import { useRoute } from 'vue-router';
-import { useRouter } from 'vue-router';
 import post_card from "@/components/home/post_card.vue"
 import { defineProps } from 'vue';
 
@@ -41,10 +40,13 @@ const admin = ref('管理员')
 const posts = ref({})
 
 onMounted(async () => {
+  //初始化
     try {
       loading.value = true;
+      
       let response;
-      response = await DataService.Select_All_Blogs();
+      response = await DataService.Search_Blogs(index["p"]);
+      console.log(index["p"]);
       console.log('response=',response);
       loading.value = false;
       posts.value = response.data.results;
@@ -57,7 +59,68 @@ onMounted(async () => {
     }
 });
 
+</script> -->
+
+<script setup>  
+import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';  
+import { ref, onMounted, watchEffect } from 'vue';  
+import DataService from '@/components/services/DataService';  
+import { useRoute } from 'vue-router';  
+import post_card from "@/components/home/post_card.vue"  
+import { defineProps } from 'vue';  
+  
+const loading = ref(true)  
+const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']  
+const index = defineProps(['p']);  
+const admin = ref('管理员')  
+const posts = ref({})  
+  
+onMounted(async () => {  
+  // 初始化  
+  try {  
+    loading.value = true;  
+    let response;  
+    response = await DataService.Search_Blogs(index["p"]);  
+    console.log(index["p"]);  
+    console.log('response=',response);  
+    loading.value = false;  
+    posts.value = response.data.results;  
+    console.log('posts=',posts.value)  
+  } catch (error) {        
+    loading.value = false;  
+    ElMessage.error('Failed to fetch data. Please try again.');  
+    console.error(error);  
+  }  
+});  
+  
+const getinf = async () => {
+  // 初始化  
+  try {  
+    loading.value = true;  
+    let response;  
+    response = await DataService.Search_Blogs(index["p"]);  
+    console.log(index["p"]);  
+    console.log('response=',response);  
+    loading.value = false;  
+    posts.value = response.data.results;  
+    console.log('posts=',posts.value)  
+  } catch (error) {        
+    loading.value = false;  
+    ElMessage.error('Failed to fetch data. Please try again.');  
+    console.error(error);  
+  }  
+};
+
+watchEffect((on) => {  
+  on(() => {  
+    // 当 index["p"] 发生变化时，执行此处的代码...  
+    console.log('index["p"] has changed');  
+    // 在此处可以重新执行 DataService.Search_Blogs(index["p"]) 来获取新的数据等。 
+    getinf();
+  }, index["p"]);  // 监听 index["p"] 的变化  
+});  
 </script>
+
 
 <style scoped>
 .center{

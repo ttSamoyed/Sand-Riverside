@@ -75,17 +75,13 @@ console.log('>>>', isLogin);
 console.log('>>>user', state.user);
 
 const handleAvatarClick = () => {
-  if (state.isLogin) {
-    console.log('state=', state)
-    console.log('>>> user=', state.user);
+  if (localStorage.getItem('status')) {
       console.log('跳转到mypage')
       router.push({path:'/mypage'})
-  } else {
-    console.log('state=', state)
-    console.log('跳转到登录')
-    console.log('>>> islogin=', state.isLogin);
+  }
+  else {
       router.push({path:'/login'})
-    }
+  }
 }
 
 // const searchByblur=()=>{

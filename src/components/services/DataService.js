@@ -116,7 +116,6 @@ export default {
    * 修改个人信息
    * @param {Number} userid
    * @param {String} sex
-   * @param {File} avatar
    * @param {String} status
    * @param {String} stuID
    * @param {String} college
@@ -124,12 +123,20 @@ export default {
    * @param {String} birth_date
    * @param {String} address
    * @param {String} phone
-   * @param {Boolean} is_active
    * @returns 修改个人信息结果
    */
-  Update_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
+  Update_Personal_Info(userid, sex, status, stuID, college, major, birth_date, address, phone) {
     const url = '/profile/' + userid + '/';
-    return apiClient.patch(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone });
+    return apiClient.patch(url, {
+      sex: sex,
+      status: status,
+      stuID: stuID,
+      college: college,
+      major: major,
+      birth_date: birth_date,
+      address: address,
+      phone: phone,
+    });
   },
 
 
@@ -146,11 +153,24 @@ export default {
    * @param {String} address
    * @param {String} phone
    * @param {Boolean} is_active
+   * @param {String} password
    * @returns 管理员修改个人信息结果
    */
-  Manage_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone) {
+  Manage_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active, password) {
     const url = '/profile/' + userid + '/';
-    return apiClient.post(url, { sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active });
+    return apiClient.post(url, {
+      sex: sex,
+      avatar: avatar,
+      status: status,
+      stuID: stuID,
+      college: college,
+      major: major,
+      birth_date: birth_date,
+      address: address,
+      phone: phone,
+      is_active: is_active,
+      password: password
+    });
   },
 
 
@@ -174,10 +194,8 @@ export default {
    */
   Get_All_Users(page = 1, page_size = 10) {
     return apiClient.get('/user/list/', {
-      params: {
-        page: page, // 页码
-        page_size: page_size // 每页数量
-      }
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
@@ -249,10 +267,34 @@ export default {
    */
   Get_All_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/list/', {
-      params: {
-        page: page, // 页码
-        page_size: page_size // 每页数量
-      }
+      page: page, // 页码
+      page_size: page_size // 每页数量
+    });
+  },
+
+  /**
+   * 获取热门博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回热门博客列表
+   */
+  Get_Hot_Blogs(page = 1, page_size = 10) {
+    return apiClient.get('/post/hot/list/', {
+      page: page, // 页码
+      page_size: page_size // 每页数量
+    });
+  },
+
+  /**
+   * 获取精华博客列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回精华博客列表
+   */
+  Get_Essence_Blogs(page = 1, page_size = 10) {
+    return apiClient.get('/post/essence/list/', {
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
@@ -264,10 +306,8 @@ export default {
    */
   Get_My_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/my/list/', {
-      params: {
-        page: page, // 页码
-        page_size: page_size // 每页数量
-      }
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
@@ -286,21 +326,19 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs(post_id, title, content, author__userID, author__username, tags__name, plate__plateID, plate__name, is_essence, page = 1, page_size = 10) {
+  Search_Blogs( plate__plateID,postID, title, content, author__userID, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
-      params: {
-        post_id: post_id,
-        title: title,
-        content: content,
-        author__userID: author__userID,
-        author__username: author__username,
-        tags__name: tags__name,
-        plate__plateID: plate__plateID,
-        plate__name: plate__name,
-        is_essence: is_essence,
-        page: page,
-        page_size: page_size
-      }
+      postID: postID,
+      title: title,
+      content: content,
+      author__userID: author__userID,
+      author__username: author__username,
+      tags__name: tags__name,
+      plate__plateID: plate__plateID,
+      plate__name: plate__name,
+      is_essence: is_essence,
+      page: page,
+      page_size: page_size
     });
   },
 
@@ -447,10 +485,8 @@ export default {
    */
   Get_All_Plates(page = 1, page_size = 10) {
     return apiClient.get('/plate/list/', {
-      params: {
-        page: page, // 页码
-        page_size: page_size // 每页数量
-      }
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
@@ -464,12 +500,10 @@ export default {
    */
   Search_Plates(plateID, name, page = 1, page_size = 10) {
     return apiClient.post('/plate/list/', {
-      params: {
-        plateID: plateID,
-        name: name,
-        page: page,
-        page_size: page_size
-      }
+      plateID: plateID,
+      name: name,
+      page: page,
+      page_size: page_size
     });
   },
 
@@ -525,10 +559,8 @@ export default {
    */
   Get_All_Plate_Manage_List(page = 1, page_size = 10) {
     return apiClient.get('/plate/manage/list/', {
-      params: {
-        page: page, // 页码
-        page_size: page_size // 每页数量
-      }
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
@@ -545,15 +577,13 @@ export default {
    */
   Get_Plate_Manage_List(mpID, plate__plateID, plate__name, moderator__userID, moderator__username, page = 1, page_size = 10) {
     return apiClient.post('/plate/manage/list/', {
-      params: {
-        mpID: mpID,
-        plate__plateID: plate__plateID,
-        plate__name: plate__name,
-        moderator__userID: moderator__userID,
-        moderator__username: moderator__username,
-        page: page,
-        page_size: page_size
-      }
+      mpID: mpID,
+      plate__plateID: plate__plateID,
+      plate__name: plate__name,
+      moderator__userID: moderator__userID,
+      moderator__username: moderator__username,
+      page: page,
+      page_size: page_size
     });
   },
 
@@ -609,14 +639,12 @@ export default {
    */
   Get_Comment_List(blogid, author, parent, reply_to, page = 1, page_size = 10) {
     return apiClient.post('/post/comment/list/' + blogid + '/', {
-      params: {
-        post: blogid,
-        author: author,
-        parent: parent,
-        reply_to: reply_to,
-        page: page,
-        page_size: page_size
-      }
+      post: blogid,
+      author: author,
+      parent: parent,
+      reply_to: reply_to,
+      page: page,
+      page_size: page_size
     });
   },
 
@@ -723,16 +751,35 @@ export default {
   Select_All_My_Blogs() {
     return apiClient.get('/post/list/');
   },
+  Search_Blogs2(  author__userID,plate__plateID,postID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+    return apiClient.post('/post/list/', {
+      postID: postID,
+      title: title,
+      content: content,
+      author__userID: author__userID,
+      author__username: author__username,
+      tags__name: tags__name,
+      plate__plateID: plate__plateID,
+      plate__name: plate__name,
+      is_essence: is_essence,
+      page: page,
+      page_size: page_size
+    });
+  },
 
   Select_All_Blogs() {
     return apiClient.get('/post/list/');
   },
 
-  // Select_Conditional_Blogs(title) {
-  //   return apiClient.post('/SCB', { title: title });
-  // },
-  isInputRight(name, password) {
-    return Login_apiClient.post('/Login_Judge', { name, password });
+  Select_Blogs_By_Part(plate) {
+    return  apiClient.get('/post/list/',{plate});
+  },
+
+  Select_Conditional_Blogs(title){
+    return apiClient.post('/SCB',{title:title});
+  },
+  isInputRight(name,password){
+    return Login_apiClient.post('/Login_Judge',{name,password});
   },
   SelectBlog(user_id, blog_id) {
     return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });

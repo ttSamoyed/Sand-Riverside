@@ -44,8 +44,40 @@
 </div>
 </template>
 
+<!-- <template>
+    <div class="post_list" >
+        <el-row>
+        <el-col :span="19" style="padding-left: 45px;">
+            <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+        </el-col>
+        </el-row>
+    </div>
+</template> -->
+
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';  
+import { ElTimeline, ElTimelineItem, ElCard, ElMessage } from 'element-plus';  
+import DataService from '@/components/services/DataService'; 
+const loading = ref(true) ;
+const posts = ref({}) ;
+
+// onMounted(async () => {  
+//   // 初始化  
+//   try {  
+//     loading.value = true;  
+//     let response;  
+//     response = await DataService.Search_Blogs2(localStorage.getItem("userID"));  
+//     console.log();  
+//     console.log('response=',response);  
+//     loading.value = false;  
+//     posts.value = response.data.results;  
+//     console.log('posts=',posts.value)  
+//   } catch (error) {        
+//     loading.value = false;  
+//     ElMessage.error('Failed to fetch data. Please try again.');  
+//     console.error(error);  
+//   }  
+// });  
 
 const post = {
     'title':'帖子名',
