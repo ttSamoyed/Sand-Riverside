@@ -68,14 +68,24 @@ export default {
   },
 
   /**
+   * 获取注册验证码
+   * @param {String} email
+   * @returns 获取验证码结果
+   */
+  Get_Register_Code(email) {
+    return apiClient.post('/register/code/', { email });
+  },
+
+  /**
    * 注册
    * @param {String} username
    * @param {String} password
    * @param {String} email
+   * @param {String} code
    * @returns 注册结果
    */
   Register(username, password, email) {
-    return apiClient.post('/register/', { username, password, email });
+    return apiClient.post('/register/', { username, password, email, code });
   },
 
   /**
@@ -233,14 +243,42 @@ export default {
 
   /**
    * 修改密码
-   * @param {Number} userid 
    * @param {string} old_password 
    * @param {string} new_password 
    * @returns 修改密码结果
    */
-  Update_Password(userid, old_password, new_password) {
-    const url = '/profile/' + userid + '/';
+  Update_Password(old_password, new_password) {
+    const url = '/password/change/';
     return apiClient.post(url, { old_password, new_password });
+  },
+
+  /**
+   * 管理员修改密码
+   * @param {Number} userid
+   * @param {String} password
+   * @returns 管理员修改密码结果
+   */
+  Manage_Password(userid, password) {
+    const url = '/profile/' + userid + '/';
+    return apiClient.post(url, { password });
+  },
+
+  /**
+   * 获取重置密码验证码
+   * @returns 获取验证码结果
+   */
+  Get_Reset_Password_Code() {
+    return apiClient.post('/password/reset/code/');
+  },
+
+  /**
+   * 重置密码
+   * @param {string} new_password
+   * @param {string} code
+   * @returns 重置密码结果
+   */
+  Reset_Password(new_password, code) {
+    return apiClient.post('/password/reset/', { new_password, code });
   },
 
   /**
@@ -326,7 +364,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs( plate__plateID, title, content, author__username, author__userID, tags__name, plate__name,postID, is_essence, page = 1, page_size = 10) {
+  Search_Blogs(plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -742,89 +780,59 @@ export default {
   //#region 评论 ====================
 
 
+  //#region 通知 ====================
 
-
-
-
-  //===================================================================================================
-  // 以下是原有的函数, 待修改后删除
-  Select_All_My_Blogs() {
-    return apiClient.get('/post/list/');
-  },
-  Search_Blogs2(  author__userID,plate__plateID,postID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
-    return apiClient.post('/post/list/', {
-      postID: postID,
-      title: title,
-      content: content,
-      author__userID: author__userID,
-      author__username: author__username,
-      tags__name: tags__name,
-      plate__plateID: plate__plateID,
-      plate__name: plate__name,
-      is_essence: is_essence,
-      page: page,
-      page_size: page_size
+  /**
+   * 获取通知列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回通知列表
+   */
+  Get_Notification_List(page = 1, page_size = 10) {
+    return apiClient.get('/notification/list/', {
+      page: page, // 页码
+      page_size: page_size // 每页数量
     });
   },
 
-  Select_All_Blogs() {
-    return apiClient.get('/post/list/');
+  /**
+   * 获取通知详情
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回通知详情
+   */
+  Get_Notification_Detail(notificationid) {
+    const url = '/notification/' + notificationid + '/';
+    return apiClient.get(url);
   },
 
-  Select_Blogs_By_Part(plate) {
-    return  apiClient.get('/post/list/',{plate});
+  /**
+   * 设置通知为已读
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回已读通知结果
+   */
+  Read_Notification(notificationid) {
+    const url = '/notification/read/' + notificationid + '/';
+    return apiClient.post(url);
   },
 
-  Select_Conditional_Blogs(title){
-    return apiClient.post('/SCB',{title:title});
-  },
-  isInputRight(name,password){
-    return Login_apiClient.post('/Login_Judge',{name,password});
-  },
-  SelectBlog(user_id, blog_id) {
-    return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });
-  },
-  select_profile(id) {
-    return apiClient.post('/SP', { user_id: id });
-  },
-  insertComment(user_id, blog_id, content) {
-    return apiClient.post('/IC', { user_id: user_id, blog_id: blog_id, content: content });
+  /**
+   * 设置通知为未读
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回未读通知结果
+   */
+  Unread_Notification(notificationid) {
+    const url = '/notification/read/' + notificationid + '/';
+    return apiClient.delete(url);
   },
 
-  Update_Likes(user_id, blog_id, user_like) {
-    return apiClient.post('/UL', { user_id: user_id, blog_id: blog_id, user_like: user_like });
+  /**
+   * 设置所有通知为已读
+   * @returns {JSON} - 返回已读所有通知结果
+   */
+  Read_All_Notifications() {
+    return apiClient.patch('/notification/all/read/');
   },
-  insertBlog(user_id, type_name, description, title, content) {
-    return apiClient.post('/IB', { user_id: user_id, type_name: type_name, description: description, title: title, content: content });
-  },
-  UpdatePhone(user_id, phone) {
-    return apiClient.post('/UP', { user_id: user_id, phone_number: phone });
-  },
-  UpdateAvatar(user_id, avatar) {
-    return apiClient.post('/UA', { user_id: user_id, avatar: avatar });
-  },
-  UpdateEmail(user_id, email) {
-    return apiClient.post('/UE', { user_id: user_id, email: email });
-  },
-  UpdateName(user_id, user_name) {
-    return apiClient.post('/UN', { user_id: user_id, user_name: user_name });
-  },
-  search_my_blogs(user_id) {
-    return apiClient.post('/SMB', { user_id: user_id });
-  },
-  Update_blog_Content(blog_id, user_id, content) {
-    return apiClient.post('/UBC', { blog_id: blog_id, user_id: user_id, content: content });
-  },
-  Update_blog_Title(blog_id, user_id, title) {
-    return apiClient.post('/UBTitle', { blog_id: blog_id, user_id: user_id, title: title });
-  },
-  Update_blog_Type(blog_id, user_id, type_name) {
-    return apiClient.post('/UBType', { blog_id: blog_id, user_id: user_id, type_name: type_name });
-  },
-  Update_blog_Description(blog_id, user_id, description) {
-    return apiClient.post('/UBD', { blog_id: blog_id, user_id: user_id, description: description });
-  },
-  delete_blog(blog_id, user_id) {
-    return apiClient.post('/DB', { blog_id: blog_id, user_id: user_id });
-  }
+
+  //#region 通知 ====================
+
 };
