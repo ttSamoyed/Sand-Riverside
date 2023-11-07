@@ -53,7 +53,7 @@ function formatTime(timestamp) {
 const lastModified = c.last_modified;
 const formattedTime = formatTime(lastModified);
 
-//寄，以为c.parent是父评论，不用管了
+//寄，以为c.parent是父评论，不用管
 // const loading = ref(true) 
 // const father=ref('');
 
