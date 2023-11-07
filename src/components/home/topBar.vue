@@ -13,10 +13,10 @@
       </div>
       <div class="search-box">
         <el-input
-          v-model="content" @blur="searchByblur"
+          v-model="content" 
           size="default"
           placeholder="搜一搜，发现校园新鲜事"
-          :prefix-icon="Search"
+          :prefix-icon="Search" @blur="searchByblur"
         />
       </div>
       <div class="dark">
