@@ -196,7 +196,7 @@ import { ElMessage } from "element-plus";
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import DataService from "@/components/services/DataService";
-import postComment from "../components/post/postComment.vue";
+import postComment from "@/components/post/postComment.vue";
 import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
 

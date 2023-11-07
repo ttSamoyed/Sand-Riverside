@@ -74,13 +74,17 @@ const name = ['','水手之家','校园热点','校园活动','失物招领','�
 const index = defineProps(['p']);  
 const admin = ref('管理员')  
 const posts = ref({})  
+const content=ref(useRoute().query.content)
   
 onMounted(async () => {  
   // 初始化  
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs(index["p"]);  
+    response = await DataService.Search_Blogs(index["p"],content.value);  
+   // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
+   //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+
     console.log(index["p"]);  
     console.log('response=',response);  
     loading.value = false;  
