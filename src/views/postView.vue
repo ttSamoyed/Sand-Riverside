@@ -198,6 +198,7 @@ import DataService from "@/components/services/DataService";
 import postComment from "@/components/post/postComment.vue";
 import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
