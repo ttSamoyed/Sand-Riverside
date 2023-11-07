@@ -779,4 +779,60 @@ export default {
 
   //#region 评论 ====================
 
+
+  //#region 通知 ====================
+
+  /**
+   * 获取通知列表
+   * @param {Number} page - 页码
+   * @param {Number} page_size - 每页数量
+   * @returns {JSON} - 返回通知列表
+   */
+  Get_Notification_List(page = 1, page_size = 10) {
+    return apiClient.get('/notification/list/', {
+      page: page, // 页码
+      page_size: page_size // 每页数量
+    });
+  },
+
+  /**
+   * 获取通知详情
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回通知详情
+   */
+  Get_Notification_Detail(notificationid) {
+    const url = '/notification/' + notificationid + '/';
+    return apiClient.get(url);
+  },
+
+  /**
+   * 设置通知为已读
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回已读通知结果
+   */
+  Read_Notification(notificationid) {
+    const url = '/notification/read/' + notificationid + '/';
+    return apiClient.post(url);
+  },
+
+  /**
+   * 设置通知为未读
+   * @param {Number} notificationid - 通知ID
+   * @returns {JSON} - 返回未读通知结果
+   */
+  Unread_Notification(notificationid) {
+    const url = '/notification/read/' + notificationid + '/';
+    return apiClient.delete(url);
+  },
+
+  /**
+   * 设置所有通知为已读
+   * @returns {JSON} - 返回已读所有通知结果
+   */
+  Read_All_Notifications() {
+    return apiClient.patch('/notification/all/read/');
+  },
+
+  //#region 通知 ====================
+
 };
