@@ -2,7 +2,9 @@
     <div class="post_list" >
         <el-row>
         <el-col :span="19" style="padding-left: 45px;">
+
             <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+            
         </el-col>
         <el-col :span="5">
             <div class="info">
