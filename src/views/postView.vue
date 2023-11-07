@@ -204,18 +204,6 @@ const router = useRouter();
 
 
 const storedUser = ref(null);
-
-onMounted(() => {
-  const storedUserData = localStorage.getItem('user');
-    if (storedUserData) {
-      storedUser.value = JSON.parse(storedUserData);
-      console.log(storedUser.value);
-    }
-});
-
-
-// const state = computed(() => useStore().state);
-// const user_id = computed(() => state.value.user.id);
 const route = useRoute();
 const postId = ref(route.params.postid);
 
@@ -245,7 +233,7 @@ const user = ref({
     userdate: '2023-9-1',
 })
 
-const isActive = ref(false);
+const isActive = ref(true);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
 const showEditBox = ref(false);
@@ -257,18 +245,73 @@ const coverImgAbs = ref('');
 const comments = ref({});  
 //console.log([user_id.value, state.value]);
 
-//评论功能
-console.log(isActive);
-
-function testActive() {
-  if (isActive.value) {
-    isActive.value = false;
-  } else {
-    isActive.value = true;
+// 加载博文
+const loadpost = async () => {
+  loading.value = true;
+  const response = await DataService.Get_Blog_Detail(postId.value);
+  console.log('response=', response.data);
+  console.log('status=',response.data.status)
+  console.log('post=', response.data.post);
+  
+  if (response.data.status != 'fail') {
+    loading.value = false;
+    post.value = response.data.post;
+    let date= new Date(post.value.created);
+    let readableDate = date.toLocaleString();
+    console.log('time=', readableDate);
+    post.value.created = readableDate;
   }
-}
+};
 
+//加载评论
+const loadcomments = async () => {
+  try {  
+    loading.value = true;  
+    const response = await DataService.Get_Blog_Comments(postId.value);  
+    console.log('response=',response);  
+    loading.value = false;  
+    comments.value = response.data.comments;  
+    console.log('comments=',comments.value)  
+  } catch (error) {        
+    loading.value = false;  
+    ElMessage.error('Failed to fetch data. Please try again.');  
+    console.error(error);  
+  }  
+};
 
+onMounted(async () => {  
+  // 初始化  
+  loadpost();
+  loadcomments();
+});  
+
+//获取用户信息
+const getPersonalInfo = async () => {
+  const status = localStorage.getItem('status');
+  if (status) {
+    loading.value = false;
+    const u = JSON.parse(localStorage.getItem('user'));
+    console.log('userID:', u.userID);
+    const response = await DataService.Get_Personal_Info(u.userID);
+    if (response.data.status === 'failed') {
+      console.log('status=', response.data.status);
+      ElMessage.error('登录已经失效，请重新登录！');
+      router.push({ path: '/login' });
+    } else {
+      console.log('status=', response.data.status);
+      user.value = response.data.user_info;
+      console.log('userinfonew:', user.value);
+      console.log('username:', user.value.username);
+    }
+    return u; // 返回u的值
+  } else {
+    ElMessage.error('您还没有登录，请先登录！');
+    router.push({ path: '/login' });
+    return null; // 如果未登录，返回null或其他适当的值
+  }
+};
+
+//评论功能
 const submitComment = async () => {
   console.log(state);
   //把内容存储到后端，下面这句用于测试 逻辑写好后请删除
@@ -290,35 +333,7 @@ const handleChildClose = () => {
   showEditBox.value = false;
   loadpost();
 };
-//点赞功能
-const toggleActive = () => {
-console.log(isActive.value)
-  if (user_id.value === null) {
-    ElMessage({
-      type: "error",
-      message: "您还没有登录，请先登录！",
-    });
-  } else {
-    submitLikes();
-    if (isActive.value === true) {
-      //点赞数+1，请同步到后端
-      isActive.value = false;
-      post.value.like -= 1;
-    } else {
-      //点赞数-1，请同步到后端
-      isActive.value = true;
-      post.value.like += 1;
-    }
-  }
-};
-const submitLikes = async () => {
-  const responce = await DataService.Update_Likes(
-    user_id.value,
-    postId.value,
-    !isActive.value
-  );
-  console.log(responce.data);
-};
+
 const handleCommentClick = () => {
   if (user_id.value === null) {
     ElMessage({
@@ -330,48 +345,40 @@ const handleCommentClick = () => {
   }
 };
 
-// 加载博文
-const loadpost = async () => {
-  loading.value = true;
-  const response = await DataService.Get_Blog_Detail(postId.value);
-  console.log('response=', response.data);
-  console.log('status=',response.data.status)
-  console.log('post=', response.data.post);
-  
-  if (response.data.status != 'fail') {
-    loading.value = false;
-    post.value = response.data.post;
-    let date= new Date(post.value.created);
-    let readableDate = date.toLocaleString();
-    console.log('time=', readableDate);
-    post.value.created = readableDate;
+//点赞功能
+const submitLikes = async (blogid, isLike_ornot) => {
+  if (isLike_ornot === true) {
+    // 调用后端API来点赞博客
+    console.log("点赞后点赞数量为："+post.value.like_count);
+    await DataService.Like_Blog(blogid);
+  } else {
+    // 调用后端API来取消点赞博客
+    console.log("取消点赞点赞数量为："+post.value.like_count);
+    await DataService.Unlike_Blog(blogid);
   }
-  // commentNumber.value = post.value.comments.length;
-  // isActive.value = post.value.isActive;
 };
 
-//加载评论
-const loadcomments = async () => {
-  try {  
-    loading.value = true;  
-    const response = await DataService.Get_Blog_Comments(postId.value);  
-    console.log('response=',response);  
-    loading.value = false;  
-    comments.value = response.data.comments;  
-    console.log('comments=',comments.value)  
-  } catch (error) {        
-    loading.value = false;  
-    ElMessage.error('Failed to fetch data. Please try again.');  
-    console.error(error);  
-  }  
+const toggleActive = async () => {
+  const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
+  if (u && u.userID != null) {
+    if (isActive.value === true) {
+      isActive.value = false;
+      post.value.like_count += 1;
+      await submitLikes(postId.value, true); // 调用submitLikes函数来点赞博客
+    } else {
+      isActive.value = true;
+      post.value.like_count -= 1;
+      await submitLikes(postId.value, false); // 调用submitLikes函数来取消点赞博客
+    }
+  } else {
+    ElMessage({
+      type: 'error',
+      message: '您还没有登录，请先登录！',
+    });
+  }
 };
 
 
-onMounted(async () => {  
-  // 初始化  
-  loadpost();
-  loadcomments();
-});  
 
 // const deletepost = async () => {
 //   const responce = await DataService.delete_post(postId.value, user_id.value);
