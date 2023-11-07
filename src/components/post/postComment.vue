@@ -3,8 +3,8 @@
         <div class="info">
             <el-avatar class="wide-avatar" :size="xl" :src="c.author.avatar">usr</el-avatar>
             <!-- <p style="margin-left: 3px;">熊</p> -->
-            <p style="margin-left: 3px;">{{ c.author.username }}</p>
-            <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
+            <span style="margin-left: 3px;">{{ c.author.username }}</span>
+            <span v-if="c.parent !== null" style="margin-left: 3px;">回复 {{c.reply_to.username}}</span> <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
         </div>
         <div class="comment_main">
             <!-- <el-text style="margin-left: 3px;">很有帮助，谢谢</el-text> -->
@@ -16,6 +16,7 @@
 
 <script setup>
 import { defineProps,ref } from 'vue';
+import DataService from "@/components/services/DataService";
 const time = ref('2023-9-20')
 
 // const props = defineProps({
@@ -51,6 +52,25 @@ function formatTime(timestamp) {
 
 const lastModified = c.last_modified;
 const formattedTime = formatTime(lastModified);
+
+//寄，以为c.parent是父评论，不用管了
+// const loading = ref(true) 
+// const father=ref('');
+
+// const getinf = async () => {
+//   if (c.parent) {
+//     loading.value = true;  
+//     let response;  
+//     response = await DataService.Get_Comment_Detail(c.parent);  
+//     console.log('response=',response);  
+//     loading.value = false;  
+//     father.value=response.data.message.author.username;
+//     console.log('posts=',father.value); 
+//   }
+//   return '';
+// };
+// getinf();
+
 
 
 </script>
