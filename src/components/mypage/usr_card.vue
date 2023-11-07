@@ -1,5 +1,5 @@
 <template>
-    <div v-loading='loading' class="usr_card">
+    <div v-loading='loading' class="usr_card" element-loading-text="Loading...">
             <el-row>
                 <el-col :span="4">
                     <el-tooltip content="点击更换头像" placement="top">

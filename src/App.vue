@@ -8,7 +8,7 @@
         </el-header>
 
         <el-main class="main">
-          <keep-alive>
+          <keep-alive include="home,writePost">
             <router-view :key=$route.fullPath></router-view>
           </keep-alive>
         </el-main>

@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <div class="box-card" v-loading="loading">
+        <div class="box-card" v-loading="loading" element-loading-text="Loading...">
         <el-card :body-style="{ padding: '0px' }">
             <template #header>
                 <img v-if="post.coverImg" :src="post.coverImg" class="image"/>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="info">
                         <span><el-icon><ArrowUpBold /></el-icon> {{ post.like_count }}  </span>
-                        <span><el-icon><ChatRound /></el-icon> {{ post.comment }} </span>
+                        <span><el-icon><ChatRound /></el-icon> {{ comments.length }} </span>
                         <span style="border: none;"><el-icon><View /></el-icon>  {{ post.views }} </span>
                     </div>
                     </div>
@@ -337,15 +337,18 @@ const loadpost = async () => {
   console.log('response=', response.data);
   console.log('status=',response.data.status)
   console.log('post=', response.data.post);
+  
   if (response.data.status != 'fail') {
     loading.value = false;
     post.value = response.data.post;
+    let date= new Date(post.value.created);
+    let readableDate = date.toLocaleString();
+    console.log('time=', readableDate);
+    post.value.created = readableDate;
   }
   // commentNumber.value = post.value.comments.length;
   // isActive.value = post.value.isActive;
 };
-
-onMounted(loadpost);
 
 //加载评论
 const loadcomments = async () => {
@@ -363,7 +366,12 @@ const loadcomments = async () => {
   }  
 };
 
-onMounted(loadcomments);
+
+onMounted(async () => {  
+  // 初始化  
+  loadpost();
+  loadcomments();
+});  
 
 // const deletepost = async () => {
 //   const responce = await DataService.delete_post(postId.value, user_id.value);

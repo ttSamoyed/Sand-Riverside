@@ -25,8 +25,10 @@ export default createStore({
     isLogin: false,
     access_token: null,
     fresh_token: null,
+    index: '0', // 初始值
   },
   getters: {
+    getIndex: (state) => state.index,
   },
   mutations: {
     setUser(state, user) {
@@ -46,9 +48,15 @@ export default createStore({
     setToken(state, access_token, fresh_token) {
       state.access_token = access_token
       state.fresh_token = fresh_token
-    }
+    },
+    setIndex(state, newIndex) {
+      state.index = newIndex;
+    },
   },
   actions: {
+    updateIndex({ commit }, newIndex) {
+      commit('setIndex', newIndex);
+    },
   },
   modules: {
   }

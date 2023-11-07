@@ -20,12 +20,17 @@
 import navigator from "@/components/home/navigator.vue"
 import aboutShp from "@/components/home/aboutShp.vue"
 import partView from "../components/home/partView.vue";
-import { ref } from "vue";
+import { useStore } from 'vuex';
+import { ref,computed } from "vue";
 
-const index = ref('0')
+const store = useStore();
+
+const index = computed(() => store.getters.getIndex);
+
 const handleItemSelected = (newIndex) => {
-  index.value = newIndex; // 更新父组件的selectedIndex
+  store.dispatch('updateIndex', newIndex);
 };
+
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <div class="center">
-        <div class="info" v-loading="loading">
+        <div class="info" v-loading="loading" element-loading-text="Loading...">
             <el-row class="center">
                 <div class="title">
                     个人信息
