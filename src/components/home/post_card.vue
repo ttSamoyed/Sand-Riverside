@@ -23,7 +23,7 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 10px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+    <el-row style="margin-top: 15px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
         <span class="view_com">
           <el-space>
             <el-tag type="info" style="scale: 0.95;"> <el-icon style=" margin-right: 5px;"><Top></Top></el-icon>{{ p.like_count }}</el-tag>
