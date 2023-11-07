@@ -68,14 +68,24 @@ export default {
   },
 
   /**
+   * 获取注册验证码
+   * @param {String} email
+   * @returns 获取验证码结果
+   */
+  Get_Register_Code(email) {
+    return apiClient.post('/register/code/', { email });
+  },
+
+  /**
    * 注册
    * @param {String} username
    * @param {String} password
    * @param {String} email
+   * @param {String} code
    * @returns 注册结果
    */
   Register(username, password, email) {
-    return apiClient.post('/register/', { username, password, email });
+    return apiClient.post('/register/', { username, password, email, code });
   },
 
   /**
@@ -233,14 +243,42 @@ export default {
 
   /**
    * 修改密码
-   * @param {Number} userid 
    * @param {string} old_password 
    * @param {string} new_password 
    * @returns 修改密码结果
    */
-  Update_Password(userid, old_password, new_password) {
-    const url = '/profile/' + userid + '/';
+  Update_Password(old_password, new_password) {
+    const url = '/password/change/';
     return apiClient.post(url, { old_password, new_password });
+  },
+
+  /**
+   * 管理员修改密码
+   * @param {Number} userid
+   * @param {String} password
+   * @returns 管理员修改密码结果
+   */
+  Manage_Password(userid, password) {
+    const url = '/profile/' + userid + '/';
+    return apiClient.post(url, { password });
+  },
+
+  /**
+   * 获取重置密码验证码
+   * @returns 获取验证码结果
+   */
+  Get_Reset_Password_Code() {
+    return apiClient.post('/password/reset/code/');
+  },
+
+  /**
+   * 重置密码
+   * @param {string} new_password
+   * @param {string} code
+   * @returns 重置密码结果
+   */
+  Reset_Password(new_password, code) {
+    return apiClient.post('/password/reset/', { new_password, code });
   },
 
   /**
@@ -326,7 +364,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs( plate__plateID, title, content, author__username, author__userID, tags__name, plate__name,postID, is_essence, page = 1, page_size = 10) {
+  Search_Blogs(plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -751,7 +789,7 @@ export default {
   Select_All_My_Blogs() {
     return apiClient.get('/post/list/');
   },
-  Search_Blogs2(  author__userID,plate__plateID,postID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+  Search_Blogs2(author__userID, plate__plateID, postID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -772,14 +810,14 @@ export default {
   },
 
   Select_Blogs_By_Part(plate) {
-    return  apiClient.get('/post/list/',{plate});
+    return apiClient.get('/post/list/', { plate });
   },
 
-  Select_Conditional_Blogs(title){
-    return apiClient.post('/SCB',{title:title});
+  Select_Conditional_Blogs(title) {
+    return apiClient.post('/SCB', { title: title });
   },
-  isInputRight(name,password){
-    return Login_apiClient.post('/Login_Judge',{name,password});
+  isInputRight(name, password) {
+    return Login_apiClient.post('/Login_Judge', { name, password });
   },
   SelectBlog(user_id, blog_id) {
     return apiClient.post('/SB', { user_id: user_id, blog_id: blog_id });
