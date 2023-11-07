@@ -128,7 +128,9 @@
         </template>
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul class="list" :infinite-scroll-disabled="disabled">
-            <postComment
+<!-- 
+            评论静态测试 -->
+            <!-- <postComment
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
@@ -137,15 +139,12 @@
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
-              ></postComment>
-            <div v-for="(comment, id) in post.comments" :key="id">
+              ></postComment> -->
+
+            
               <!-- 调用评论子模块 -->
-              <postComment
-                :message="comment.content"
-                :user_name="comment.user_name"
-                :avatar="comment.avatar"
-              ></postComment>
-            </div>
+              <postComment v-for="(comment,index) in comments" :key="comment.commentID" :c="comment"></postComment>
+           
           </ul>
         </div>
       </el-card>
@@ -241,6 +240,7 @@ const disabled = computed(() => loading.value);
 const newComment = ref("");
 const commentNumber = ref(0);
 const coverImgAbs = ref('');
+const comments = ref({});  
 //console.log([user_id.value, state.value]);
 
 //评论功能
@@ -320,6 +320,24 @@ const loadpost = async () => {
 };
 
 onMounted(loadpost);
+
+//加载评论
+const loadcomments = async () => {
+  try {  
+    loading.value = true;  
+    const response = await DataService.Get_Blog_Comments(postId.value);  
+    console.log('response=',response);  
+    loading.value = false;  
+    comments.value = response.data.comments;  
+    console.log('comments=',comments.value)  
+  } catch (error) {        
+    loading.value = false;  
+    ElMessage.error('Failed to fetch data. Please try again.');  
+    console.error(error);  
+  }  
+};
+
+onMounted(loadcomments);
 
 // const deletepost = async () => {
 //   const responce = await DataService.delete_post(postId.value, user_id.value);
