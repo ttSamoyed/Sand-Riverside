@@ -13,7 +13,7 @@
       </div>
       <div class="search-box">
         <el-input
-          v-model="content"
+          v-model="content" @blur="searchByblur"
           size="default"
           placeholder="搜一搜，发现校园新鲜事"
           :prefix-icon="Search"
@@ -84,11 +84,11 @@ const handleAvatarClick = () => {
   }
 }
 
-// const searchByblur=()=>{
-//     search()
-// }
+const searchByblur=()=>{
+    search()
+}
 const search=()=>{
-    router.push({name:'blog',query:{content:content.value}})
+    router.push({name:'post2',query:{content:content.value}})
     content.value=''
 }
 </script>

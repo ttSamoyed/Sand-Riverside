@@ -7,6 +7,7 @@ import postView from '../views/postView.vue'
 import mypageView from '../views/mypageView.vue'
 import registerView from '../views/registerView.vue'
 import writePost from '../views/writePost.vue'
+import partview from '@/components/home/partview.vue'
 const routes = [
     {
         path: '/',
@@ -32,6 +33,11 @@ const routes = [
         path: '/post:postid',
         name: 'post',
         component: postView,
+    },
+    {
+        path: '/post',
+        name: 'post2',
+        component: partview,
     },
     {
         path: '/mypage',

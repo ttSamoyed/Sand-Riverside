@@ -326,7 +326,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs( plate__plateID,postID, title, content, author__userID, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+  Search_Blogs( plate__plateID, title, content, author__username, author__userID, tags__name, plate__name,postID, is_essence, page = 1, page_size = 10) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -750,6 +750,21 @@ export default {
   // 以下是原有的函数, 待修改后删除
   Select_All_My_Blogs() {
     return apiClient.get('/post/list/');
+  },
+  Search_Blogs2(  author__userID,plate__plateID,postID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+    return apiClient.post('/post/list/', {
+      postID: postID,
+      title: title,
+      content: content,
+      author__userID: author__userID,
+      author__username: author__username,
+      tags__name: tags__name,
+      plate__plateID: plate__plateID,
+      plate__name: plate__name,
+      is_essence: is_essence,
+      page: page,
+      page_size: page_size
+    });
   },
 
   Select_All_Blogs() {

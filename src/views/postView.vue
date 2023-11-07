@@ -77,38 +77,37 @@
                   ><el-icon><ChatRound /></el-icon
                 ></span>
                 <span>
+
                   <el-button
-                    v-if="isActive"
-                    text
+                  v-if = "isActive"
                     round
                     @click="toggleActive"
                     style="
-                      background-color: rgb(90, 156, 248);
-                      color: white;
-                      width: 55px;
+                      border: 1.5px solid rgb(230, 230, 230);
+                      background-color: rgb(211, 230, 250);
                     "
                   >
-                    <el-icon style="font-size: 20px; color: white"
+                    <el-icon style="font-size: 20px; color: rgb(29, 132, 234)"
                       ><CaretTop
                     /></el-icon>
-                    {{ post.like }}
+                    <span style="color: rgb(29, 132, 234);">赞同 {{ post.likes }}</span>
                   </el-button>
+                  
                   <el-button
-                    v-else
-                    text
+                  v-else
                     round
                     @click="toggleActive"
                     style="
                       border: 1.5px solid rgb(203, 201, 201);
-                      color: rgb(165, 162, 162);
-                      width: 55px;
+                      background-color: rgb(29, 132, 234);
                     "
                   >
-                    <el-icon style="font-size: 20px; color: rgb(165, 162, 162)"
+                    <el-icon style="font-size: 20px; color: rgb(255, 255, 255)"
                       ><CaretTop
                     /></el-icon>
-                    {{ post.like }}
+                    <span style="color: rgb(255, 255, 255);">已赞同 {{ post.likes }}</span>
                   </el-button>
+
                   <el-button
                     text
                     round
@@ -128,7 +127,9 @@
         </template>
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul class="list" :infinite-scroll-disabled="disabled">
-            <postComment
+<!-- 
+            评论静态测试 -->
+            <!-- <postComment
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
@@ -137,15 +138,12 @@
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
-              ></postComment>
-            <div v-for="(comment, id) in post.comments" :key="id">
+              ></postComment> -->
+
+            
               <!-- 调用评论子模块 -->
-              <postComment
-                :message="comment.content"
-                :user_name="comment.user_name"
-                :avatar="comment.avatar"
-              ></postComment>
-            </div>
+              <postComment v-for="(comment,index) in comments" :key="comment.commentID" :c="comment"></postComment>
+           
           </ul>
         </div>
       </el-card>
@@ -197,9 +195,24 @@ import { ElMessage } from "element-plus";
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import DataService from "@/components/services/DataService";
-import postComment from "../components/post/postComment.vue";
+import postComment from "@/components/post/postComment.vue";
 import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+
+const storedUser = ref(null);
+
+onMounted(() => {
+  const storedUserData = localStorage.getItem('user');
+    if (storedUserData) {
+      storedUser.value = JSON.parse(storedUserData);
+      console.log(storedUser.value);
+    }
+});
+
 
 // const state = computed(() => useStore().state);
 // const user_id = computed(() => state.value.user.id);
@@ -241,9 +254,21 @@ const disabled = computed(() => loading.value);
 const newComment = ref("");
 const commentNumber = ref(0);
 const coverImgAbs = ref('');
+const comments = ref({});  
 //console.log([user_id.value, state.value]);
 
 //评论功能
+console.log(isActive);
+
+function testActive() {
+  if (isActive.value) {
+    isActive.value = false;
+  } else {
+    isActive.value = true;
+  }
+}
+
+
 const submitComment = async () => {
   console.log(state);
   //把内容存储到后端，下面这句用于测试 逻辑写好后请删除
@@ -267,6 +292,7 @@ const handleChildClose = () => {
 };
 //点赞功能
 const toggleActive = () => {
+console.log(isActive.value)
   if (user_id.value === null) {
     ElMessage({
       type: "error",
@@ -320,6 +346,24 @@ const loadpost = async () => {
 };
 
 onMounted(loadpost);
+
+//加载评论
+const loadcomments = async () => {
+  try {  
+    loading.value = true;  
+    const response = await DataService.Get_Blog_Comments(postId.value);  
+    console.log('response=',response);  
+    loading.value = false;  
+    comments.value = response.data.comments;  
+    console.log('comments=',comments.value)  
+  } catch (error) {        
+    loading.value = false;  
+    ElMessage.error('Failed to fetch data. Please try again.');  
+    console.error(error);  
+  }  
+};
+
+onMounted(loadcomments);
 
 // const deletepost = async () => {
 //   const responce = await DataService.delete_post(postId.value, user_id.value);
