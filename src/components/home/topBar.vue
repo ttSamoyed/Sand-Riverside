@@ -9,7 +9,7 @@
         <router-link to="/"><el-link>主页</el-link></router-link>
         <router-link to="/hot"><el-link>热门</el-link></router-link>
         <router-link to="/perfect"><el-link>精华</el-link></router-link>
-        <router-link to="/login"><el-link>登录</el-link></router-link>
+        <router-link to="/login" v-if="isLogin==false"><el-link>登录</el-link></router-link>
       </div>
       <div class="search-box">
         <el-input
@@ -25,16 +25,16 @@
       <div class="message">
 
         <el-button text>
-          <router-link to="/writePost">
+          <router-link to="/writePost" v-if="isLogin">
             <el-icon size="large" style="margin-top:2.5px;color: var(--el-color-primary);"><Edit /></el-icon>
           </router-link>
         </el-button>
-        <el-button text @click="drawer = true">
+        <el-button text @click="drawer = true" v-if="isLogin">
           <el-icon size="large" style="color: var(--el-color-success);"><ChatDotSquare /></el-icon>
         </el-button>
       </div>
       <div class="user" >
-        <el-avatar @click="handleAvatarClick" :size="30" :icon="UserFilled" shape="square"/>
+        <el-avatar @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
       </div>
     </div>
     <el-drawer
@@ -58,12 +58,15 @@ import { Search, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import message from '../home/message.vue'
+import DataService from "@/components/services/DataService.js";
+
 const router = useRouter();
 
 const state = useStore().state
+const user = JSON.parse(localStorage.getItem('user'))
 // console.log(store.state)
 // const state=computed(()=>useStore().state)
-const isLogin = state.isLogin;
+const isLogin = localStorage.getItem('status')
 const avatar = state.user.avatar;
 
 const content = ref('')

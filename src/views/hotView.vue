@@ -14,7 +14,7 @@
           :offset="2"
         >
         <el-badge :value="(row - 1) * 3 + col" class="item" type="primary">
-          <cover_card :p="posts[(row - 1) * 3 + col]"></cover_card>
+          <cover_card :p="posts[(row - 1) * 3 + col - 1]"></cover_card>
         </el-badge>
         </el-col>
     </el-row>

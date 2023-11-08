@@ -1,7 +1,8 @@
 <template>
 <div class="post">
-    <el-row @click="router.push({name:'post',params: {postid:p.postID}})">
+    <el-row class="side" @click="router.push({name:'post',params: {postid:p.postID}})">
       <span class="title">{{ p.title }}</span>
+      <el-tag type="error" v-if="p.is_essence" effect="dark">精华</el-tag>
     </el-row>
     <el-row style="margin-top: 10px;" @click="router.push({name:'post',params: {postid:p.postID}})">
       <el-col :span="6">
@@ -11,8 +12,8 @@
       <el-col :span="18">
         <el-row>
           <el-space wrap>
-            <el-avatar v-if="p.author.avatar" :size="25" :src="p.author.avatar" shape="circle"></el-avatar>
-            <el-avatar v-else :size="25" shape="circle">
+            <el-avatar v-if="p.author.avatar" :size="25" :src="p.author.avatar" shape="square"></el-avatar>
+            <el-avatar v-else :size="25" shape="square">
                 <el-icon><UserFilled /></el-icon>
             </el-avatar>
             <el-text type="info">{{ p.author.username }}</el-text>
@@ -26,6 +27,7 @@
     <el-row style="margin-top: 15px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
         <span class="view_com">
           <el-space>
+            <el-tag style="scale:0.95" effect="dark"><el-icon><Guide /></el-icon>{{ p.plate.name }}</el-tag>
             <el-tag type="info" style="scale: 0.95;"> <el-icon style=" margin-right: 5px;"><Top></Top></el-icon>{{ p.like_count }}</el-tag>
             <el-tag type="info" style="scale: 0.95;"> <el-icon style=" margin-right: 5px;"><View></View></el-icon>{{ p.views }}</el-tag>
           </el-space>
@@ -58,6 +60,12 @@ const readableDate = date.toLocaleString()
     padding-bottom: 10px;
     margin-top: 10px;
     border-bottom: 1px solid var(--el-border-color);
+    transition: margin-left 0.5s ease;
+}
+
+.post:hover{
+margin-left: 20px;
+color: rgb(18, 126, 233);
 }
 
 .title{
@@ -76,6 +84,10 @@ const readableDate = date.toLocaleString()
 .view_com{
     color: #727070cd;
     font-size: 15px;
+}
+
+.side{
+  display: flex; justify-content: space-between; align-items: center;
 }
   
 </style>

@@ -1,9 +1,8 @@
 <template>
 <div class="post" @click="router.push({name:'post',params: {postid:p.postID}})">
-    <el-row>
-        <span class="title">
-            {{ p.title }}
-        </span>
+    <el-row class="side" @click="router.push({name:'post',params: {postid:p.postID}})">
+      <span class="title">{{ p.title }}</span>
+      <el-tag type="error" v-if="p.is_essence" effect="dark">精华</el-tag>
     </el-row>
     <el-row style="margin-top: 10px;">
         <el-col :span="6">
@@ -11,14 +10,13 @@
         </el-col>
         <el-col :span="18">
                 <el-row>
-                    <el-space wrag>
-                        <el-avatar v-if="p.author.avatar" :size="25" :src="p.author.avatar" shape="circle"></el-avatar>
-                        <el-avatar v-else :size="25" shape="circle">
+                        <el-space>
+                        <el-avatar v-if="p.author.avatar" :size="25" :src="p.author.avatar" shape="square"></el-avatar>
+                        <el-avatar v-else :size="25" shape="square">
                             <el-icon><UserFilled /></el-icon>
                         </el-avatar>
-                        <el-text type="info">{{ p.author.username }}</el-text>
-                    </el-space>
-                    
+                        <el-text style="scale:0.95" type="info">{{ p.author.username }}</el-text>
+                    </el-space>                                 
                 </el-row>
                 <el-row style="margin-top: 10px;width: 100%;">
                     <el-text size="large">
@@ -30,6 +28,7 @@
     <el-row style="margin-top: 10px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
         <span class="view_com">
           <el-space>
+            <el-tag style="scale:0.95" effect="dark"><el-icon><Guide /></el-icon>{{ p.plate.name }}</el-tag>
             <el-tag type="info" style="scale: 0.95;"> <el-icon style=" margin-right: 5px;"><Top></Top></el-icon>{{ p.like_count }}</el-tag>
             <el-tag type="info" style="scale: 0.95;"> <el-icon style=" margin-right: 5px;"><View></View></el-icon>{{ p.views }}</el-tag>
           </el-space>
@@ -61,6 +60,12 @@ const readableDate = date.toLocaleString()
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--el-border-color);
+    transition: margin-left 0.5s ease;
+}
+
+.post:hover{
+margin-left: 60px;
+color: rgb(18, 126, 233);
 }
 
 .title{
@@ -83,4 +88,8 @@ const readableDate = date.toLocaleString()
     font-size: 15px;
 }
   
+.side{
+  display: flex; justify-content: space-between; align-items: center;
+}
+
 </style>

@@ -2,7 +2,7 @@
   <div class="post-editor">
     <el-form ref="form" :model="post" label-width="40px">
       <el-form-item>
-        <el-text>标题</el-text>
+        <el-text>标题{{ params.user_id }}</el-text>
         <el-input
           :rows="1"
           type="textarea"
@@ -56,12 +56,14 @@
       <el-form-item>
         <el-text>板块</el-text>
         <el-divider direction="vertical"></el-divider>
-        <el-radio-group v-model="post.type" size="default">
-          <el-radio-button label="成电校园" />
-          <el-radio-button label="生活信息" />
-          <el-radio-button label="情感专区" />
-          <el-radio-button label="未来可期" />
-        </el-radio-group>
+        <el-select v-model="post.type" placeholder="请选择板块" size="large">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
 
       <el-form-item>
@@ -91,6 +93,49 @@ import type { UploadFile } from 'element-plus'
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const disabled = ref(false)
+
+const options = [
+  {
+    value: '水手之家',
+    label: '水手之家',
+  },
+  {
+    value: '校园热点',
+    label: '校园热点',
+  },
+  {
+    value: '校园活动',
+    label: '校园活动',
+  },
+  {
+    value: '失物招领',
+    label: '失物招领',
+  },
+  {
+    value: '二手买卖',
+    label: '二手买卖',
+  },
+  {
+    value: '鹊桥',
+    label: '鹊桥',
+  },
+  {
+    value: '话心',
+    label: '话心',
+  },
+  {
+    value: '就业创业',
+    label: '就业创业',
+  },
+  {
+    value: '出国留学',
+    label: '出国留学',
+  },
+  {
+    value: '保研考研',
+    label: '保研考研',
+  },
+]
 
 const handleRemove = (file: UploadFile) => {
   console.log(file)
@@ -135,20 +180,13 @@ const post = ref({
   content: params.content,
   type: params.type,
 });
+
 const submitpost = async () => {
   console.log(post.value);
   await submit();
   console.log("submit ok");
-  // if (params.post_id === -1) {
-  //   router.push({path:'/post',query:{content:''}})
-  // }else{
-  //   router.push({name:'postPresent',params: {postId:params.post_id}})
-  // }
- // params.onClose();
-  // 将博客内容转换为Markdown格式存储
-  // 提交博客数据到后台
-  // ...
 };
+
 const submit = async () => {
   if (params.post_id === -1) {
     const responce = await DataService.insertpost(

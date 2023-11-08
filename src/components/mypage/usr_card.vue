@@ -125,6 +125,7 @@ const getPersonalInfo = async () => {
         else {
             console.log('status=',response.data.status)
             user.value = response.data.user_info;
+            localStorage.setItem('user', JSON.stringify(response.data.user_info))
             console.log('userinfonew:', user.value)
             console.log('username:',user.value.username)
         }

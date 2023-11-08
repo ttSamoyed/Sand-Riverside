@@ -2,6 +2,9 @@
     <div class="post_list">
         <el-row>
         <el-col :span="19" style="padding-left: 45px;" v-loading="loading" element-loading-text="Loading...">
+          <div class="nopost" v-if="posts.length==0">
+            <el-text style="font-size:16px;">这个板块还没有帖子捏😯！快去发一篇吧</el-text>
+          </div>
             <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
         </el-col>
         <el-col :span="5">
@@ -114,6 +117,10 @@ watchEffect((on) => {
 
 .banzhu{
   zoom: 0.8;
+}
+.nopost{
+  text-align:center;
+  margin-top:30px;
 }
 
 </style>

@@ -81,7 +81,7 @@ const loadMyInteraction = async () => {
     }
     catch (error) {        
         loading.value = false;  
-        ElMessage.error('Failed to fetch data. Please try again.');  
+        ElMessage.error('抱歉，我们无法加载数据，请检查网络与登录状态后重试');  
         console.error(error);  
     }  
 }

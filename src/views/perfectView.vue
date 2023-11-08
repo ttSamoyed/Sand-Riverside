@@ -6,18 +6,13 @@
   </div>
   <div  v-loading="loading">
     <div v-if="loading==false">
-      <el-row v-for="row in 2" :key="row" style="padding-left:0px; width: 100%; margin-bottom:40px">
-        <el-col
-          v-for="col in 3"
-          :key="col"
-          :span="5"
-          :offset="2"
-        >
-        <el-badge :value="(row - 1) * 3 + col" class="item" type="primary">
-          <cover_card :p="posts[(row - 1) * 3 + col]"></cover_card>
-        </el-badge>
+      <el-row v-for="row in 2" :key="row" style="padding-left: 0px; width: 100%; margin-bottom: 40px">
+        <el-col v-for="col in 3" :key="col" :span="5" :offset="2">
+          <div v-if="(row - 1) * 3 + col - 1 < posts.length">
+            <cover_card  :p="posts[(row - 1) * 3 + col - 1]"></cover_card>
+          </div>
         </el-col>
-    </el-row>
+      </el-row>
     </div>
   </div>
 </template>
@@ -38,6 +33,7 @@ const loadHotBlog = async () => {
       response = await DataService.Get_Essence_Blogs(1,6);  
       console.log('response=',response);  
       loading.value = false;  
+      console.log('loading=',loading.value)
       posts.value = response.data.results;  
       console.log('posts=', posts.value)  
       console.log('post0=',posts.value[0])
