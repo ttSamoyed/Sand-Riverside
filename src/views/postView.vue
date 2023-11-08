@@ -73,11 +73,47 @@
           <div class="card-header">
             <h3>
               <div class="comment">
-                <span
-                  ><el-icon><ChatRound /></el-icon
-                ></span>
-                <span>
 
+                <!-- 评论输入框 -->
+                <el-icon style="margin-right: 20px;"><ChatRound/></el-icon>
+                <el-input
+                  v-model="newComment"
+                  autosize
+                  placeholder="发表一条评论吧"
+                  type="textarea"
+                  style="margin-right: 25px;"
+                />
+                <!-- 评论按钮 -->
+                <el-button
+                  v-if="hasInput"
+                  text
+                  round
+                  style="
+                  border: 1.5px solid rgb(230, 230, 230);
+                  background-color: rgb(0, 149, 255);
+                  width: 55px;
+                  margin-right: 15px;
+                  "
+                  @click="handleCommentClick"
+                >
+                <span style="color: white;">评论</span>
+                </el-button>
+
+                <el-button
+                  v-else
+                  text
+                  round
+                  style="
+                  border: 1.5px solid rgb(230, 230, 230);
+                  background-color: rgb(179, 220, 250);
+                  width: 55px;
+                  margin-right: 15px;
+                  "
+                >
+                <span style="color: white;">评论</span>
+                </el-button>
+
+                  <!-- 点赞按钮 -->
                   <el-button
                   v-if = "isActive==false"
                     round
@@ -107,23 +143,12 @@
                     <span style="color: rgb(255, 255, 255);">已赞同 {{ post.likes }}</span>
                   </el-button>
 
-                  <el-button
-                    text
-                    round
-                    style="
-                      border: 1.5px solid rgb(203, 201, 201);
-                      color: rgb(165, 162, 162);
-                      width: 55px;
-                    "
-                    @click="handleCommentClick"
-                  >
-                    评论
-                  </el-button>
-                </span>
+                  
               </div>
             </h3>
           </div>
         </template>
+
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul class="list" :infinite-scroll-disabled="disabled">
 <!-- 
@@ -242,6 +267,7 @@ const newComment = ref("");
 const commentNumber = ref(0);
 const coverImgAbs = ref('');
 const comments = ref({});  
+
 //console.log([user_id.value, state.value]);
 
 // 加载博文
@@ -263,6 +289,11 @@ const loadpost = async () => {
   }
 };
 
+const handleChildClose = () => {
+  showEditBox.value = false;
+  loadpost();
+};
+
 //加载评论
 const loadcomments = async () => {
   try {  
@@ -279,8 +310,8 @@ const loadcomments = async () => {
   }  
 };
 
-onMounted(async () => {  
   // 初始化  
+onMounted(async () => {  
   loadpost();
   loadcomments();
 });  
@@ -312,35 +343,30 @@ const getPersonalInfo = async () => {
 };
 
 //评论功能
+
+const hasInput = computed(() => {
+    return newComment.value.trim() !== '';
+  });
+
 const submitComment = async () => {
-  console.log(state);
-  //把内容存储到后端，下面这句用于测试 逻辑写好后请删除
-  console.log("已经提交评论:", newComment.value);
-  const responce = await DataService.insertComment(
-    user_id.value,
-    postId.value,
-    newComment.value
-  );
-  console.log(responce.data);
-  loadpost();
-  //请只改这上面
-  //清空评论内容(防止下次点开时会有)
+  
+
   newComment.value = "";
   //关闭对话框
   dialogVisible.value = false;
 };
-const handleChildClose = () => {
-  showEditBox.value = false;
-  loadpost();
-};
 
-const handleCommentClick = () => {
-  if (user_id.value === null) {
+
+const handleCommentClick = async () => {
+  const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
+  if (u && u.userID === null) {
     ElMessage({
       type: "error",
       message: "您还没有登录，请先登录！",
     });
   } else {
+    
+
     dialogVisible.value = true;
   }
 };
@@ -380,13 +406,6 @@ const toggleActive = async () => {
   }
 };
 
-
-
-// const deletepost = async () => {
-//   const responce = await DataService.delete_post(postId.value, user_id.value);
-//   console.log(responce.data);
-//   router.push({ name: "MyPage" });
-// };
 
 </script>
 
@@ -441,7 +460,7 @@ const toggleActive = async () => {
   margin-top: -10px;
   display: flex;
   align-items: center; /* 设置垂直居中对齐 */
-  justify-content: space-between; /* 将子元素分别排列在容器的最左边和最右边 */
+
 }
 .comment span {
   display: flex; /* 设置为 Flex 容器 */
