@@ -12,8 +12,15 @@
     <div class="center">
         <div class="main">
             <ul class="infinite-list" style="overflow: auto" v-loading="loading" element-loading-text="Loading...">
-                <div v-if="label=='1'">
+                <div v-if="label=='1'" id="target">
                     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+                    <div class="center">
+                        <el-divider></el-divider>
+                        <el-pagination v-model:currentPage="currentPage"
+                        layout="prev, pager, next" :total="totalcounts" :page-size="5"
+                        @current-change="loadMyBlog"
+                        />
+                    </div>
                 </div>  
                 <div v-if="label=='2'">
                     <message_card v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message_card>
@@ -44,17 +51,21 @@ const label = ref('1')
 const loading = ref(true)
 const posts = ref({})
 const notifications = ref({})
+const totalcounts = ref()
+const currentPage = ref(1)
 
 const loadMyBlog = async () => {
-    try {  
+    try { 
+        target.scrollIntoView(); 
         loading.value = true;  
         let response;  
-        response = await DataService.Get_My_Blogs();  
+        response = await DataService.Get_My_Blogs(currentPage.value);  
     // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
     //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
         console.log('response=',response);  
         loading.value = false;  
         posts.value = response.data.results;  
+        totalcounts.value = response.data.count;
         console.log('posts=', posts.value)  
         console.log('post0=',posts.value[0])
     }

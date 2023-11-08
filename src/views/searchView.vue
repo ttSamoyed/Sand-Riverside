@@ -1,7 +1,8 @@
 <template>
+  <div id="target" v-loading="loading" element-loading-text="Loading...">
     <div class="info">
         <el-row>
-            <span style="font-size:20px; font-weight:500">找到包含 {{ content }} 的文章{{ count }}篇</span>
+            <span style="font-size:20px; font-weight:500">找到包含 {{ content }} 的文章{{ totalcounts }}篇</span>
         </el-row>
     </div>
     <el-row class="center">
@@ -11,12 +12,13 @@
     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
     </el-row>
     <div class="center">
-          {{ count }}
+          <el-divider></el-divider>
           <el-pagination v-model:currentPage="currentPage"
-           layout="prev, pager, next" :total="totalcounts" :page-size="10"
+           layout="prev, pager, next" :total="totalcounts" :page-size="5"
            @current-change="loadBlogs"
            />
     </div> 
+  </div>
 </template>
 
 <script setup>
@@ -31,10 +33,13 @@ const loading = ref(true)
 const posts = ref({}) 
 const totalcounts = ref()
 const content = ref(useRoute().query.content)
-const currentPage =ref(1)
+const currentPage = ref(1)
+
 
 const loadBlogs = async () => {
   try {  
+    //回到顶部
+    target.scrollIntoView();
     loading.value = true; 
     let response;  
       response = await DataService.Search_Blogs({ title:content.value,page:currentPage.value});  
@@ -42,7 +47,7 @@ const loadBlogs = async () => {
     loading.value = false;  
       posts.value = response.data.results;  
       totalcounts.value = response.data.count;
-    console.log('posts=',posts.value)  
+    console.log('posts=', posts.value) 
   }
   catch (error) {        
     loading.value = false;  
@@ -50,6 +55,8 @@ const loadBlogs = async () => {
     console.error(error);  
   }  
 }
+
+
 
 onMounted(async () => {  
   // 初始化  

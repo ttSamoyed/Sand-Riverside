@@ -1,14 +1,16 @@
 <template>
-    <div class="post_list">
+    <div class="post_list" id="target">
         <el-row>
         <el-col :span="19" style="padding-left: 45px;" v-loading="loading" element-loading-text="Loading...">
           <div class="nopost" v-if="posts.length==0">
             <el-text style="font-size:16px;">这个板块还没有帖子捏😯！快去发一篇吧</el-text>
           </div>
             <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+            <el-backtop :right="100" :bottom="100" />
         <div class="center">
+          <el-divider></el-divider>
           <el-pagination v-model:currentPage="currentPage"
-           layout="prev, pager, next" :total="totalcounts" :page-size="4"
+           layout="prev, pager, next" :total="totalcounts" :page-size="5"
            @current-change="loadBlogs"
            />
         </div>    
@@ -55,6 +57,8 @@ const currentPage =ref(1)
 
 const loadBlogs = async() => {
   try {  
+    //回到顶部
+    target.scrollIntoView();
     loading.value = true;  
     let response;  
     response = await DataService.Search_Blogs({plate__plateID:index["p"], page:currentPage.value});  
@@ -83,7 +87,7 @@ const getinf = async () => {
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs({plate__plateID:index["p"], page:currentPage, page_size:4});  
+    response = await DataService.Search_Blogs({plate__plateID:index["p"], page_size:4});  
     console.log(index["p"]);  
     console.log('response=',response);  
     loading.value = false;  
@@ -99,6 +103,7 @@ const getinf = async () => {
 
 watchEffect((on) => {  
   on(() => {  
+    currentPage.value = 1;
     // 当 index["p"] 发生变化时，执行此处的代码...  
     console.log('index["p"] has changed');  
     // 在此处可以重新执行 DataService.Search_Blogs(index["p"]) 来获取新的数据等。 
