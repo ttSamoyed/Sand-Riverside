@@ -37,7 +37,10 @@
         </el-button>
       </div>
       <div class="user" >
-        <el-avatar @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
+        <el-avatar v-if="isLogin" @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
+        <el-avatar v-else @click="handleAvatarClick" :size="30" shape="square">
+          <el-icon :size="20"><Avatar /></el-icon>
+        </el-avatar>
       </div>
     </div>
     <el-drawer
@@ -99,20 +102,23 @@ const search=()=>{
 }
 
 const loadNotification = async () => {
-    try {
-      loading.value = true
-      let response;
-      response = await DataService.Get_Notification_List();
-      console.log('response=', response);
-      notifications.value = response.data.results
-      console.log('notification',notifications.value)
-      loading.value = false;
-    }
-    catch (error) {        
-      loading.value = false;  
-      ElMessage.error('获取信息失败，请检查网络并重新登录');  
-      console.error(error);  
-  }  
+    if (localStorage.getItem('status')) {
+      try {
+        loading.value = true
+        let response;
+        response = await DataService.Get_Notification_List();
+        console.log('response=', response);
+        notifications.value = response.data.results
+        console.log('notification',notifications.value)
+        loading.value = false;
+      }
+      catch (error) {        
+        loading.value = false;  
+        ElMessage.error('获取信息失败，请检查网络并重新登录');  
+        localStorage.clear();
+        console.error(error);  
+    }  
+  }
 }
 
 onMounted(async () => {  
