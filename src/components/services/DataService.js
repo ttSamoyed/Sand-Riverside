@@ -34,13 +34,15 @@ async function handleRequestError(error) {
         console.log('刷新 Token 失败, 请重新登录');
         localStorage.removeItem('refresh_token');
         // 跳转到登录页
-        window.location.href = '/login';
+        localStorage.setItem('status', false);
+        window.location.href = '/#/login';
       }
     } catch (error) {
       console.log('刷新 Token 失败:', error);
       localStorage.removeItem('refresh_token');
       // 跳转到登录页
-      window.location.href = '/login';
+      localStorage.setItem('status', false);
+      window.location.href = '/#/login';
     }
   }
   return Promise.reject(error);
