@@ -7,7 +7,8 @@ import postView from '../views/postView.vue'
 import mypageView from '../views/mypageView.vue'
 import registerView from '../views/registerView.vue'
 import writePost from '../views/writePost.vue'
-import partview from '@/components/home/partview.vue'
+import searchView from '../views/searchView.vue'
+
 const routes = [
     {
         path: '/',
@@ -35,9 +36,9 @@ const routes = [
         component: postView,
     },
     {
-        path: '/post',
-        name: 'post2',
-        component: partview,
+        path: '/search',
+        name: 'search',
+        component: searchView,
     },
     {
         path: '/mypage',

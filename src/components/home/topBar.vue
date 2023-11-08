@@ -12,12 +12,15 @@
         <router-link to="/login" v-if="isLogin==false"><el-link>登录</el-link></router-link>
       </div>
       <div class="search-box">
+
         <el-input
           v-model="content" 
           size="default"
           placeholder="搜一搜，发现校园新鲜事"
           :prefix-icon="Search" @blur="searchByblur"
+          @keyup.enter="search"
         />
+
       </div>
       <div class="dark">
         <Dark></Dark>
@@ -91,7 +94,7 @@ const searchByblur=()=>{
     search()
 }
 const search=()=>{
-    router.push({name:'post2',query:{content:content.value}})
+    router.push({name:'search',query:{content:content.value}})
     content.value=''
 }
 </script>
