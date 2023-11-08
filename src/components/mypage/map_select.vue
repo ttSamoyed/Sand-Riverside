@@ -3,7 +3,7 @@
       <el-row>
            <el-form :model="queryParams" inline  label-width="80px" >
               <el-form-item label="省份" prop="province">
-                <el-select v-model="provinceValue" placeholder="请选择" @change="selectProvince" style="width: 120px">
+                <el-select v-model="provinceValue" :placeholder=p @change="selectProvince" style="width: 120px; color: #000000;" >
                    <el-option
                          v-for="(item,index) of provincearr"
                          :key="index"          
@@ -13,7 +13,7 @@
                    </el-select>
             </el-form-item>            
             <el-form-item label="城市" prop="city">
-                    <el-select v-model="cityValue" placeholder="请选择" @change="selectCity" style="width: 120px">
+                    <el-select v-model="cityValue" :placeholder=c @change="selectCity" style="width: 120px">
                         <el-option 
                         v-for="(item,index) of cityarr" 
                         :key="index" 
@@ -22,7 +22,7 @@
                     </el-select>
            </el-form-item>
           <el-form-item label="区县" prop="country">
-              <el-select v-model="regionValue" placeholder="请选择" @change="selectCountry"  style="width: 120px">
+              <el-select v-model="regionValue" :placeholder=r @change="selectCountry"  style="width: 120px">
                     <el-option
                         v-for="(item,index) of regionarr"
                         :key="index"
@@ -38,9 +38,13 @@
 
   <script> 
   import { province } from '@/utils/map'
-   
+  import { defineProps, defineExpose } from 'vue'
+  const props = defineProps({
+  address: String
+})
+
   export default {
-   
+      
     created () {
       this.provincearr = province
     },
@@ -54,7 +58,12 @@
             regionValue: ''
       }
     },
-    mounted () { },
+    props :({
+  p: String,
+  c:String,
+  r:String
+}),
+    mounted () {  console.log("address", this.address)},
     methods: {
      selectProvince (id) {
               this.cityarr = [];
@@ -89,13 +98,26 @@
                   }
               }
           },
-   
+          getSelectedValue() {
+            return {
+                province: this.provinceValue,
+                city: this.cityValue,
+                region: this.regionValue
+            }
+        },
       }
+      
+      
     }
+   
+
   </script>
 <style scoped>
 .select{
     margin-top: 25px;
     margin-bottom: -15px;
 }
+.deep_color .el-select__dropdown__item {  
+  color:#000000
+}  
 </style>

@@ -59,6 +59,7 @@ import DataService from '@/components/services/DataService'
 import { useStore} from 'vuex'
 //import router from '@/router';
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const form=ref(null)
 const rules = {
   username: [
@@ -99,19 +100,27 @@ const postData = async () => {
     console.log(response.data);
     store.commit("Register", response.data);
     router.push({ path: '/login' });
+    if (response.status=== 200) {
+        ElMessage.success('注册成功！');
+        window.location.reload();
+    }
+    if (response.status=== 400|response.status=== 500) {
+    ElMessage.warning('注册失败！')
+    }
   } catch (error) {
     console.error(error);
+    ElMessage.warning('注册失败！')
   }
 };
 
 const submit = () => {
   if (!username.value || !password.value || !email.value) {
-    console.log('Please fill in all the required fields');
+    ElMessage.warning('Please fill in all the required fields');
     return;
   }
 
   if (password.value !== confirmpassword.value) {
-    console.log('Password and Confirm Password do not match');
+    ElMessage.warning('Password and Confirm Password do not match');
     return;
   }
 //  console.log(userData);

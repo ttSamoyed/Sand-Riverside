@@ -84,7 +84,7 @@ export default {
    * @param {String} code
    * @returns 注册结果
    */
-  Register(username, password, email) {
+  Register(username, password, email,code) {
     return apiClient.post('/register/', { username, password, email, code });
   },
 

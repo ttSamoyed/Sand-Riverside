@@ -125,6 +125,7 @@ const getPersonalInfo = async () => {
         else {
             console.log('status=',response.data.status)
             user.value = response.data.user_info;
+            user.value.date_joined=response.data.user_info.date_joined.slice(0,10);
             localStorage.setItem('user', JSON.stringify(response.data.user_info))
             console.log('userinfonew:', user.value)
             console.log('username:',user.value.username)
@@ -171,7 +172,7 @@ const handleAvatarSuccess = async (res, uploadFile) => {
 };
 
 
-onMounted(getPersonalInfo)
+onMounted(getPersonalInfo);
 </script>
 
 <style scoped>

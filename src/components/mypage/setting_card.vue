@@ -20,13 +20,12 @@
                     <el-input v-model="user.sex" placeholder="请输入性别"></el-input>
                 </el-col>
             </el-row>
-            <el-divider></el-divider>
-                <el-col span="8">
+                <!-- <el-col span="8">
                     <el-text> 头像 </el-text>
                 </el-col>
                 <el-col span="16" style="margin-left: 80px;">
                     <avatar_upload :userid="user.userID"></avatar_upload>
-                </el-col>
+                </el-col> -->
             <el-divider></el-divider>
             <el-row>
                 <el-col span="8">
@@ -44,8 +43,8 @@
             </el-row>
             <el-divider></el-divider>
 
-            <map_select style="margin-left: -36px;"></map_select>
-
+            <map_select :p="province" :c="city" :r="district" ref="mapselect" style="margin-left: -36px;"></map_select>
+            <!-- 为啥这里改为map_select就不显示了 -->
             <el-divider></el-divider><el-row>
                 <el-col span="8">
                     <el-text> 签名 </el-text>
@@ -56,11 +55,21 @@
             </el-row>
             <el-divider></el-divider>
             <el-row>
-                <div class="center">
-                    <el-space wrap>
-                        <el-button type="primary" plain round @click="updateInfo()">修改信息</el-button>
-                        <el-button plain round>修改密码</el-button>
-                    </el-space>
+                <div>
+                <el-button type="primary" plain round @click="updateInfo">修改信息</el-button>
+                <el-button type="primary" plain round @click="showPasswordDialog = true " >修改密码</el-button>
+                <el-dialog title="修改密码" width="30%" v-if="true">
+                <span>请输入旧密码：</span>
+                <el-input v-model="oldPassword" type="password" placeholder="请输入旧密码"></el-input>
+                <br>
+                <span>请输入新密码：</span>
+                <el-input v-model="newPassword" type="password" placeholder="请输入新密码"></el-input>
+                <br>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="showPasswordDialog = false">取消</el-button>
+                <el-button type="primary" @click="updatePassword">修改</el-button>
+                </span>
+                </el-dialog>
                 </div>
             </el-row>
         </div>
@@ -68,12 +77,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useStore } from 'vuex';
 import map_select from '../mypage/map_select.vue'
 import DataService from '@/components/services/DataService'
 import avatar_upload from './avatar_upload.vue';
+
+
+
 const state = useStore().state
 const loading = ref(true)
 const user = ref({
@@ -95,6 +107,7 @@ const user = ref({
     userID: null,
     username: null,
 })
+const address = ref('北京市-北京市-朝阳区')
 
 const getPersonalInfo = async () => {
     const status = localStorage.getItem('status');
@@ -111,6 +124,7 @@ const getPersonalInfo = async () => {
         else {
             console.log('status=',response.data.status)
             user.value = response.data.user_info;
+            address.value=response.data.user_info.address;
             console.log('userinfonew:', user.value)
             console.log('username:',user.value.username)
         }
@@ -122,16 +136,49 @@ const getPersonalInfo = async () => {
     }
 };
 
+
+
+const areas = computed(() => {
+  return (address.value || '').split('-') // 使用 split 方法分割字符串，并提供一个空字符串作为默认值
+})
+
+const province = computed(() => {
+  return areas.value[0] // 获取省份名称
+})
+
+const city = computed(() => {
+  return areas.value[1] // 获取城市名称
+})
+
+const district = computed(() => {
+  return areas.value[2] // 获取区县名称
+})
+
+const mapselect=ref();
+
 const updateInfo = async () => {
     console.log('user=',user.value)
     console.log('userid=',user.value.userID)
+    const regionValue = mapselect.value.getSelectedValue().region;
+    const cityValue =  mapselect.value.getSelectedValue().city;
+    const provinceValue = mapselect.value.getSelectedValue().province;
+    if(regionValue!=''&cityValue!=''&provinceValue!=''&(user.value.sex!='男'|user.value.sex!='女')&user.value.college!=''&user.value.major!='')
+   { user.value.address = provinceValue + '-' + cityValue + '-' + regionValue;
+    user.value.address=provinceValue+'-'+cityValue+'-'+regionValue;
     const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
     console.log('status=',responce.status);
     if (responce.status=== 200) {
-        ElMessage.success('修改成功！')
+        ElMessage.success('修改成功！');
+        window.location.reload();
     }
     if (responce.status=== 400|responce.status=== 500) {
     ElMessage.warning('修改失败！')
+    }}
+    else if(user.value.status.length>20){
+        ElMessage.warning('签名太长了，重新试试吧！')
+    }
+    else{
+        ElMessage.warning('请修改后填写正确、完整的信息！')
     }
     // //原来的
     // if (responce.status=== 200) {
@@ -142,7 +189,34 @@ const updateInfo = async () => {
     // }
 }
 
-onMounted(getPersonalInfo)
+const showPasswordDialog = ref(false);
+
+const    oldPassword=ref('') 
+const    newPassword=ref('') 
+// console.log("dialog=",showPasswordDialog.value);
+//     const oldPassword = ref('');
+//     const newPassword = ref('');
+//     const confirmPassword = ref('');
+
+//     const update = () => {
+//       // 更新信息的代码
+//     };
+
+//     const updatePassword = () => {
+//       if (newPassword.value !== confirmPassword.value) {
+//         alert('两次输入的新密码不一致');
+//         return;
+//       }
+//       if (oldPassword.value === '正确的旧密码') { // 这里需要替换为实际的验证旧密码的逻辑
+//         alert('修改成功');
+//         showPasswordDialog.value = false;
+//       } else {
+//         alert('旧密码错误');
+//       }
+//     };
+
+
+ onMounted(getPersonalInfo)
 
 </script>
 
@@ -155,11 +229,13 @@ onMounted(getPersonalInfo)
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.center{
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
+
 
 .info{
     margin-top: 20px;
