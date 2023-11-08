@@ -364,7 +364,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs({ plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 4 }) {
+  Search_Blogs({ plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 5 }) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -375,9 +375,13 @@ export default {
       plate__plateID: plate__plateID,
       plate__name: plate__name,
       is_essence: is_essence,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
@@ -540,8 +544,11 @@ export default {
     return apiClient.post('/plate/list/', {
       plateID: plateID,
       name: name,
-      page: page,
-      page_size: page_size
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -620,9 +627,13 @@ export default {
       plate__name: plate__name,
       moderator__userID: moderator__userID,
       moderator__username: moderator__username,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
@@ -681,9 +692,13 @@ export default {
       author: author,
       parent: parent,
       reply_to: reply_to,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
