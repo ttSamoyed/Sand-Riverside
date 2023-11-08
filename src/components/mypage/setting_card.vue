@@ -126,11 +126,20 @@ const updateInfo = async () => {
     console.log('user=',user.value)
     console.log('userid=',user.value.userID)
     const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
-    console.log(responce);
-    if (responce.status === 'success') {
+    console.log('status=',responce.status);
+    if (responce.status=== 200) {
         ElMessage.success('修改成功！')
     }
+    if (responce.status=== 400|responce.status=== 500) {
     ElMessage.warning('修改失败！')
+    }
+    // //原来的
+    // if (responce.status=== 200) {
+    //     ElMessage.success('修改成功！')
+    // }
+    // else  {
+    // ElMessage.warning('修改失败！')
+    // }
 }
 
 onMounted(getPersonalInfo)
