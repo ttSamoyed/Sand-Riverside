@@ -49,7 +49,7 @@ onMounted(async () => {
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs(index["p"],content.value);  
+    response = await DataService.Search_Blogs({plate__plateID:index["p"]});  
    // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
    //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
 
@@ -70,7 +70,7 @@ const getinf = async () => {
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs(index["p"]);  
+    response = await DataService.Search_Blogs({plate__plateID:index["p"]});  
     console.log(index["p"]);  
     console.log('response=',response);  
     loading.value = false;  
