@@ -79,18 +79,17 @@
                 <span>
 
                   <el-button
-                  v-if = "isActive"
+                  v-if = "isActive==false"
                     round
                     @click="toggleActive"
                     style="
-                      border: 1.5px solid rgb(230, 230, 230);
-                      background-color: rgb(211, 230, 250);
+                       border: 1.5px solid rgb(203, 201, 201);
                     "
                   >
-                    <el-icon style="font-size: 20px; color: rgb(29, 132, 234)"
+                    <el-icon style="font-size: 20px; color: "
                       ><CaretTop
                     /></el-icon>
-                    <span style="color: rgb(29, 132, 234);">赞同 {{ post.likes }}</span>
+                    <span style="color: ;">赞同 {{ post.likes }}</span>
                   </el-button>
                   
                   <el-button
@@ -233,7 +232,7 @@ const user = ref({
     userdate: '2023-9-1',
 })
 
-const isActive = ref(true);
+const isActive = ref(false);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
 const showEditBox = ref(false);
@@ -260,6 +259,7 @@ const loadpost = async () => {
     let readableDate = date.toLocaleString();
     console.log('time=', readableDate);
     post.value.created = readableDate;
+    isActive.value = post.value.has_liked;
   }
 };
 
@@ -350,11 +350,13 @@ const submitLikes = async (blogid, isLike_ornot) => {
   if (isLike_ornot === true) {
     // 调用后端API来点赞博客
     console.log("点赞后点赞数量为："+post.value.like_count);
-    await DataService.Like_Blog(blogid);
+    const responce = await DataService.Like_Blog(blogid);
+    console.log('like response=',responce)
   } else {
     // 调用后端API来取消点赞博客
-    console.log("取消点赞点赞数量为："+post.value.like_count);
-    await DataService.Unlike_Blog(blogid);
+    console.log("取消点赞后点赞数量为："+post.value.like_count);
+    const responce = await DataService.Unlike_Blog(blogid);
+    console.log('unlike response=',responce)
   }
 };
 
@@ -363,12 +365,12 @@ const toggleActive = async () => {
   if (u && u.userID != null) {
     if (isActive.value === true) {
       isActive.value = false;
-      post.value.like_count += 1;
-      await submitLikes(postId.value, true); // 调用submitLikes函数来点赞博客
+      post.value.like_count -= 1;
+      await submitLikes(postId.value, false); // 调用submitLikes函数来点赞博客
     } else {
       isActive.value = true;
-      post.value.like_count -= 1;
-      await submitLikes(postId.value, false); // 调用submitLikes函数来取消点赞博客
+      post.value.like_count += 1;
+      await submitLikes(postId.value, true); // 调用submitLikes函数来取消点赞博客
     }
   } else {
     ElMessage({
