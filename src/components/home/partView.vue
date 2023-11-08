@@ -6,6 +6,12 @@
             <el-text style="font-size:16px;">这个板块还没有帖子捏😯！快去发一篇吧</el-text>
           </div>
             <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+        <div class="center">
+          <el-pagination v-model:currentPage="currentPage"
+           layout="prev, pager, next" :total="totalcounts" :page-size="4"
+           @current-change="loadBlogs"
+           />
+        </div>    
         </el-col>
         <el-col :span="5">
             <div class="info">
@@ -36,20 +42,22 @@ import DataService from '@/components/services/DataService';
 import { useRoute } from 'vue-router';  
 import post_card from "@/components/home/post_card.vue"  
 import { defineProps } from 'vue';  
+import { async } from '@kangc/v-md-editor';
   
 const loading = ref(true)  
 const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']  
 const index = defineProps(['p']);  
 const admin = ref('管理员')  
 const posts = ref({})  
-const content=ref(useRoute().query.content)
-  
-onMounted(async () => {  
-  // 初始化  
+const content = ref(useRoute().query.content)
+const totalcounts = ref()
+const currentPage =ref(1)
+
+const loadBlogs = async() => {
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs({plate__plateID:index["p"]});  
+    response = await DataService.Search_Blogs({plate__plateID:index["p"], page:currentPage.value});  
    // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
    //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
 
@@ -57,12 +65,17 @@ onMounted(async () => {
     console.log('response=',response);  
     loading.value = false;  
     posts.value = response.data.results;  
+    totalcounts.value = response.data.count;
     console.log('posts=',posts.value)  
   } catch (error) {        
     loading.value = false;  
     ElMessage.error('Failed to fetch data. Please try again.');  
     console.error(error);  
   }  
+}
+  
+onMounted(async () => {  
+  loadBlogs();
 });  
   
 const getinf = async () => {
@@ -70,11 +83,12 @@ const getinf = async () => {
   try {  
     loading.value = true;  
     let response;  
-    response = await DataService.Search_Blogs({plate__plateID:index["p"]});  
+    response = await DataService.Search_Blogs({plate__plateID:index["p"], page:currentPage, page_size:4});  
     console.log(index["p"]);  
     console.log('response=',response);  
     loading.value = false;  
     posts.value = response.data.results;  
+    totalcounts.value = response.data.count;
     console.log('posts=',posts.value)  
   } catch (error) {        
     loading.value = false;  
