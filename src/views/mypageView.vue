@@ -16,9 +16,7 @@
                     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
                 </div>  
                 <div v-if="label=='2'">
-                    
-                    <message_card></message_card>
-
+                    <message_card v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message_card>
                 </div>
                 <div v-if="label=='3'">
                     <setting_card></setting_card>
@@ -44,7 +42,8 @@ import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 const label = ref('1')
 const loading = ref(true)
-const posts=ref({})
+const posts = ref({})
+const notifications = ref({})
 
 const loadMyBlog = async () => {
     try {  
@@ -66,30 +65,27 @@ const loadMyBlog = async () => {
     }  
 }
 
-const loadMyInteraction = async () => {
-    try {  
-        loading.value = true;  
-        let response;  
-        response = await DataService.Get_My_Blogs();  
-    // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
-    //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
-        console.log('response=',response);  
-        loading.value = false;  
-        posts.value = response.data.results;  
-        console.log('posts=', posts.value)  
-        console.log('post0=',posts.value[0])
+const loadNotification = async () => {
+    try {
+      loading.value = true
+      let response;
+      response = await DataService.Get_Notification_List();
+      console.log('response=', response);
+      notifications.value = response.data.results
+      console.log('notification',notifications.value)
+      loading.value = false;
     }
     catch (error) {        
-        loading.value = false;  
-        ElMessage.error('抱歉，我们无法加载数据，请检查网络与登录状态后重试');  
-        console.error(error);  
-    }  
+      loading.value = false;  
+      ElMessage.error('获取信息失败，请检查网络并重新登录');  
+      console.error(error);  
+  }  
 }
-
 
 onMounted(async () => {  
   // 初始化  
     loadMyBlog();
+    loadNotification();
 });  
 
 </script>

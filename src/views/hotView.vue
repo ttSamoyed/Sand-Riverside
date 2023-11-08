@@ -13,7 +13,7 @@
           :span="5"
           :offset="2"
         >
-        <el-badge :value="(row - 1) * 3 + col" class="item" type="primary">
+        <el-badge :value="(row - 1) * 3 + col" class="item" type="error">
           <cover_card :p="posts[(row - 1) * 3 + col - 1]"></cover_card>
         </el-badge>
         </el-col>

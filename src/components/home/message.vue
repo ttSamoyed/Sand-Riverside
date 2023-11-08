@@ -1,22 +1,23 @@
 <template>
-    <div class="messagebox">
+    <div class="messagebox" v-if="n.actor">
         <el-row>
         <el-col :span="4">
-            <el-avatar :size="40" :src="user.useravatar"/>
+            <el-avatar v-if="n.actor.avatar!=null" :size="40" :src="avatar"/>
+            <el-avatar v-else :size="40"><el-icon><Avatar /></el-icon></el-avatar>
         </el-col>
         <el-col :span="20">
             <el-row>
             <el-space wrap>
-                <span style="zoom:0.8;font-weight: 500;">{{ user.username }}</span>
+                <span style="zoom:0.8;font-weight: 500;">{{ n.actor.username }}</span>
                 <el-divider direction="vertical"></el-divider>
-                <el-text style="zoom:0.8; font-weight: 400;">{{ user.usersign }}</el-text>
+                <el-text style="zoom:0.8; font-weight: 400;">{{ n.actor.status }}</el-text>
             </el-space>
             </el-row>
             <el-row>
             <el-space wrap>
-                <span v-if="useraction.like" style="zoom:0.8;font-size:xx-small;">点赞了你的帖子</span>
-                <span v-if="useraction.comment" style="zoom:0.8;font-size:xx-small;">评论了你的帖子</span>
-                <el-text type="info" style="zoom:0.8;font-size:xx-small;">{{ post.name }}</el-text>
+                <span style="zoom:0.8;font-size:xx-small;">{{ n.description }}</span>
+                <el-text type="info" @click="router.push({name:'post',params: {postid:n.target.postID}})"
+                style="zoom:0.8;font-size:xx-small;">{{ n.target.title }}</el-text>
             </el-space>
             </el-row>
         </el-col>
@@ -26,18 +27,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-const user = ref({
-    username: '用户名',
-    useravatar: 'https://img2.baidu.com/it/u=3513073338,239101075&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-    usersign: '此用户很懒，还没有设置签名',
-})
-
-const useraction = ref({ like: true, comment: false });
-const post = ref({
-    name: '帖子名称',
-    id: '1'
-})
-
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { defineProps } from 'vue';
+const props = defineProps({
+    n: Object, // 指定p属性的类型
+});
+const { n } = props;
+const avatar = computed(() => {
+    return 'http://124.222.42.111:8000' + n.actor.avatar
+});
+const router = useRouter();
+const date = new Date(n.timestamp)
+const readableDate = date.toLocaleString()
 
 </script>

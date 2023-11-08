@@ -47,29 +47,29 @@
       size="22%"
     >
     <!-- <el-text>还没有新消息，去参与互动吧 🥳</el-text> -->
-    <message></message>
-    <message></message>
-    <message></message>
-    <message></message>
+    <message v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message>
   </el-drawer>
 </template>
 
 <script setup>
 import Dark from './dark.vue'
-import { computed, ref } from 'vue';
+import { computed, ref,onMounted } from 'vue';
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { ElMessage } from 'element-plus';
 import message from '../home/message.vue'
 import DataService from "@/components/services/DataService.js";
 
 const router = useRouter();
+const notifications = ref({})
 
 const state = useStore().state
 const user = JSON.parse(localStorage.getItem('user'))
 // console.log(store.state)
 // const state=computed(()=>useStore().state)
 const isLogin = localStorage.getItem('status')
+const loading=ref(true)
 const avatar = state.user.avatar;
 
 const content = ref('')
@@ -97,6 +97,28 @@ const search=()=>{
     router.push({name:'search',query:{content:content.value}})
     content.value=''
 }
+
+const loadNotification = async () => {
+    try {
+      loading.value = true
+      let response;
+      response = await DataService.Get_Notification_List();
+      console.log('response=', response);
+      notifications.value = response.data.results
+      console.log('notification',notifications.value)
+      loading.value = false;
+    }
+    catch (error) {        
+      loading.value = false;  
+      ElMessage.error('获取信息失败，请检查网络并重新登录');  
+      console.error(error);  
+  }  
+}
+
+onMounted(async () => {  
+    loadNotification();
+});  
+
 </script>
 
 
