@@ -10,6 +10,13 @@
     </div>
     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
     </el-row>
+    <div class="center">
+          {{ count }}
+          <el-pagination v-model:currentPage="currentPage"
+           layout="prev, pager, next" :total="totalcounts" :page-size="10"
+           @current-change="loadBlogs"
+           />
+    </div> 
 </template>
 
 <script setup>
@@ -22,20 +29,19 @@ import { defineProps } from 'vue';
 
 const loading = ref(true)  
 const posts = ref({}) 
-const count = ref()
+const totalcounts = ref()
 const content = ref(useRoute().query.content)
+const currentPage =ref(1)
 
-onMounted(async () => {  
-  // 初始化  
+const loadBlogs = async () => {
   try {  
     loading.value = true; 
     let response;  
-      response = await DataService.Search_Blogs({ title:content.value });  
-
+      response = await DataService.Search_Blogs({ title:content.value,page:currentPage.value});  
     console.log('response=',response);  
     loading.value = false;  
       posts.value = response.data.results;  
-      count.value = response.data.count;
+      totalcounts.value = response.data.count;
     console.log('posts=',posts.value)  
   }
   catch (error) {        
@@ -43,6 +49,11 @@ onMounted(async () => {
     ElMessage.error('Failed to fetch data. Please try again.');  
     console.error(error);  
   }  
+}
+
+onMounted(async () => {  
+  // 初始化  
+  loadBlogs();
 });  
 
 </script>
