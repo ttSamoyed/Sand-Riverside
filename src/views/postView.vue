@@ -310,7 +310,7 @@ const loadcomments = async () => {
   }  
 };
 
-  // 初始化  
+// 初始化  
 onMounted(async () => {  
   loadpost();
   loadcomments();
@@ -343,20 +343,9 @@ const getPersonalInfo = async () => {
 };
 
 //评论功能
-
 const hasInput = computed(() => {
     return newComment.value.trim() !== '';
   });
-
-const submitComment = async () => {
-  
-
-  newComment.value = "";
-  //关闭对话框
-  dialogVisible.value = false;
-};
-
-
 const handleCommentClick = async () => {
   const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
   if (u && u.userID === null) {
@@ -365,9 +354,14 @@ const handleCommentClick = async () => {
       message: "您还没有登录，请先登录！",
     });
   } else {
-    
-
-    dialogVisible.value = true;
+    const responce = await DataService.Comment_Blog(
+    postId.value,
+    newComment.value,
+    null
+    );
+    console.log(responce.data);
+    loadcomments();
+    newComment.value = "";
   }
 };
 
