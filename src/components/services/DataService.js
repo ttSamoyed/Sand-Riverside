@@ -204,8 +204,10 @@ export default {
    */
   Get_All_Users(page = 1, page_size = 10) {
     return apiClient.get('/user/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
     });
   },
 
@@ -305,8 +307,10 @@ export default {
    */
   Get_All_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -318,8 +322,10 @@ export default {
    */
   Get_Hot_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/hot/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -331,8 +337,10 @@ export default {
    */
   Get_Essence_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/essence/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -344,8 +352,10 @@ export default {
    */
   Get_My_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/my/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -527,8 +537,10 @@ export default {
    */
   Get_All_Plates(page = 1, page_size = 10) {
     return apiClient.get('/plate/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -604,8 +616,10 @@ export default {
    */
   Get_All_Plate_Manage_List(page = 1, page_size = 10) {
     return apiClient.get('/plate/manage/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -805,8 +819,10 @@ export default {
    */
   Get_Notification_List(page = 1, page_size = 10) {
     return apiClient.get('/notification/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
