@@ -34,13 +34,15 @@ async function handleRequestError(error) {
         console.log('刷新 Token 失败, 请重新登录');
         localStorage.removeItem('refresh_token');
         // 跳转到登录页
-        window.location.href = '/login';
+        localStorage.setItem('status', false);
+        window.location.href = '/#/login';
       }
     } catch (error) {
       console.log('刷新 Token 失败:', error);
       localStorage.removeItem('refresh_token');
       // 跳转到登录页
-      window.location.href = '/login';
+      localStorage.setItem('status', false);
+      window.location.href = '/#/login';
     }
   }
   return Promise.reject(error);
@@ -204,8 +206,10 @@ export default {
    */
   Get_All_Users(page = 1, page_size = 10) {
     return apiClient.get('/user/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page, // 页码
+        page_size: page_size // 每页数量
+      }
     });
   },
 
@@ -305,8 +309,10 @@ export default {
    */
   Get_All_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -318,8 +324,10 @@ export default {
    */
   Get_Hot_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/hot/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -331,8 +339,10 @@ export default {
    */
   Get_Essence_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/essence/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -344,8 +354,10 @@ export default {
    */
   Get_My_Blogs(page = 1, page_size = 10) {
     return apiClient.get('/post/my/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -364,7 +376,7 @@ export default {
    * @param {number} page_size - 每页数量
    * @returns {JSON} - 返回搜索结果
    */
-  Search_Blogs({ plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 10 }) {
+  Search_Blogs({ plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 5 }) {
     return apiClient.post('/post/list/', {
       postID: postID,
       title: title,
@@ -375,9 +387,13 @@ export default {
       plate__plateID: plate__plateID,
       plate__name: plate__name,
       is_essence: is_essence,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
@@ -523,8 +539,10 @@ export default {
    */
   Get_All_Plates(page = 1, page_size = 10) {
     return apiClient.get('/plate/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -540,8 +558,11 @@ export default {
     return apiClient.post('/plate/list/', {
       plateID: plateID,
       name: name,
-      page: page,
-      page_size: page_size
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -597,8 +618,10 @@ export default {
    */
   Get_All_Plate_Manage_List(page = 1, page_size = 10) {
     return apiClient.get('/plate/manage/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
@@ -620,9 +643,13 @@ export default {
       plate__name: plate__name,
       moderator__userID: moderator__userID,
       moderator__username: moderator__username,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
@@ -681,9 +708,13 @@ export default {
       author: author,
       parent: parent,
       reply_to: reply_to,
-      page: page,
-      page_size: page_size
-    });
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
   },
 
   /**
@@ -790,8 +821,10 @@ export default {
    */
   Get_Notification_List(page = 1, page_size = 10) {
     return apiClient.get('/notification/list/', {
-      page: page, // 页码
-      page_size: page_size // 每页数量
+      params: {
+        page: page,
+        page_size: page_size
+      }
     });
   },
 
