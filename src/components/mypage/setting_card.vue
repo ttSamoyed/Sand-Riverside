@@ -128,12 +128,6 @@ const user = ref({
 const address = ref('北京市-北京市-朝阳区')
 
 //获取个人信息
-for (var i = 0; i < localStorage.length; i++){
-    var key = localStorage.key(i);
-    var value = localStorage.getItem(key);
-    console.log("现在在第"+i+"次遍历localstorage");
-    console.log(key, value);
-}
 const getPersonalInfo = async () => {
     const status = localStorage.getItem('status');
     if (status) {
@@ -155,7 +149,7 @@ const getPersonalInfo = async () => {
             console.log('userinfonew:', user.value)
             console.log('username:',user.value.username)
         }
-        return u;
+        return;
     }
     else {
         ElMessage.error('您还没有登录，请先登录！');
@@ -215,33 +209,46 @@ const updateInfo = async () => {
 
 
 const showPasswordDialog = ref(false);
-const input_oldPassword = ref('') 
-const newPassword = ref('') 
-const confirmPassword = ref('')
+const input_oldPassword = ref('');
+const newPassword = ref('');
+const confirmPassword = ref('');
+
 
 const updatePassword = async() => {
-    const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
-    if (u && u.userID != null) {
-        console.log("3534535353"+u);
-    } else {
-        ElMessage({
-        type: 'error',
-        message: '您还没有登录，请先登录！',
-    });
-    } 
-
-        if (newPassword.value !== confirmPassword.value) {
-            alert('两次输入的新密码不一致');
-            return;
+    if (newPassword.value !== confirmPassword.value) {
+        alert('两次输入的新密码不一致');
+        return;
+    }
+    else{
+        const response = await DataService.Update_Password(input_oldPassword.value,newPassword.value);
+        console.log("返回数据为：" + JSON.stringify(response.data));
+        //status : "failed"  message:"wrong password"
+        if (response.data.status === "failed"){
+           if(response.data.message === "wrong password"){
+            alert("旧密码输入错误");
+            input_oldPassword.value = "";
+           }
+           else{
+            let messages = response.data.message; // 将字符串解析为数组
+            messages = messages.replace(/'\s*,\s*'/g, '\n');
+            let newStr = messages.slice(2, -2);
+            alert("新密码不符合规范，可能存在下面的问题：\n" + newStr);
+            newPassword.value = "";
+            confirmPassword.value = "";
+           }
         }
-        else if (input_oldPassword.value !== '正确的旧密码') { // 这里需要替换为实际的验证旧密码的逻辑
-            alert('旧密码错误');
-            
-        } else {
+        else{
             alert('修改成功');
+            input_oldPassword.value = "";
+            newPassword.value = "";
+            confirmPassword.value = "";
             showPasswordDialog.value = false;
         }
-    };
+
+
+    }
+
+};
 
 
  onMounted(getPersonalInfo)
