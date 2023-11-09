@@ -93,7 +93,7 @@ const submit = async () => {
     localStorage.setItem('access_token', response.data.access_token)
     localStorage.setItem('refresh_token', response.data.refresh_token)
         localStorage.setItem('status', true);   
-    router.push({path:'/mypage'})
+        router.push({ path: '/mypage' })
     }
 }
 </script>

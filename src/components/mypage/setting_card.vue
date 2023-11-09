@@ -58,7 +58,7 @@
                 <div>
                 <el-button type="primary" plain round @click="updateInfo">修改信息</el-button>
                 <el-button type="primary" plain round @click="showPasswordDialog = true " >修改密码</el-button>
-                <el-dialog title="修改密码" width="30%" v-if="true">
+                <el-dialog title="修改密码" width="30%" v-model="showPasswordDialog">
                 <span>请输入旧密码：</span>
                 <el-input v-model="oldPassword" type="password" placeholder="请输入旧密码"></el-input>
                 <br>

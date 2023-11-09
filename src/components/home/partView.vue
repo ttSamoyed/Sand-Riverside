@@ -73,7 +73,7 @@ const loadBlogs = async() => {
     console.log('posts=',posts.value)  
   } catch (error) {        
     loading.value = false;  
-    ElMessage.error('Failed to fetch data. Please try again.');  
+    ElMessage.error('获取信息失败，请检查网络并确认登录状态');  
     console.error(error);  
   }  
 }
@@ -96,7 +96,7 @@ const getinf = async () => {
     console.log('posts=',posts.value)  
   } catch (error) {        
     loading.value = false;  
-    ElMessage.error('Failed to fetch data. Please try again.');  
+    ElMessage.error('获取信息失败，请检查网络并确认登录状态');  
     console.error(error);  
   }  
 };

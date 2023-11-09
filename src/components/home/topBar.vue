@@ -62,6 +62,7 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ElMessage } from 'element-plus';
 import message from '../home/message.vue'
+import { useLocalStorage } from '@vueuse/core'
 import DataService from "@/components/services/DataService.js";
 
 const router = useRouter();
@@ -69,19 +70,16 @@ const notifications = ref({})
 
 const state = useStore().state
 const user = JSON.parse(localStorage.getItem('user'))
-// console.log(store.state)
-// const state=computed(()=>useStore().state)
-const isLogin = localStorage.getItem('status')
+
+const isLogin = useLocalStorage('status', false)
 const loading=ref(true)
 const avatar = state.user.avatar;
 
 const content = ref('')
-
 const drawer = ref(false)
 
-console.log('>>>', state.isLogin);
-console.log('>>>', isLogin);
-console.log('>>>user', state.user);
+console.log('>>>isLogin', isLogin);
+console.log('>>>user', user);
 
 const handleAvatarClick = () => {
   if (localStorage.getItem('status')) {
