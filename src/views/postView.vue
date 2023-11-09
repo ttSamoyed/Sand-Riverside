@@ -84,34 +84,32 @@
                   style="margin-right: 25px;"
                 />
                 <!-- 评论按钮 -->
-                <el-button
-                  v-if="hasInput"
+                <el-button :disabled="!hasInput"
                   text
                   round
                   style="
-                  border: 1.5px solid rgb(230, 230, 230);
-                  background-color: rgb(0, 149, 255);
+                  border: 1.5px solid rgb(203, 201, 201);
                   width: 55px;
                   margin-right: 15px;
                   "
                   @click="handleCommentClick"
                 >
-                <span style="color: white;">评论</span>
+                <span>评论</span>
                 </el-button>
 
-                <el-button
+                <!-- <el-button
                   v-else
                   text
                   round
                   style="
                   border: 1.5px solid rgb(230, 230, 230);
-                  background-color: rgb(179, 220, 250);
+                  background-color: rgba(21, 142, 228, 0.244);
                   width: 55px;
                   margin-right: 15px;
                   "
                 >
                 <span style="color: white;">评论</span>
-                </el-button>
+                </el-button> -->
 
                   <!-- 点赞按钮 -->
                   <el-button

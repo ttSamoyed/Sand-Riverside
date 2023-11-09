@@ -1,5 +1,5 @@
 <template>
-    <div class="center">
+    <div class="center" id="target">
         <el-row>
             <usr_card></usr_card>
         </el-row>
@@ -12,7 +12,7 @@
     <div class="center">
         <div class="main">
             <ul class="infinite-list" style="overflow: auto" v-loading="loading" element-loading-text="Loading...">
-                <div v-if="label=='1'" id="target">
+                <div v-if="label=='1'">
                     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
                     <div class="center">
                         <el-divider></el-divider>
