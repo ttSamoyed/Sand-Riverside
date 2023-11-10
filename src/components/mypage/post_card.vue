@@ -2,7 +2,7 @@
 <div class="post" @click="router.push({name:'post',params: {postid:p.postID}})">
     <el-row class="side" @click="router.push({name:'post',params: {postid:p.postID}})">
       <span class="title">{{ p.title }}</span>
-      <el-tag type="error" v-if="p.is_essence" effect="dark">精华</el-tag>
+      <el-tag type="success"  v-if="p.is_essence" effect="dark">精华</el-tag>
     </el-row>
     <el-row style="margin-top: 10px;">
         <el-col :span="6">

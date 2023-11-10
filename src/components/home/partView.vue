@@ -23,9 +23,8 @@
                 <el-row style="margin-top: 3px;">
                 <el-space>
                     <el-text class="banzhu">板块由</el-text>
-                    <el-avatar :size="20" shape="square">
-                    <el-icon><UserFilled /></el-icon>
-                    </el-avatar>
+                    <el-avatar v-if="adminavatar" :size="20" :src="adminavatar" shape="square"/>
+                    <el-avatar v-else :size="20" shape="square"><el-icon :size="20"><Avatar /></el-icon></el-avatar>
                     <el-text class="banzhu">{{ admin }}</el-text>
                     <el-text class="banzhu">管理</el-text>
                 </el-space>
@@ -50,6 +49,7 @@ const loading = ref(true)
 const name = ['','水手之家','校园热点','校园活动','失物招领','二手买卖','鹊桥','话心','就业创业','出国留学','保研考研']  
 const index = defineProps(['p']);  
 const admin = ref('管理员')  
+const adminavatar=ref(null);
 const posts = ref({})  
 const content = ref(useRoute().query.content)
 const totalcounts = ref()
@@ -64,6 +64,8 @@ const loadBlogs = async() => {
     response = await DataService.Search_Blogs({plate__plateID:index["p"], page:currentPage.value});  
    // postID: "", title: "1", content: "", author__userID: "1", author__username: "1"
    //  Search_Blogs( plate__plateID, title, content, author__username, tags__name, plate__name, is_essence, page = 1, page_size = 10) {
+
+        //Get_Plate_Detail(plateid)
 
     console.log(index["p"]);  
     console.log('response=',response);  
@@ -93,7 +95,20 @@ const getinf = async () => {
     loading.value = false;  
     posts.value = response.data.results;  
     totalcounts.value = response.data.count;
-    console.log('posts=',posts.value)  
+    console.log('posts=',posts.value) ;
+    const response2 = await DataService.Get_Plate_Detail(index["p"]);
+    if( response2.data.plate.moderators.length!=0)
+    {
+      admin.value=response2.data.plate.moderators[0].username;
+      const response3 = await DataService.Get_Personal_Info(response2.data.plate.moderators[0].userID);
+      adminavatar.value=response3.data.user_info.avatar;
+    }
+    else{
+      admin.value="管理员";
+      adminavatar.value=null;
+    }
+  
+     
   } catch (error) {        
     loading.value = false;  
     ElMessage.error('获取信息失败，请检查网络并确认登录状态');  
