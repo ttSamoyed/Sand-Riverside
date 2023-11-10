@@ -24,7 +24,7 @@
                     <el-text> 头像 </el-text>
                 </el-col>
                 <el-col span="16" style="margin-left: 80px;">
-                    <avatar_upload :userid="user.userID"></avatar_upload>
+                    <avatar_upload :userID="user.userID"></avatar_upload>
                 </el-col> -->
             <el-divider></el-divider>
 
@@ -176,7 +176,7 @@ const district = computed(() => {
 const mapselect=ref();
 const updateInfo = async () => {
     console.log('user=',user.value)
-    console.log('userid=',user.value.userID)
+    console.log('userID=',user.value.userID)
     const regionValue = mapselect.value.getSelectedValue().region;
     const cityValue =  mapselect.value.getSelectedValue().city;
     const provinceValue = mapselect.value.getSelectedValue().province;
