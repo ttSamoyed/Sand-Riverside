@@ -189,10 +189,10 @@ const updateInfo = async () => {
         ElMessage.success('修改成功！');
         window.location.reload();
     }
-    if (responce.status=== 400|responce.status=== 500) {
+    if (responce.status=== 400||responce.status=== 500||responce.status=== 404) {
     ElMessage.warning('修改失败！')
     }}
-    else if(user.value.status.length>20){
+    else if(user.value.status!=null&&user.value.status.length>20){
         ElMessage.warning('签名太长了，重新试试吧！')
     }
     else{

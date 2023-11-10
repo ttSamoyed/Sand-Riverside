@@ -2,7 +2,7 @@
     <div class="center">
         <div class="info" v-loading="loading" element-loading-text="Loading...">
         <el-row>
-          <el-col span="14">
+          <!-- <el-col span="14">
             <el-space wrap>
               <el-divider direction="vertical"></el-divider>
                 <el-text> 板块 </el-text>
@@ -17,7 +17,7 @@
                 </el-select>
                 <el-divider direction="vertical"></el-divider>
               </el-space>
-          </el-col>
+          </el-col> -->
           <el-col span="10">
             <el-space wrap>
                 <el-text> 用户 </el-text>
@@ -64,7 +64,11 @@
                     </el-table-column>
                     <el-table-column prop="groups" label="用户组" width="120">
                       <template #default="{row}">
-                        <el-text v-if="row.is_active">{{ row.groups }}</el-text>
+                        <div v-if="row.is_active">
+                          <el-text v-if="row.groups.length==1">普通用户</el-text>
+                          <el-text v-if="row.groups.length==2&&row.groups[1]==2">版主</el-text>
+                          <el-text v-if="row.groups.length==2&&row.groups[1]==3">河畔管理员</el-text>
+                        </div>
                         <el-text type="danger" v-else>已封禁</el-text>
                       </template>
                     </el-table-column>
