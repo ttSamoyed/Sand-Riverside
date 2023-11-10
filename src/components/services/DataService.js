@@ -5,7 +5,7 @@ const apiClient = axios.create({
   baseURL: "http://124.222.42.111:8000/api",
   headers: {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type": "application/x-www-form-urlencoded",
   },
 });
 
@@ -156,7 +156,6 @@ export default {
    * 管理员修改个人信息
    * @param {Number} userID
    * @param {String} sex
-   * @param {File} avatar
    * @param {String} status
    * @param {String} stuID
    * @param {String} college
@@ -168,11 +167,10 @@ export default {
    * @param {String} password
    * @returns 管理员修改个人信息结果
    */
-  Manage_Personal_Info(userID, sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active, password) {
+  Manage_Personal_Info(userID, sex, status, stuID, college, major, birth_date, address, phone, is_active, password) {
     const url = '/profile/' + userID + '/';
     return apiClient.post(url, {
       sex: sex,
-      avatar: avatar,
       status: status,
       stuID: stuID,
       college: college,
