@@ -3,7 +3,7 @@
         <div class="info">
             <el-avatar class="wide-avatar" :size="xl" :src="c.author.avatar">usr</el-avatar>
             <!-- <p style="margin-left: 3px;">熊</p> -->
-            <span style="margin-left: 3px;">{{ c.author.username }}</span>
+            <span style="margin-left: 15px;">{{ c.author.username }}</span>
             <span v-if="c.parent !== null" style="margin-left: 3px;">回复 {{c.reply_to.username}}</span> <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
         </div>
         <div class="comment_main">
@@ -103,7 +103,7 @@ const formattedTime = formatTime(lastModified);
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-weight: light;
     margin-top: 4px;
-    margin-left: 73px;
+    margin-left: 95px;
     text-align: start;
     font-size: 13px;
 }
