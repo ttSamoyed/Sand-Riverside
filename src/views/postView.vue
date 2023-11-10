@@ -26,20 +26,20 @@
                         </el-text>
                         <!--编辑帖子和删除帖子-->
                         <div v-if="true">
-                          <el-button
+                          <el-button v-if="showEditBox1"
                             circle
                             text
                             style="margin-left: 15px"
                             type="primary"
-                            @click="showEditBox = true"
+                            @click="showEditBox = true "
                           >
                             <el-icon><Edit /></el-icon>
                           </el-button>
-                          <el-button
+                          <el-button v-if="showDeleteBox1"
                             circle
                             text
                             type="danger"
-                            @click="showDeleteBox = true"
+                            @click=" showDeleteBox= true "
                             ><el-icon><Delete /></el-icon
                           ></el-button>
                         </div>
@@ -194,7 +194,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="showDeleteBox = false">取消</el-button>
-          <el-button type="primary" @click="deletepost">删除</el-button>
+          <el-button type="primary" @click="handleDeleteAndNavigate" >删除</el-button>
         </span>
       </template>
     </el-dialog>
@@ -221,6 +221,7 @@ import postComment from "@/components/post/postComment.vue";
 import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
+import { useLocalStorage } from '@vueuse/core'
 
 const router = useRouter();
 
@@ -259,6 +260,8 @@ const isActive = ref(false);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
 const showEditBox = ref(false);
+const showDeleteBox1 = ref(false);
+const showEditBox1 = ref(false);
 const loading = ref(false);
 const disabled = computed(() => loading.value);
 const newComment = ref("");
@@ -284,6 +287,23 @@ const loadpost = async () => {
     console.log('time=', readableDate);
     post.value.created = readableDate;
     isActive.value = post.value.has_liked;
+    const u = JSON.parse(localStorage.getItem('user'));
+    showEditBox1.value=(post.value.author.userID==u.userID);
+  
+    //Get_Plate_Detail(plateid)
+    const response2 = await DataService.Get_Plate_Detail(post.value.plate.plateID);
+    console.log('response2=',  response2);
+    if( response2.data.plate.moderators.length!=0)
+    {
+    console.log('response2=',  response2.data.plate.moderators[0].userID);
+   showDeleteBox1.value=response2.data.plate.moderators[0].userID==u.userID|post.value.author.userID==u.userID|3==u.groups[1];
+    }
+    else
+    showDeleteBox1.value=post.value.author.userID==u.userID|3==u.groups[1];
+   console.log(showEditBox1.value);
+   console.log(showDeleteBox1.value);
+
+
   }
 };
 
@@ -397,6 +417,33 @@ const toggleActive = async () => {
     });
   }
 };
+//Delete_Blog(blogid)
+const deletepost=async() => {
+  const responce = await DataService.Delete_Blog(post.value.postID);
+  console.log('responce=',responce);
+  console.log('status=',responce.status);
+    if (responce.status=== 200) {
+        ElMessage.success('删除成功！');
+        window.location.reload();
+    }
+    if (responce.status=== 400|responce.status=== 500) {
+    ElMessage.warning('删除失败！')
+    }
+
+};
+const handleDeleteAndNavigate=async () => {
+    try {
+      // 执行删除帖子的异步操作
+    //  await deletepost();
+      
+      // 在异步操作完成后进行路由跳转
+      this.$router.push({ name: 'home' });
+      console.log("现在完成了跳转！")
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
+
 
 
 </script>

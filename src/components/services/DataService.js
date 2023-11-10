@@ -424,9 +424,9 @@ export default {
    * @param {String} tags - 标签
    * @returns {JSON} - 返回发表博客结果
    */
-  Publish_Blog(title, content, plate, tags) {
+  Publish_Blog(title, content, plate_id, tags) {
     const url = 'post/create/';
-    return apiClient.post(url, { title, content, plate, tags });
+    return apiClient.post(url, { title, content, plate_id, tags });
   },
 
   /**
@@ -438,9 +438,9 @@ export default {
    * @param {String} tags - 标签
    * @returns {JSON} - 返回修改博客结果
    */
-  Update_Blog(blogid, title, content, plate, tags) {
+  Update_Blog(blogid, title, content,plate_id, tags) {
     const url = 'post/action/' + blogid + '/';
-    return apiClient.patch(url, { title, content, plate, tags });
+    return apiClient.patch(url, { title, content, plate_id,tags });
   },
 
   /**
