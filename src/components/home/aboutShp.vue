@@ -29,7 +29,6 @@
         </el-card>
         </el-col>
     </el-row>
-
     <el-row class="center" style="min-width: 1000px;">
         <statistics></statistics>
     </el-row>

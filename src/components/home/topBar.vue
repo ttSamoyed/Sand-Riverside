@@ -9,6 +9,7 @@
         <router-link to="/"><el-link>主页</el-link></router-link>
         <router-link to="/hot"><el-link>热门</el-link></router-link>
         <router-link to="/perfect"><el-link>精华</el-link></router-link>
+        <router-link to="/aboutUS"><el-link>关于我们</el-link></router-link>
         <router-link to="/login" v-if="isLogin==false"><el-link>登录</el-link></router-link>
       </div>
       <div class="search-box">
