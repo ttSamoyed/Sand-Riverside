@@ -17,6 +17,8 @@
                         <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
                         <el-text style="margin-left: 10px;">创建时间：</el-text>
                         <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.created}}</el-tag>
+                        <el-tag type="success"  effect="dark" style="margin-left: 15px;">精华</el-tag>
+                        <!-- v-if="p.is_essence" -->
                         </el-row>
                         <el-row class="row">
                         <el-avatar v-if="post.author.avatar" :size="30" :src="post.author.avatar"></el-avatar>
@@ -24,7 +26,7 @@
                         <el-text class="author">
                              {{post.author.username}}
                         </el-text>
-                        <!--编辑帖子和删除帖子-->
+                        <!--编辑帖子、删除帖子和设为精华帖子-->
                         <div v-if="true">
                           <el-button v-if="showEditBox1"
                             circle
@@ -42,6 +44,16 @@
                             @click=" showDeleteBox= true "
                             ><el-icon><Delete /></el-icon
                           ></el-button>
+                          <el-button v-if="setperfect1"
+                            circle
+                            text
+                            type="success"
+                            @click=" setperfect= true "
+                          ><el-icon v-if="post.is_essence"><StarFilled /></el-icon 
+                        ><el-icon v-if="!post.is_essence"><Star /></el-icon
+                          >
+                      </el-button>
+                       
                         </div>
 
                         </el-row>
@@ -198,6 +210,16 @@
         </span>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="setperfect" title="提示" width="350px">
+      <span>您要将这篇帖子设为精华贴吗？</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="setperfect = false">取消</el-button>
+          <el-button type="primary" @click="handleset" >确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   
     <el-dialog v-model="showEditBox" title="编辑帖子" width="90%">
       <writePost
@@ -222,6 +244,7 @@ import writePost from "../views/writePost.vue";
 import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
 import { useLocalStorage } from '@vueuse/core'
+
 
 const router = useRouter();
 
@@ -260,8 +283,10 @@ const isActive = ref(false);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
 const showEditBox = ref(false);
+const setperfect=ref(false)
 const showDeleteBox1 = ref(false);
 const showEditBox1 = ref(false);
+const setperfect1=ref(false)
 const loading = ref(false);
 const disabled = computed(() => loading.value);
 const newComment = ref("");
@@ -300,6 +325,12 @@ const loadpost = async () => {
     }
     else
     showDeleteBox1.value=post.value.author.userID==u.userID|3==u.groups[1];
+
+    if( response2.data.plate.moderators.length!=0)
+   setperfect1.value=response2.data.plate.moderators[0].userID==u.userID|3==u.groups[1];
+    else
+    setperfect1.value=3==u.groups[1];
+
    console.log(showEditBox1.value);
    console.log(showDeleteBox1.value);
 
@@ -424,25 +455,46 @@ const deletepost=async() => {
   console.log('status=',responce.status);
     if (responce.status=== 200) {
         ElMessage.success('删除成功！');
-        window.location.reload();
+       // window.location.reload();
     }
     if (responce.status=== 400|responce.status=== 500) {
     ElMessage.warning('删除失败！')
     }
 
 };
+
 const handleDeleteAndNavigate=async () => {
     try {
       // 执行删除帖子的异步操作
-    //  await deletepost();
+    
       
       // 在异步操作完成后进行路由跳转
-      this.$router.push({ name: 'home' });
+      
       console.log("现在完成了跳转！")
+      await deletepost();
+      router.push({ name: 'home' });
     } catch (error) {
       console.error('Error deleting post:', error);
     }
   };
+
+  //set perfect
+const handleset=async() => {
+ // const responce = await DataService.设置精华(post.value.postID);
+ setperfect.value=false;
+  console.log('responce=',responce);
+  console.log('status=',responce.status);
+  
+    if (responce.status=== 200) {
+        ElMessage.success('设置成功！');
+        post.value.is_essence=true;
+       // window.location.reload();
+    }
+    if (responce.status=== 400|responce.status=== 500) {
+    ElMessage.warning('设置失败！')
+    }
+
+};
 
 
 
