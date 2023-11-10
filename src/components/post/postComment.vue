@@ -10,7 +10,7 @@
             </div>
             <div class="icon_buttons">
                 <el-button type="text" class="icon-button" @click = "showReplyBox = showReplyBox?false:true;ph()"><el-icon  size="25"><ChatLineRound /></el-icon><span>{{ c.reply_count }}</span></el-button>
-                <el-button type="text" class="icon-button" @click = "Like_Comment">                          <el-icon  size="28"><Top /></el-icon>{{ c.like_count }}</el-button>
+                <el-button type="text" class="icon-button" @click = "Like_Comment">                               <el-icon  size="28"><Top /></el-icon>{{ c.like_count }}</el-button>
                 <el-button v-if = "can_delete" type="text" style="margin-left: 15px;"><el-icon  size="23"><Delete /></el-icon></el-button>
             </div>
         </div>
@@ -104,31 +104,30 @@ const Reply_Comment = async() => {
 };
 
 
-// const handleCommentClick = async () => {
-//   const status = localStorage.getItem('status');
-//   if (status) {
-
-//     const u = JSON.parse(localStorage.getItem('user'));
-//     console.log('userID:', u.userID);
-//     const response = await DataService.Comment_Blog(
-//     postId.value,
-//     newComment.value,
-//     );
-//     console.log(response.data);
-//     loadcomments();
-//     newComment.value = "";
-//   } else {
-//     ElMessage({
-//       type: "error",
-//       message: "您还没有登录，请先登录！",
-//     });
-//   }
-// };
 
 //点赞评论
 const Like_Comment = () => {
     console.log('点赞评论');
 }
+  // /**
+  //  * 点赞评论
+  //  * @param {Number} commentid - 评论ID
+  //  * @returns {JSON} - 返回点赞评论结果
+  //  */
+  //  Like_Comment(commentid) {
+  //   const url = '/comment/like/' + commentid + '/';
+  //   return apiClient.get(url);
+  // },
+
+  // /**
+  //  * 取消点赞评论
+  //  * @param {Number} commentid - 评论ID
+  //  * @returns {JSON} - 返回取消点赞评论结果
+  //  */
+  // Unlike_Comment(commentid) {
+  //   const url = '/comment/like/' + commentid + '/';
+  //   return apiClient.delete(url);
+  // },
 //寄，以为c.parent是父评论，不用管
 // const loading = ref(true) 
 // const father=ref('');
