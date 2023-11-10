@@ -8,7 +8,7 @@ import mypageView from '../views/mypageView.vue'
 import registerView from '../views/registerView.vue'
 import writePost from '../views/writePost.vue'
 import searchView from '../views/searchView.vue'
-
+import aboutusView from '../views/aboutUSView.vue'
 const routes = [
     {
         path: '/',
@@ -54,6 +54,11 @@ const routes = [
         path: '/writePost',
         name: 'writePost',
         component:writePost,
+    },
+    {
+        path: '/aboutUS',
+        name: 'aboutUS',
+        component:aboutusView,
     }
 ]
 const router = createRouter({
