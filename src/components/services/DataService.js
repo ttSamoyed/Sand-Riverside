@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: "http://124.222.42.111:8000/api",
+  baseURL: "http://124.222.42.111:8000/api/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/x-www-form-urlencoded",
@@ -66,7 +66,7 @@ export default {
    * @description 登录成功后, 会将 access_token 和 refresh_token 保存到本地
    */
   Login(username, password) {
-    return apiClient.post('/login/', { username, password });
+    return apiClient.post('login/', { username, password });
   },
 
   /**
@@ -75,7 +75,7 @@ export default {
    * @returns 获取验证码结果
    */
   Get_Register_Code(email) {
-    return apiClient.post('/register/code/', { email });
+    return apiClient.post('register/code/', { email });
   },
 
   /**
@@ -87,7 +87,7 @@ export default {
    * @returns 注册结果
    */
   Register(username, password, email, code) {
-    return apiClient.post('/register/', { username, password, email, code });
+    return apiClient.post('register/', { username, password, email, code });
   },
 
   /**
@@ -98,7 +98,7 @@ export default {
    */
   Relogin() {
     const refreshToken = localStorage.getItem('refresh_token');
-    return apiClient.post('/relogin/', { refresh_token: refreshToken });
+    return apiClient.post('relogin/', { refresh_token: refreshToken });
   },
 
   /**
@@ -107,7 +107,7 @@ export default {
    * @description 登出后, 需要清除本地的 access_token 和 refresh_token
    */
   Logout() {
-    return apiClient.post('/logout/');
+    return apiClient.post('logout/');
   },
 
 
@@ -119,7 +119,7 @@ export default {
    * @returns 个人详细信息
    */
   Get_Personal_Info(userID) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.get(url);
   },
 
@@ -138,7 +138,7 @@ export default {
    * @returns 修改个人信息结果
    */
   Update_Personal_Info(userID, sex, status, stuID, college, major, birth_date, address, phone) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.patch(url, {
       sex: sex,
       status: status,
@@ -168,7 +168,7 @@ export default {
    * @returns 管理员修改个人信息结果
    */
   Manage_Personal_Info(userID, sex, status, stuID, college, major, birth_date, address, phone, is_active, password) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.post(url, {
       sex: sex,
       status: status,
@@ -191,7 +191,7 @@ export default {
    * @returns 封禁/解封 用户结果
    */
   Ban_User(userID, is_active) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.post(url, { is_active });
   },
 
@@ -203,7 +203,7 @@ export default {
    * @returns 所有用户列表及简略信息
    */
   Get_All_Users(page = 1, page_size = 10) {
-    return apiClient.get('/user/list/', {
+    return apiClient.get('user/list/', {
       params: {
         page: page, // 页码
         page_size: page_size // 每页数量
@@ -225,7 +225,7 @@ export default {
    * @description 只有用户名是模糊搜索, 其他都是精确搜索
    */
   Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone) {
-    return apiClient.post('/user/list/', {
+    return apiClient.post('user/list/', {
       userID: userID,
       username: username,
       email: email,
@@ -288,7 +288,7 @@ export default {
    * @returns 修改密码结果
    */
   Update_Password(old_password, new_password) {
-    const url = '/password/change/';
+    const url = 'password/change/';
     return apiClient.post(url, { old_password, new_password });
   },
 
@@ -299,7 +299,7 @@ export default {
    * @returns 管理员修改密码结果
    */
   Manage_Password(userID, password) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.post(url, { password });
   },
 
@@ -308,7 +308,7 @@ export default {
    * @returns 获取验证码结果
    */
   Get_Reset_Password_Code() {
-    return apiClient.post('/password/reset/code/');
+    return apiClient.post('password/reset/code/');
   },
 
   /**
@@ -318,7 +318,7 @@ export default {
    * @returns 重置密码结果
    */
   Reset_Password(new_password, code) {
-    return apiClient.post('/password/reset/', { new_password, code });
+    return apiClient.post('password/reset/', { new_password, code });
   },
 
   /**
@@ -327,7 +327,7 @@ export default {
    * @returns 删除用户的账户结果
    */
   Delete_Account(userID) {
-    const url = '/profile/' + userID + '/';
+    const url = 'profile/' + userID + '/';
     return apiClient.delete(url);
   },
 
@@ -344,7 +344,7 @@ export default {
    * @returns {JSON} - 返回所有博客列表
    */
   Get_All_Blogs(page = 1, page_size = 10) {
-    return apiClient.get('/post/list/', {
+    return apiClient.get('post/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -359,7 +359,7 @@ export default {
    * @returns {JSON} - 返回热门博客列表
    */
   Get_Hot_Blogs(page = 1, page_size = 10) {
-    return apiClient.get('/post/hot/list/', {
+    return apiClient.get('post/hot/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -374,7 +374,7 @@ export default {
    * @returns {JSON} - 返回精华博客列表
    */
   Get_Essence_Blogs(page = 1, page_size = 10) {
-    return apiClient.get('/post/essence/list/', {
+    return apiClient.get('post/essence/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -389,7 +389,7 @@ export default {
    * @returns {JSON} - 返回我的博客列表
    */
   Get_My_Blogs(page = 1, page_size = 10) {
-    return apiClient.get('/post/my/list/', {
+    return apiClient.get('post/my/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -413,7 +413,7 @@ export default {
    * @returns {JSON} - 返回搜索结果
    */
   Search_Blogs({ plate__plateID, title, content, author__username, author__userID, tags__name, plate__name, postID, is_essence, page = 1, page_size = 5 }) {
-    return apiClient.post('/post/list/', {
+    return apiClient.post('post/list/', {
       postID: postID,
       title: title,
       content: content,
@@ -438,7 +438,7 @@ export default {
    * @returns {JSON} - 返回博客详情
    */
   Get_Blog_Detail(blogid) {
-    const url = '/post/detail/' + blogid + '/';
+    const url = 'post/detail/' + blogid + '/';
     return apiClient.get(url);
   },
 
@@ -448,7 +448,7 @@ export default {
    * @returns {JSON} - 返回博客评论
    */
   Get_Blog_Comments(blogid) {
-    const url = '/post/comment/list/' + blogid + '/';
+    const url = 'post/comment/list/' + blogid + '/';
     return apiClient.get(url);
   },
 
@@ -580,7 +580,7 @@ export default {
    * @returns {JSON} - 返回板块列表
    */
   Get_All_Plates(page = 1, page_size = 10) {
-    return apiClient.get('/plate/list/', {
+    return apiClient.get('plate/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -597,7 +597,7 @@ export default {
    * @returns {JSON} - 返回搜索结果
    */
   Search_Plates(plateID, name, page = 1, page_size = 10) {
-    return apiClient.post('/plate/list/', {
+    return apiClient.post('plate/list/', {
       plateID: plateID,
       name: name,
     }, {
@@ -614,7 +614,7 @@ export default {
    * @returns {JSON} - 返回板块详情
    */
   Get_Plate_Detail(plateid) {
-    const url = '/plate/' + plateid + '/';
+    const url = 'plate/' + plateid + '/';
     return apiClient.get(url);
   },
 
@@ -659,7 +659,7 @@ export default {
    * @returns {JSON} - 返回所有板块管理列表
    */
   Get_All_Plate_Manage_List(page = 1, page_size = 10) {
-    return apiClient.get('/plate/manage/list/', {
+    return apiClient.get('plate/manage/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -679,7 +679,7 @@ export default {
    * @returns {JSON} - 返回板块管理列表
    */
   Get_Plate_Manage_List(mpID, plate__plateID, plate__name, moderator__userID, moderator__username, page = 1, page_size = 10) {
-    return apiClient.post('/plate/manage/list/', {
+    return apiClient.post('plate/manage/list/', {
       mpID: mpID,
       plate__plateID: plate__plateID,
       plate__name: plate__name,
@@ -700,7 +700,7 @@ export default {
    * @returns {JSON} - 返回板块管理详情
    */
   Get_Plate_Manage_Detail(mpID) {
-    const url = '/plate/manage/' + mpID + '/';
+    const url = 'plate/manage/' + mpID + '/';
     return apiClient.get(url);
   },
 
@@ -745,7 +745,7 @@ export default {
    * @description 评论列表按时间倒序排列
    */
   Get_Comment_List(blogid, author, parent, reply_to, page = 1, page_size = 10) {
-    return apiClient.post('/post/comment/list/' + blogid + '/', {
+    return apiClient.post('post/comment/list/' + blogid + '/', {
       post: blogid,
       author: author,
       parent: parent,
@@ -769,7 +769,7 @@ export default {
    * @description 回复评论时, parent 为被回复的评论ID, 超过两级回复时, parent 为最上层的评论ID
    */
   Comment_Blog(blogid, content, parent) {
-    const url = '/comment/create/';
+    const url = 'comment/create/';
     return apiClient.post(url, {
       post: blogid,
       content: content,
@@ -783,7 +783,7 @@ export default {
    * @returns {JSON} - 返回评论详情
    */
   Get_Comment_Detail(commentid) {
-    const url = '/comment/detail/' + commentid + '/';
+    const url = 'comment/detail/' + commentid + '/';
     return apiClient.get(url);
   },
 
@@ -794,7 +794,7 @@ export default {
    * @returns {JSON} - 返回修改评论结果
    */
   Update_Comment(commentid, content) {
-    const url = '/comment/action/' + commentid + '/';
+    const url = 'comment/action/' + commentid + '/';
     return apiClient.patch(url, { content });
   },
 
@@ -805,7 +805,7 @@ export default {
    * @description 删除根评论后, 会自动删除其下的所有回复评论
    */
   Delete_Comment(commentid) {
-    const url = '/comment/action/' + commentid + '/';
+    const url = 'comment/action/' + commentid + '/';
     return apiClient.delete(url);
   },
 
@@ -815,7 +815,7 @@ export default {
    * @returns {JSON} - 返回点赞评论结果
    */
   Like_Comment(commentid) {
-    const url = '/comment/like/' + commentid + '/';
+    const url = 'comment/like/' + commentid + '/';
     return apiClient.get(url);
   },
 
@@ -825,7 +825,7 @@ export default {
    * @returns {JSON} - 返回取消点赞评论结果
    */
   Unlike_Comment(commentid) {
-    const url = '/comment/like/' + commentid + '/';
+    const url = 'comment/like/' + commentid + '/';
     return apiClient.delete(url);
   },
 
@@ -835,7 +835,7 @@ export default {
    * @returns {JSON} - 返回收藏评论结果
    */
   Collect_Comment(commentid) {
-    const url = '/comment/collect/' + commentid + '/';
+    const url = 'comment/collect/' + commentid + '/';
     return apiClient.get(url);
   },
 
@@ -845,7 +845,7 @@ export default {
    * @returns {JSON} - 返回取消收藏评论结果
    */
   Uncollect_Comment(commentid) {
-    const url = '/comment/collect/' + commentid + '/';
+    const url = 'comment/collect/' + commentid + '/';
     return apiClient.delete(url);
   },
 
@@ -862,7 +862,7 @@ export default {
    * @returns {JSON} - 返回通知列表
    */
   Get_Notification_List(page = 1, page_size = 10) {
-    return apiClient.get('/notification/list/', {
+    return apiClient.get('notification/list/', {
       params: {
         page: page,
         page_size: page_size
@@ -876,7 +876,7 @@ export default {
    * @returns {JSON} - 返回通知详情
    */
   Get_Notification_Detail(notificationid) {
-    const url = '/notification/' + notificationid + '/';
+    const url = 'notification/' + notificationid + '/';
     return apiClient.get(url);
   },
 
@@ -886,7 +886,7 @@ export default {
    * @returns {JSON} - 返回已读通知结果
    */
   Read_Notification(notificationid) {
-    const url = '/notification/read/' + notificationid + '/';
+    const url = 'notification/read/' + notificationid + '/';
     return apiClient.post(url);
   },
 
@@ -896,7 +896,7 @@ export default {
    * @returns {JSON} - 返回未读通知结果
    */
   Unread_Notification(notificationid) {
-    const url = '/notification/read/' + notificationid + '/';
+    const url = 'notification/read/' + notificationid + '/';
     return apiClient.delete(url);
   },
 
@@ -905,7 +905,7 @@ export default {
    * @returns {JSON} - 返回已读所有通知结果
    */
   Read_All_Notifications() {
-    return apiClient.patch('/notification/all/read/');
+    return apiClient.patch('notification/all/read/');
   },
 
   //#region 通知 ====================
