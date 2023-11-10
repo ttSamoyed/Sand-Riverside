@@ -20,7 +20,7 @@
                         </el-upload>
                     </el-tooltip>
                 </el-col>
-                <el-col :span="17">
+                <el-col :span="16">
                     <div style="padding-left: 20px;">
                         <el-row>
                         <el-space wrap size="small">
@@ -51,23 +51,25 @@
                         </el-row>
                     </div>
                 </el-col>
-                <el-col :span="3">
+                <el-col :span="4">
                     <div style="padding-top: 45px;"></div>
-                    <div v-if="user.is_superuser!=1">
+                    <div v-if="user.groups">
+                        <div v-if="user.groups.length==1 && user.groups[0]==1">
                         <el-row class="center">
                             <el-icon size="30"><UserFilled /></el-icon>
                         </el-row>
                         <el-row class="center" style="margin-top: 10px;">
-                            <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">普通用户</el-text>
+                            <el-text style="width: 100%; font-weight: 500; text-align: center;">普通用户</el-text>
                         </el-row>
                     </div>
-                    <div v-if="user.is_superuser==1">
+                    <div v-if="user.groups.length==2 && user.groups[1]==3">
                         <el-row class="center">
-                            <el-icon size="30"><UserFilled /></el-icon>
+                            <el-icon size="30"><HelpFilled /></el-icon>
                         </el-row>
                         <el-row class="center" style="margin-top: 10px;">
-                            <el-text style="width: 100%; font-size: 5px; font-weight: 300; text-align: center;">河畔管理员</el-text>
+                            <el-text style="width: 100%; font-weight: 500; text-align: center;">河畔管理员</el-text>
                         </el-row>
+                    </div>
                     </div>
                 </el-col>
             </el-row>

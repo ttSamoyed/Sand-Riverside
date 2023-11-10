@@ -138,7 +138,7 @@ export default {
    * @returns 修改个人信息结果
    */
   Update_Personal_Info(userid, sex, status, stuID, college, major, birth_date, address, phone) {
-    const url = '/profile/' + userid + '/';
+    const url = '/profile/0/';
     return apiClient.patch(url, {
       sex: sex,
       status: status,
@@ -682,7 +682,7 @@ export default {
    * @description 任命版主后, 会自动创建板块管理记录
    * @description 任命版主后, 会自动将用户加入版主组
    */
-  Appoint_Moderator(plateid, userid) {
+   Appoint_Moderator(plateid, userid) {
     const url = 'plate/manage/create/';
     return apiClient.post(url, { plate: plateid, moderator: userid });
   },

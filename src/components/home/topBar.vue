@@ -37,7 +37,14 @@
         </el-button>
       </div>
       <div class="user" >
-        <el-avatar v-if="isLogin" @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
+        <el-dropdown v-if="isLogin">
+          <el-avatar  @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="logOut">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <el-avatar v-else @click="handleAvatarClick" :size="30" shape="square">
           <el-icon :size="20"><Avatar /></el-icon>
         </el-avatar>
@@ -64,6 +71,7 @@ import { ElMessage } from 'element-plus';
 import message from '../home/message.vue'
 import { useLocalStorage } from '@vueuse/core'
 import DataService from "@/components/services/DataService.js";
+import { async } from '@kangc/v-md-editor';
 
 const router = useRouter();
 const notifications = ref({})
@@ -80,6 +88,18 @@ const drawer = ref(false)
 
 console.log('>>>isLogin', isLogin);
 console.log('>>>user', user);
+
+const logOut = async () => {
+  try {
+    await DataService.Logout();
+    localStorage.clear();
+    router.push({ path: '/' });
+    ElMessage.success('退出登录成功');
+  } catch (error) {
+    console.error('Failed to log out:', error);
+    ElMessage.error('退出登录失败');
+  }
+}
 
 const handleAvatarClick = () => {
   if (localStorage.getItem('status')) {

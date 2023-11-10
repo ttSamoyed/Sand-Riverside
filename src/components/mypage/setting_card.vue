@@ -24,7 +24,7 @@
                     <el-text> 头像 </el-text>
                 </el-col>
                 <el-col span="16" style="margin-left: 80px;">
-                    <avatar_upload :userid="user.userID"></avatar_upload>
+                    <avatar_upload :userID="user.userID"></avatar_upload>
                 </el-col> -->
             <el-divider></el-divider>
 
@@ -176,7 +176,7 @@ const district = computed(() => {
 const mapselect=ref();
 const updateInfo = async () => {
     console.log('user=',user.value)
-    console.log('userid=',user.value.userID)
+    console.log('userID=',user.value.userID)
     const regionValue = mapselect.value.getSelectedValue().region;
     const cityValue =  mapselect.value.getSelectedValue().city;
     const provinceValue = mapselect.value.getSelectedValue().province;
@@ -191,10 +191,10 @@ const updateInfo = async () => {
         ElMessage.success('修改成功！');
         window.location.reload();
     }
-    if (responce.status=== 400|responce.status=== 500) {
+    if (responce.status=== 400||responce.status=== 500||responce.status=== 404) {
     ElMessage.warning('修改失败！')
     }}
-    else if(user.value.status.length>20){
+    else if(user.value.status!=null&&user.value.status.length>20){
         ElMessage.warning('签名太长了，重新试试吧！')
     }
     else{
