@@ -516,10 +516,10 @@ export default {
    * @returns {JSON} - 返回博客封面上传结果
    * @description 上传成功后, 会返回封面的 URL
    */
-  Upload_Blog_Cover(blogid, coverImg) {
-    const url = 'post/coverImg/' + blogid + '/';
-    let formData = new FormData();
-    formData.append('coverImg', coverImg);
+  Upload_Blog_Cover(blogid, formData) {
+     const url = 'post/coverImg/' + blogid + '/';
+    // let formData = new FormData();
+    // formData.append('coverImg', coverImg);
     return apiClient.post(url, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
