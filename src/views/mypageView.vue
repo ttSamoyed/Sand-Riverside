@@ -1,5 +1,5 @@
 <template>
-    <div class="center" id="target">
+    <div class="center">
         <el-row>
             <usr_card></usr_card>
         </el-row>
@@ -10,8 +10,8 @@
         </el-row>
     </div>
     <div class="center">
-        <div class="main">
-            <ul class="infinite-list" style="overflow: auto" v-loading="loading" element-loading-text="Loading...">
+        <div class="main" v-loading="loading" element-loading-text="Loading...">
+            <ul class="infinite-list" style="overflow: auto" v-loading="loading" element-loading-text="Loading..." id="target">
                 <div v-if="label=='1'">
                     <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
                     <div class="center">
@@ -24,14 +24,22 @@
                 </div>  
                 <div v-if="label=='2'">
                     <message_card v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message_card>
+                    <div class="center">
+                        <el-divider></el-divider>
+                        <el-pagination v-model:currentPage="currentPageMessage"
+                        layout="prev, pager, next" :total="totalcountsMessage" :page-size="4"
+                        @current-change="loadNotification"
+                        />
+                    </div>
                 </div>
                 <div v-if="label=='3'">
                     <setting_card></setting_card>
                 </div>
                 <div v-if="label=='4'">
-                    <div class="center">
+                    <div class="center" v-if="!user.groups.length==2 || !user.groups[1]==3">
                         <el-text style="padding-top:50px;font-size: 15px;">你不是沙河畔版主 请联系河畔管理员以获得管理权限</el-text>
                     </div>
+                    <managePart v-else></managePart>
                 </div>
             </ul>
         </div>
@@ -45,7 +53,9 @@ import post_card from '../components/mypage/post_card.vue';
 import message_card from '../components/mypage/message_card.vue';
 import setting_card from "../components/mypage/setting_card.vue";
 import DataService from '../components/services/DataService';
-import { ref, onMounted } from 'vue';
+import managePart from '../components/mypage/managePart.vue';
+import { ref, onMounted, watch } from 'vue';
+import { useLocalStorage } from '@vueuse/core';
 import { ElMessage } from 'element-plus';
 const label = ref('1')
 const loading = ref(true)
@@ -53,10 +63,18 @@ const posts = ref({})
 const notifications = ref({})
 const totalcounts = ref()
 const currentPage = ref(1)
+const currentPageMessage = ref(1)
+const totalcountsMessage = ref()
+const user = useLocalStorage('user', {})
+
+const toTop = () => {
+      document.documentElement.scrollTop = 0;
+}
 
 const loadMyBlog = async () => {
     try { 
-        target.scrollIntoView(); 
+        target.scrollIntoView();
+        toTop(); 
         loading.value = true;  
         let response;  
         response = await DataService.Get_My_Blogs(currentPage.value);  
@@ -78,11 +96,15 @@ const loadMyBlog = async () => {
 
 const loadNotification = async () => {
     try {
+        toTop();
+      target.scrollIntoView(); 
       loading.value = true
       let response;
-      response = await DataService.Get_Notification_List();
+      response = await DataService.Get_Notification_List(currentPageMessage.value,4);
       console.log('response=', response);
-      notifications.value = response.data.results
+        notifications.value = response.data.results
+        totalcountsMessage.value = notifications.value[notifications.value.length-1].unread_count;
+        console.log('notification总数',totalcountsMessage.value)
       console.log('notification',notifications.value)
       loading.value = false;
     }
@@ -98,6 +120,14 @@ onMounted(async () => {
     loadMyBlog();
     loadNotification();
 });  
+
+watch(label.value, () => {
+ currentPage.value = 1;
+ currentPageMessage.value = 1;
+ console.log('labelchangeto', label.value)
+ loadMyBlog();
+ loadNotification();
+});
 
 </script>
 

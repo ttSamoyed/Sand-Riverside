@@ -50,9 +50,7 @@
         </el-col>
         </el-row>
         </div>
-
     </div>
-    
 </template>
 
 <script setup>
@@ -81,7 +79,7 @@ const submit = async () => {
     loading.value = false;
     ElNotification({
     title: '登录失败',
-    message: '用户名或密码错误',
+    message: '用户名或密码错误 若您确认密码 您有可能已被封号 请联系管理员',
     })
     } else {
     loading.value = false;

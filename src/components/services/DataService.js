@@ -670,7 +670,7 @@ export default {
    * @description 任命版主后, 会自动创建板块管理记录
    * @description 任命版主后, 会自动将用户加入版主组
    */
-  Appoint_Moderator(plateid, userid) {
+   Appoint_Moderator(plateid, userid) {
     const url = 'plate/manage/create/';
     return apiClient.post(url, { plate: plateid, moderator: userid });
   },

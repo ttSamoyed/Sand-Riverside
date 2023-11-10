@@ -10,6 +10,27 @@
                     <div class="title">
                         <el-row class="row">
                         <h2>{{ post.title }}</h2>
+                        <!--编辑帖子和删除帖子-->
+                        <div style="margin-left: 10px;">
+                          <el-button
+                            v-if="post.author.userID==myIdentity.userID"
+                            circle
+                            text
+                            style="margin-left: 15px"
+                            type="primary"
+                            @click="showEditBox = true"
+                          >
+                            <el-icon size="20"><Edit /></el-icon>
+                          </el-button>
+                          <el-button
+                            v-if="post.author.userID==myIdentity.userID || myIdentity.groups[1]==3"
+                            circle
+                            text
+                            type="danger"
+                            @click="showDeleteBox = true"
+                            ><el-icon size="20"><Delete /></el-icon
+                          ></el-button>
+                        </div>
                         </el-row>
                         <el-row style="margin-top: -10px;">
                             
@@ -24,26 +45,6 @@
                         <el-text class="author">
                              {{post.author.username}}
                         </el-text>
-                        <!--编辑帖子和删除帖子-->
-                        <div v-if="true">
-                          <el-button
-                            circle
-                            text
-                            style="margin-left: 15px"
-                            type="primary"
-                            @click="showEditBox = true"
-                          >
-                            <el-icon><Edit /></el-icon>
-                          </el-button>
-                          <el-button
-                            circle
-                            text
-                            type="danger"
-                            @click="showDeleteBox = true"
-                            ><el-icon><Delete /></el-icon
-                          ></el-button>
-                        </div>
-
                         </el-row>
                     </div>
                     <div class="info">
@@ -228,6 +229,7 @@ const router = useRouter();
 const storedUser = ref(null);
 const route = useRoute();
 const postId = ref(route.params.postid);
+const myIdentity = JSON.parse(localStorage.getItem('user'))
 
 const post = ref({
   title:'标题',
