@@ -180,9 +180,11 @@ const updateInfo = async () => {
     const regionValue = mapselect.value.getSelectedValue().region;
     const cityValue =  mapselect.value.getSelectedValue().city;
     const provinceValue = mapselect.value.getSelectedValue().province;
-    if(regionValue!=''&cityValue!=''&provinceValue!=''&(user.value.sex!='男'|user.value.sex!='女')&user.value.college!=''&user.value.major!='')
+    if(((regionValue!=''&cityValue!=''&provinceValue!='')|(regionValue==''&cityValue==''&provinceValue==''))&(user.value.sex=='男'|user.value.sex=='女')&user.value.college!=''&user.value.major!='')
+   { 
+    if(user.value.address=='--')
    { user.value.address = provinceValue + '-' + cityValue + '-' + regionValue;
-    user.value.address=provinceValue+'-'+cityValue+'-'+regionValue;
+   }
     const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
     console.log('status=',responce.status);
     if (responce.status=== 200) {
