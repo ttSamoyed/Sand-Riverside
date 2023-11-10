@@ -16,17 +16,14 @@
         <el-text>封面</el-text>
         <el-divider direction="vertical"></el-divider>
         <!-- action="#" -->
-        <el-upload  list-type="picture-card"  @change="handleUpload" :disabled="!disabled2"
-        action="http://124.222.42.111:8000/api/post/coverImg/16/"
-        :data="ImageData"
-        :headers="headers"
-        ref="uploadRef" 
-        method="post"
-        :auto-upload="true"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
-        name="coverImg"
-        >
+        <!-- <el-button type="primary" >点击上传</el-button> -->
+        <!-- <input   
+        type="file"  enctype="multipart/form-data" style="display:none;" accept="image/jpeg,image/png" @change="uploadFile2">
+
+        > -->
+        <input type="file" ref="loadfile" enctype="multipart/form-data" style="display:block;" accept="image/png, image/jpeg"
+        @change="uploadFile">
+
           <el-icon><Plus /></el-icon>
           <template #file="{ file }" >
             <div>
@@ -53,8 +50,7 @@
               jpg files with a size less than 500kb
             </div>
           </template>
-        </el-upload>
-
+      
         <el-dialog v-model="dialogVisible">
           <el-text>预览图片</el-text>
           <img w-full :src="dialogImageUrl" alt="Preview Image" style="max-width: 100%;"/>
@@ -106,6 +102,7 @@ import { ref,computed } from "vue";
 import { defineProps } from "vue";
 import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router';
 import type { UploadProps } from 'element-plus'
 
 import type { UploadFile, UploadUserFile } from 'element-plus'
@@ -116,7 +113,30 @@ const dialogVisible = ref(false)
 const disabled = ref(false)
 const disabled2 = ref(true)
 const uploadRef = ref()
+const loadfile = ref(null);
 
+const router = useRouter();
+
+const fileInput = ref<HTMLInputElement>()
+const uploadFile = () =>{
+	// 当点击button按钮后会触发此事件
+	// 作用就是打开文件上传弹框
+  //fileInput.value?.click()
+
+      // 创建一个新的 FormData 对象
+      const formData = new FormData();
+  // 将上传的文件附加到 FormData 对象中，使用 'avatar' 作为字段名
+  formData.append('coverImg', loadfile.value.files[0]);
+ // formData.append( 'type', "file");
+  // 将 FormData 对象赋值给 ImageData
+  ImageData.value = formData;
+  console.log("loaffile=",ImageData.value);
+  if (ImageData.value.has('coverImg')) {
+  console.log('FormData 不为空');
+} else {
+  console.log('FormData 为空');
+}
+   }
 
 const handleRemove = (file: UploadFile) => {
  // console.log(file);
@@ -167,14 +187,7 @@ const beforeAvatarUpload = async (rawFile) => {
     });
     return;
   }
-      // 创建一个新的 FormData 对象
-  const formData = new FormData();
-  // 将上传的文件附加到 FormData 对象中，使用 'avatar' 作为字段名
-  formData.append('coverImg', rawFile);
-  // 将 FormData 对象赋值给 ImageData
-  ImageData.value = formData;
-  
-    // const response = await DataService.Update_User_Avatar(user.value.userID,rawFile)
+
 };
 
 let file;
@@ -207,6 +220,8 @@ const handleAvatarSuccess = async (response,rawFile) => {
 } else {
   console.log('URL does not end with .jpg');
 }
+    
+    // const response = await DataService.Update_User_Avatar(user.value.userID,rawFile)
 
 // 在这里可以使用 file 变量
        
@@ -300,6 +315,8 @@ const submitpost = async (res, uploadFile) => {
   
   console.log("post=",post.value);
   console.log("uploadfile=",uploadFile);
+  if(ImageData.value)
+  console.log("Imagedata=",ImageData.value);
   
   if(post.value.title==''||post.value.content==''){
     ElMessage.warning('请输入标题和内容！')
@@ -313,43 +330,48 @@ const submitpost = async (res, uploadFile) => {
       post.value.plate
     );
 
-    post.value.post_id=responce.data.postID;
+    post.value.post_id=responce.data.post.postID;
 
-    console.log(responce.data);
-    if( file )
+    console.log("发布返回：",responce.data);
+    if( ImageData.value )
     {    
       console.log("这里更新封面",file);
         const responce2 = await DataService.Upload_Blog_Cover(
         post.value.post_id,
-        file
+        ImageData.value,
       );
       console.log("封面：",responce2.data);
     }
       
-      ElMessage.success('发布成功！');
+    ElMessage.success('发布成功！');
+    console.log("postid=",post.value.post_id);
+    router.push({ name: 'post', params: { postid: post.value.post_id } });
+
+
   } 
   else {
-    if (file) {
-      console.log("这里更新封面2",file.type);
+    if (ImageData.value) {
+      console.log("这里更新封面2",file);
       const responce = await DataService.Upload_Blog_Cover(
         post.value.post_id,
-        file
+        ImageData.value,
       );
       console.log("更新封面的回复",responce.data);
     }
-    let a="123";
     if ((post.value.content !== params.content)||(post.value.title !== params.title)||post.value.plate !== params.plate) {
       const responce = await DataService.Update_Blog(
         post.value.post_id,
         post.value.title,
-        a,
+        post.value.content ,
         post.value.plate
       );
       console.log(post.value.content)
       console.log(responce.data);
     }
+    ElMessage.success('修改成功！');
+   // window.location.reload();
   }
-  ElMessage.success('修改成功！');
+  
   }
 };
 </script>
