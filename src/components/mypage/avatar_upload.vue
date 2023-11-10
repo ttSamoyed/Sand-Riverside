@@ -18,10 +18,10 @@
   import { Plus } from '@element-plus/icons-vue'
   
   import type { UploadProps } from 'element-plus'
-  //"http://124.222.42.111:8000/api/profile/" + userid + '/'
+  //"http://124.222.42.111:8000/api/profile/" + userID + '/'
   const imageUrl = ref('')
   const props = defineProps({
-  userid: {
+  userID: {
     type: Number
   }
   })
@@ -32,7 +32,7 @@
     };
   });
   const url = computed(() => {
-  return "http://124.222.42.111:8000/api/user/avatar/" + props.userid + '/'
+  return "http://124.222.42.111:8000/api/user/avatar/" + props.userID + '/'
     })
 
   

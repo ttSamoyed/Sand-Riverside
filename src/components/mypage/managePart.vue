@@ -27,8 +27,8 @@
                     v-model="content" 
                     size="large"
                     placeholder="搜索沙河畔用户"
-                    :prefix-icon="Search" @blur="searchByblur"
-                    @keyup.enter="search"
+                    :prefix-icon="Search"
+                    @keyup.enter="SearchUser"
                     />
                 </div>
             </el-space>
@@ -165,6 +165,22 @@ const UnbanUser = async (row) => {
     console.log('response=',response);
     ElMessage.success('解封成功');
     loadUser();
+    loading.value = false;
+  } catch (error) {
+    console.log(error);
+    loading.value = false;
+  }
+}
+const SearchUser = async () => {
+  try {
+    loading.value = true;
+    let response;
+    console.log('search:', content.value)
+    currentPage.value = 1;
+    response = await DataService.Search_Users({page:currentPage.value,page_size:5,username:content.value});
+    console.log('response=',response);
+    users.value = response.data.results;
+    totalcounts.value = response.data.count;
     loading.value = false;
   } catch (error) {
     console.log(error);
