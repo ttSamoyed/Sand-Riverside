@@ -171,6 +171,7 @@ const beforeAvatarUpload = async (rawFile) => {
 // 上传成功回调
 const handleAvatarSuccess = async (res, uploadFile) => {
     user.value.avatar = URL.createObjectURL(uploadFile.raw);
+    console.log(user.value.avatar);
 };
 
 
