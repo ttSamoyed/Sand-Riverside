@@ -86,7 +86,7 @@ export default {
    * @param {String} code
    * @returns 注册结果
    */
-  Register(username, password, email,code) {
+  Register(username, password, email, code) {
     return apiClient.post('/register/', { username, password, email, code });
   },
 
@@ -115,18 +115,18 @@ export default {
 
   /**
    * 获取个人详细信息
-   * @param {Number} userid
+   * @param {Number} userID
    * @returns 个人详细信息
    */
-  Get_Personal_Info(userid) {
-    const url = '/profile/' + userid + '/';
+  Get_Personal_Info(userID) {
+    const url = '/profile/' + userID + '/';
     return apiClient.get(url);
   },
 
 
   /**
    * 修改个人信息
-   * @param {Number} userid
+   * @param {Number} userID
    * @param {String} sex
    * @param {String} status
    * @param {String} stuID
@@ -137,8 +137,8 @@ export default {
    * @param {String} phone
    * @returns 修改个人信息结果
    */
-  Update_Personal_Info(userid, sex, status, stuID, college, major, birth_date, address, phone) {
-    const url = '/profile/' + userid + '/';
+  Update_Personal_Info(userID, sex, status, stuID, college, major, birth_date, address, phone) {
+    const url = '/profile/' + userID + '/';
     return apiClient.patch(url, {
       sex: sex,
       status: status,
@@ -154,7 +154,7 @@ export default {
 
   /**
    * 管理员修改个人信息
-   * @param {Number} userid
+   * @param {Number} userID
    * @param {String} sex
    * @param {File} avatar
    * @param {String} status
@@ -168,8 +168,8 @@ export default {
    * @param {String} password
    * @returns 管理员修改个人信息结果
    */
-  Manage_Personal_Info(userid, sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active, password) {
-    const url = '/profile/' + userid + '/';
+  Manage_Personal_Info(userID, sex, avatar, status, stuID, college, major, birth_date, address, phone, is_active, password) {
+    const url = '/profile/' + userID + '/';
     return apiClient.post(url, {
       sex: sex,
       avatar: avatar,
@@ -188,12 +188,12 @@ export default {
 
   /**
    * 封禁/解封 用户
-   * @param {Number} userid
+   * @param {Number} userID
    * @param {Boolean} is_active
    * @returns 封禁/解封 用户结果
    */
-  Ban_User(userid, is_active) {
-    const url = '/profile/' + userid + '/';
+  Ban_User(userID, is_active) {
+    const url = '/profile/' + userID + '/';
     return apiClient.post(url, { is_active });
   },
 
@@ -214,23 +214,55 @@ export default {
   },
 
   /**
+   * 搜索用户
+   * @param {Number} userID - 用户ID关键字
+   * @param {String} username - 用户名关键字
+   * @param {String} email - 邮箱关键字
+   * @param {String} sex - 性别关键字
+   * @param {String} stuID - 学号关键字
+   * @param {String} college - 学院关键字
+   * @param {String} major - 专业关键字
+   * @param {String} phone - 手机号关键字
+   * @returns 搜索用户结果
+   * @description 只有用户名是模糊搜索, 其他都是精确搜索
+   */
+  Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone) {
+    return apiClient.post('/user/list/', {
+      userID: userID,
+      username: username,
+      email: email,
+      sex: sex,
+      stuID: stuID,
+      college: college,
+      major: major,
+      phone: phone,
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
+  },
+
+  /**
    * 获取用户头像
-   * @param {Number} userid
+   * @param {Number} userID
    * @returns 用户头像 URL
    */
-  Get_User_Avatar(userid) {
-    const url = 'user/avatar/' + userid + "/";
+  Get_User_Avatar(userID) {
+    const url = 'user/avatar/' + userID + "/";
     return apiClient.get(url);
   },
 
   /**
    * 修改用户头像
-   * @param {Number} userid
+   * @param {Number} userID
    * @param {File} avatar
    * @returns 修改用户头像结果
    */
-  Update_User_Avatar(userid, avatar) {
-    const url = 'user/avatar/' + userid + "/";
+  Update_User_Avatar(userID, avatar) {
+    const url = 'user/avatar/' + userID + "/";
     let formData = new FormData();
     formData.append('avatar', avatar);
     return apiClient.post(url, formData, {
@@ -243,11 +275,11 @@ export default {
 
   /**
    * 删除用户头像
-   * @param {Number} userid
+   * @param {Number} userID
    * @returns 删除用户头像结果
    */
-  Delete_User_Avatar(userid) {
-    const url = 'user/avatar/' + userid + "/";
+  Delete_User_Avatar(userID) {
+    const url = 'user/avatar/' + userID + "/";
     return apiClient.delete(url);
   },
 
@@ -264,12 +296,12 @@ export default {
 
   /**
    * 管理员修改密码
-   * @param {Number} userid
+   * @param {Number} userID
    * @param {String} password
    * @returns 管理员修改密码结果
    */
-  Manage_Password(userid, password) {
-    const url = '/profile/' + userid + '/';
+  Manage_Password(userID, password) {
+    const url = '/profile/' + userID + '/';
     return apiClient.post(url, { password });
   },
 
@@ -293,11 +325,11 @@ export default {
 
   /**
    * 删除用户的账户
-   * @param {Number} userid 
+   * @param {Number} userID 
    * @returns 删除用户的账户结果
    */
-  Delete_Account(userid) {
-    const url = '/profile/' + userid + '/';
+  Delete_Account(userID) {
+    const url = '/profile/' + userID + '/';
     return apiClient.delete(url);
   },
 
@@ -444,9 +476,9 @@ export default {
    * @param {String} tags - 标签
    * @returns {JSON} - 返回修改博客结果
    */
-  Update_Blog(blogid, title, content,plate_id, tags) {
+  Update_Blog(blogid, title, content, plate_id, tags) {
     const url = 'post/action/' + blogid + '/';
-    return apiClient.patch(url, { title, content, plate_id,tags });
+    return apiClient.patch(url, { title, content, plate_id, tags });
   },
 
   /**
@@ -677,14 +709,14 @@ export default {
   /**
    * 任命版主
    * @param {Number} plateid - 板块ID
-   * @param {Number} userid - 用户ID
+   * @param {Number} userID - 用户ID
    * @returns {JSON} - 返回任命版主结果
    * @description 任命版主后, 会自动创建板块管理记录
    * @description 任命版主后, 会自动将用户加入版主组
    */
-   Appoint_Moderator(plateid, userid) {
+  Appoint_Moderator(plateid, userID) {
     const url = 'plate/manage/create/';
-    return apiClient.post(url, { plate: plateid, moderator: userid });
+    return apiClient.post(url, { plate: plateid, moderator: userID });
   },
 
   /**
