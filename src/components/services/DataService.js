@@ -231,7 +231,13 @@ export default {
    */
   Update_User_Avatar(userid, avatar) {
     const url = 'user/avatar/' + userid + "/";
-    return apiClient.post(url, { avatar });
+    let formData = new FormData();
+    formData.append('avatar', avatar);
+    return apiClient.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   },
 
 
@@ -512,7 +518,13 @@ export default {
    */
   Upload_Blog_Cover(blogid, coverImg) {
     const url = 'post/coverImg/' + blogid + '/';
-    return apiClient.post(url, { coverImg });
+    let formData = new FormData();
+    formData.append('coverImg', coverImg);
+    return apiClient.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   },
 
   /**
