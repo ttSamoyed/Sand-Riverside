@@ -480,6 +480,21 @@ export default {
   },
 
   /**
+   * 管理员修改博客
+   * @param {Number} blogid - 博客ID
+   * @param {String} title - 标题
+   * @param {String} content - 内容
+   * @param {String} plate - 板块
+   * @param {String} tags - 标签
+   * @param {Boolean} is_essence - 是否为精华博客
+   * @returns {JSON} - 返回管理员修改博客结果
+   */
+  Manage_Blog(blogid, title, content, plate_id, tags, is_essence) {
+    const url = 'post/action/' + blogid + '/';
+    return apiClient.post(url, { title, content, plate_id, tags, is_essence });
+  },
+
+  /**
    * 删除博客
    * @param {Number} blogid - 博客ID
    * @returns {JSON} - 返回删除博客结果
