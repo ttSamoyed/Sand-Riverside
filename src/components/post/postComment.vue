@@ -7,6 +7,23 @@
             <el-avatar class="wide-avatar" :src="c.author.avatar">usr</el-avatar>
             <span style="margin-left: 15px;">{{ c.author.username }}</span>
             <span v-if="c.parent !== null" style="margin-left: 3px;">回复 {{c.reply_to.username}}</span> <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
+            </div>
+            <div class="icon_buttons">
+
+                <el-button type="text" class="icon-button" @click = "showReplyBox = showReplyBox?false:true;ph()"><el-icon  size="20"><ChatLineRound /></el-icon>
+                  <span v-if = "show_reply_number" style="font-size: large;">{{ c.reply_count }}</span>
+                </el-button>
+
+                <el-button v-if = "!has_liked" type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="23"><ArrowUpBold /></el-icon>
+                  <span style="font-size: large;">{{ c.like_count }}</span>
+                </el-button>
+                <el-button v-else type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="23"><CaretTop/></el-icon>
+                  <span style="font-size: large;">{{ c.like_count }}</span>
+                </el-button>
+                
+                <el-button v-if = "can_delete" type="text" style="margin-left: 15px;" @click = "Delete_Comment"><el-icon  size="20"><Delete /></el-icon></el-button>
+                
+            </div>
         </div>
 
         <div class="comment_main">
