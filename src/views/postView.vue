@@ -10,10 +10,10 @@
                     <div class="title">
                         <el-row class="row">
                         <h2>{{ post.title }}</h2>
-                        <!--编辑帖子和删除帖子-->
+                          <!--编辑帖子、删除帖子和设为精华帖子-->
                         <div style="margin-left: 10px;">
                           <el-button
-                            v-if="post.author.userID==myIdentity.userID"
+                           v-if="showEditBox1"
                             circle
                             text
                             style="margin-left: 15px"
@@ -23,13 +23,22 @@
                             <el-icon size="20"><Edit /></el-icon>
                           </el-button>
                           <el-button
-                            v-if="post.author.userID==myIdentity.userID || myIdentity.groups[1]==3"
+                            v-if="showDeleteBox1"
                             circle
                             text
                             type="danger"
                             @click="showDeleteBox = true"
                             ><el-icon size="20"><Delete /></el-icon
                           ></el-button>
+                          <el-button v-if="setperfect1"
+                          circle
+                          text
+                          type="success"
+                          @click="toggleValues" 
+                        ><el-icon size="20" v-if="post.is_essence"><StarFilled /></el-icon 
+                      ><el-icon size="20" v-if="!post.is_essence"><Star /></el-icon
+                        >
+                    </el-button>
                         </div>
                         </el-row>
                         <el-row style="margin-top: -10px;">
@@ -38,8 +47,11 @@
                         <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
                         <el-text style="margin-left: 10px;">创建时间：</el-text>
                         <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.created}}</el-tag>
-                        <el-tag type="success"  effect="dark" style="margin-left: 15px;">精华</el-tag>
-                        <!-- v-if="p.is_essence" -->
+                        <el-tag  v-if="post.is_essence" type="success"  effect="dark" style="margin-left: 15px;">精华</el-tag>
+                        <!-- v-if="post.is_essence" -->
+
+                        <!-- 待加接口后修改 -->
+
                         </el-row>
                         <el-row class="row">
                         <el-avatar v-if="post.author.avatar" :size="30" :src="post.author.avatar"></el-avatar>
@@ -47,36 +59,7 @@
                         <el-text class="author">
                              {{post.author.username}}
                         </el-text>
-                        <!--编辑帖子、删除帖子和设为精华帖子-->
-                        <div v-if="true">
-                          <el-button v-if="showEditBox1"
-                            circle
-                            text
-                            style="margin-left: 15px"
-                            type="primary"
-                            @click="showEditBox = true "
-                          >
-                            <el-icon><Edit /></el-icon>
-                          </el-button>
-                          <el-button v-if="showDeleteBox1"
-                            circle
-                            text
-                            type="danger"
-                            @click=" showDeleteBox= true "
-                            ><el-icon><Delete /></el-icon
-                          ></el-button>
-                          <el-button v-if="setperfect1"
-                            circle
-                            text
-                            type="success"
-                            @click=" setperfect= true "
-                          ><el-icon v-if="post.is_essence"><StarFilled /></el-icon 
-                        ><el-icon v-if="!post.is_essence"><Star /></el-icon
-                          >
-                      </el-button>
-                       
-                        </div>
-
+                     
                         </el-row>
                     </div>
                     <div class="info">
@@ -229,12 +212,22 @@
       </template>
     </el-dialog>
 
-    <el-dialog v-model="setperfect" title="提示" width="350px">
+    <el-dialog   v-model="setperfect" title="提示" width="350px">
       <span>您要将这篇帖子设为精华贴吗？</span>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="setperfect = false">取消</el-button>
           <el-button type="primary" @click="handleset" >确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="cancelperfect" title="提示" width="350px">
+      <span>您要将这篇帖子取消精华吗？</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancelperfect = false">取消</el-button>
+          <el-button type="primary" @click="handlecancel" >确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -306,6 +299,7 @@ const setperfect=ref(false)
 const showDeleteBox1 = ref(false);
 const showEditBox1 = ref(false);
 const setperfect1=ref(false)
+const cancelperfect=ref(false)
 const loading = ref(false);
 const disabled = computed(() => loading.value);
 const newComment = ref("");
@@ -314,6 +308,11 @@ const coverImgAbs = ref('');
 const comments = ref({});  
 
 //console.log([user_id.value, state.value]);
+
+const toggleValues = async () => {
+    setperfect.value=!post.is_essence;
+    cancelperfect.value= post.is_essence
+ }
 
 // 加载博文
 const loadpost = async () => {
@@ -517,7 +516,22 @@ const handleset=async() => {
 
 };
 
-
+//cancel perfect
+const handlecancel=async() => {
+ // const responce = await DataService.取消精华(post.value.postID);
+    setperfect.value=false;
+    console.log('responce=',responce);
+    console.log('status=',responce.status);
+  
+    if (responce.status=== 200) {
+        ElMessage.success('取消成功！');
+        post.value.is_essence=true;
+       // window.location.reload();
+    }
+    if (responce.status=== 400|responce.status=== 500) {
+    ElMessage.warning('设置失败！')
+    };
+    };
 
 </script>
 

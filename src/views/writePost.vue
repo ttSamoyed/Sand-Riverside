@@ -12,15 +12,9 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <!-- <el-form-item>
         <el-text>封面</el-text>
         <el-divider direction="vertical"></el-divider>
-        <!-- action="#" -->
-        <!-- <el-button type="primary" >点击上传</el-button> -->
-        <!-- <input   
-        type="file"  enctype="multipart/form-data" style="display:none;" accept="image/jpeg,image/png" @change="uploadFile2">
-
-        > -->
         <input type="file" ref="loadfile" enctype="multipart/form-data" style="display:block;" accept="image/png, image/jpeg"
         @change="uploadFile">
 
@@ -56,14 +50,7 @@
           <img w-full :src="dialogImageUrl" alt="Preview Image" style="max-width: 100%;"/>
         </el-dialog>
 
-        <!-- <el-input
-          :rows="1"
-          type="textarea"
-          placeholder="请输入帖子封面照片的url"
-          v-model="post.cover"
-        ></el-input> -->
-
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item>
         <el-text>板块</el-text>
