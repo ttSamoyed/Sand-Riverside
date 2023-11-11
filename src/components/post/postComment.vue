@@ -4,6 +4,7 @@
             <div style="
             display: flex;
             align-items: center;">
+            <div style="margin-left: 40px;" v-if="c.parent!= null"></div>
             <el-avatar class="wide-avatar" :src="c.author.avatar">usr</el-avatar>
             <span style="margin-left: 15px;">{{ c.author.username }}</span>
             <span v-if="c.parent !== null" style="margin-left: 3px;">回复 {{c.reply_to.username}}</span> <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
@@ -27,8 +28,8 @@
         </div>
 
         <div class="comment_main">
-            <!-- <el-text style="margin-left: 3px;">很有帮助，谢谢</el-text> -->
-            <p>{{ c.content }}</p>
+            <p v-if="c.parent!=null" style="margin-left: 40px;">{{ c.content }}</p>
+            <p v-else>{{ c.content }}</p>
         </div>
 
         <div v-if="showReplyBox" class="replybox">
