@@ -390,5 +390,8 @@ const submitpost = async (res, uploadFile) => {
   margin-top: 0px;
   border-color: #e6e6e6;
 }
+.v-md-editor{
+  color: black;
+}
 </style>
   

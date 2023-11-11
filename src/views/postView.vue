@@ -621,4 +621,7 @@ const handleset=async() => {
   align-items:end;
   min-width:50px;
 }
+.v-md-editor {
+  background-color: var(--el-fill-body-color);
+}
 </style>
