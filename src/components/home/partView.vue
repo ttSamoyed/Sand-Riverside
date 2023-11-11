@@ -16,18 +16,19 @@
         </div>    
         </el-col>
         <el-col :span="5">
-            <div class="info">
+            <div class="info" v-loading="loading">
                 <el-row>
                 <span class="smalltitle">{{ name[index["p"]] }}</span>
                 </el-row>
                 <el-row style="margin-top: 3px;">
-                <el-space>
-                    <el-text class="banzhu">板块由</el-text>
-                    <el-avatar v-if="adminavatar" :size="20" :src="adminavatar" shape="square"/>
-                    <el-avatar v-else :size="20" shape="square"><el-icon :size="20"><Avatar /></el-icon></el-avatar>
-                    <el-text class="banzhu">{{ admin }}</el-text>
-                    <el-text class="banzhu">管理</el-text>
-                </el-space>
+                  <el-space v-if="admin!='管理员'">
+                      <el-text class="banzhu">板块由</el-text>
+                      <el-avatar v-if="adminavatar" :size="20" :src="adminavatar" shape="square"/>
+                      <el-avatar v-else :size="20" shape="square"><el-icon :size="20"><Avatar /></el-icon></el-avatar>
+                      <el-text class="banzhu">{{ admin }}</el-text>
+                      <el-text class="banzhu">管理</el-text>
+                  </el-space>
+                  <el-text v-else class="banzhu">还没有版主<br>欢迎联系管理员申请</el-text>
                 </el-row>
             </div>
         </el-col>
