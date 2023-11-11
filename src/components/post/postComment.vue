@@ -9,9 +9,20 @@
             <span v-if="c.parent !== null" style="margin-left: 3px;">回复 {{c.reply_to.username}}</span> <el-text type="info" style="scale: 0.9;text-align: right;">{{ formattedTime }}</el-text>
             </div>
             <div class="icon_buttons">
-                <el-button type="text" class="icon-button" @click = "showReplyBox = showReplyBox?false:true;ph()"><el-icon  size="25"><ChatLineRound /></el-icon><span>{{ c.reply_count }}</span></el-button>
-                <el-button type="text" class="icon-button" @click = "Like_Comment">                               <el-icon  size="28"><Top /></el-icon>{{ c.like_count }}</el-button>
-                <el-button v-if = "can_delete" type="text" style="margin-left: 15px;"><el-icon  size="23"><Delete /></el-icon></el-button>
+
+                <el-button type="text" class="icon-button" @click = "showReplyBox = showReplyBox?false:true;ph()"><el-icon  size="25"><ChatLineRound /></el-icon>
+                  <span v-if = "show_reply_number" style="font-size: large;">{{ c.reply_count }}</span>
+                </el-button>
+
+                <el-button v-if = "!has_liked" type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="28"><ArrowUpBold /></el-icon>
+                  <span style="font-size: large;">{{ c.like_count }}</span>
+                </el-button>
+                <el-button v-else type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="28"><CaretTop/></el-icon>
+                  <span style="font-size: large;">{{ c.like_count }}</span>
+                </el-button>
+                
+                <el-button v-if = "can_delete" type="text" style="margin-left: 15px;" @click = "Delete_Comment"><el-icon  size="23"><Delete /></el-icon></el-button>
+                
             </div>
         </div>
 
@@ -32,6 +43,7 @@
 <script setup>
 import { defineProps,onMounted,ref,computed } from 'vue';
 import DataService from "@/components/services/DataService";
+import { async } from '@kangc/v-md-editor';
 const time = ref('2023-9-20');
 
 
@@ -71,9 +83,13 @@ const lastModified = c.last_modified;
 const formattedTime = formatTime(lastModified);
 
 //回复评论
-const can_delete = ref(true);
+
 const input_reply = ref('');
 const showReplyBox = ref(false);
+const show_reply_number = ref(false);
+if (c.parent === null){
+  show_reply_number.value = true;
+}
 
 const ph = computed(() => {
   const ans = "回复 " + c.author.username
@@ -106,8 +122,23 @@ const Reply_Comment = async() => {
 
 
 //点赞评论
-const Like_Comment = () => {
-    console.log('点赞评论');
+const has_liked = ref(false);
+
+
+const Like_Comment = async() => {
+  if(has_liked.value){
+    has_liked.value = false;
+    c.like_count -= 1;
+  }
+  else{
+    has_liked.value = true;
+    c.like_count += 1;
+    //const response = await DataService.Like_Comment();
+    //console.log(response.status);
+    
+  }
+
+  console.log('点赞评论');
 }
   // /**
   //  * 点赞评论
@@ -128,25 +159,12 @@ const Like_Comment = () => {
   //   const url = '/comment/like/' + commentid + '/';
   //   return apiClient.delete(url);
   // },
-//寄，以为c.parent是父评论，不用管
-// const loading = ref(true) 
-// const father=ref('');
 
-// const getinf = async () => {
-//   if (c.parent) {
-//     loading.value = true;  
-//     let response;  
-//     response = await DataService.Get_Comment_Detail(c.parent);  
-//     console.log('response=',response);  
-//     loading.value = false;  
-//     father.value=response.data.message.author.username;
-//     console.log('posts=',father.value); 
-//   }
-//   return '';
-// };
-// getinf();
-
-
+//删除评论，博客作者，评论作者，管理员可以删
+const can_delete = ref(true);
+const Delete_Comment = () => {
+  console.log("删除评论");
+}
 
 </script>
 
