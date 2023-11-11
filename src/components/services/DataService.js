@@ -137,8 +137,8 @@ export default {
    * @param {String} phone
    * @returns 修改个人信息结果
    */
-  Update_Personal_Info(userid, sex, status, stuID, college, major, birth_date, address, phone) {
-    const url = '/profile/0/';
+  Update_Personal_Info(userID, sex, status, stuID, college, major, birth_date, address, phone) {
+    const url = 'profile/' + userID + '/';
     return apiClient.patch(url, {
       sex: sex,
       status: status,

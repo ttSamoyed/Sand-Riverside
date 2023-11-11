@@ -182,22 +182,19 @@
 
         <div class="infinite-list-wrapper" style="overflow: auto">
           <ul class="list" :infinite-scroll-disabled="disabled">
-<!-- 
-            评论静态测试 -->
-            <!-- <postComment
+          <!-- 评论静态测试 -->
+          <!-- <postComment
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
-              ></postComment>
-              <postComment
+                ></postComment>
+                <postComment
                 :message='写得好'
                 :user_name='杨波'
                 :avatar='h'
-              ></postComment> -->
-
-            
-              <!-- 调用评论子模块 -->
-              <postComment v-for="(comment,index) in comments" :key="comment.commentID" :c="comment"></postComment>
+                ></postComment> -->
+            <!-- 调用评论子模块 -->
+            <postComment v-for="(comment,index) in comments" :key="comment.commentID" :c="comment"></postComment>
            
           </ul>
         </div>
@@ -418,21 +415,23 @@ const hasInput = computed(() => {
     return newComment.value.trim() !== '';
   });
 const handleCommentClick = async () => {
-  const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
-  if (u && u.userID === null) {
+  const status = localStorage.getItem('status');
+  if (status) {
+
+    const u = JSON.parse(localStorage.getItem('user'));
+    console.log('userID:', u.userID);
+    const response = await DataService.Comment_Blog(
+    postId.value,
+    newComment.value,
+    );
+    console.log(response.data);
+    loadcomments();
+    newComment.value = "";
+  } else {
     ElMessage({
       type: "error",
       message: "您还没有登录，请先登录！",
     });
-  } else {
-    const responce = await DataService.Comment_Blog(
-    postId.value,
-    newComment.value,
-    null
-    );
-    console.log(responce.data);
-    loadcomments();
-    newComment.value = "";
   }
 };
 
@@ -452,8 +451,8 @@ const submitLikes = async (blogid, isLike_ornot) => {
 };
 
 const toggleActive = async () => {
-  const u = await getPersonalInfo(); // 调用getPersonalInfo函数以获取u的值
-  if (u && u.userID != null) {
+  const status = localStorage.getItem('status');
+  if (status) {
     if (isActive.value === true) {
       isActive.value = false;
       post.value.like_count -= 1;
