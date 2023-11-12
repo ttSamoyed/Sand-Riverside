@@ -55,7 +55,7 @@
       <el-form-item>
         <el-text>板块</el-text>
         <el-divider direction="vertical"></el-divider>
-        <el-select v-model="post.plate" placeholder="请选择板块" size="large">
+        <el-select v-model="name[post.plate]" placeholder="请选择板块" size="large">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -85,7 +85,7 @@
 <script lang="ts" setup>
 
 import DataService from '@/components/services/DataService';  
-import { ref,computed } from "vue";
+import { ref,computed,onMounted } from "vue";
 import { defineProps } from "vue";
 import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
@@ -260,8 +260,8 @@ const options = [
     label: '未来可期：保研考研',
   },
 ]
-
-
+const constname=['','成电校园：水手之家','成电校园：校园热点','成电校园：校园活动','生活信息：失物招领','生活信息：二手买卖','情感专区：鹊桥','情感专区：话心','未来可期：就业创业','未来可期：出国留学','未来可期：保研考研'];
+const name = ref(['','成电校园：水手之家','成电校园：校园热点','成电校园：校园活动','生活信息：失物招领','生活信息：二手买卖','情感专区：鹊桥','情感专区：话心','未来可期：就业创业','未来可期：出国留学','未来可期：保研考研']);  
 const params = defineProps({
   post_id: {
     type: Number,
@@ -284,8 +284,8 @@ const params = defineProps({
     default: "",
   },
   plate: {
-    type: String,
-    default: "1",
+    type: Number,
+    default: 1,
   },
   onClose: Function,
 });
@@ -296,10 +296,31 @@ const post = ref({
   content: params.content,
   plate: params.plate,
 });
+
+const postpre = ref({
+  title:'',
+  cover: '',
+  content: '',
+  plate: 1,
+});
 const submitpost = async (res, uploadFile) => {
 
+  console.log("数组是",name.value);
+  for (let i = 0; i < name.value.length; i++) {
+    if (typeof(name.value[i])!='number'&&name.value[i].length==1) {
+        post.value.plate = name.value[i];
+        name.value[i]=constname[i];
+        console.log("数组1取出是",constname[post.value.plate]);
 
-  
+    }
+    else if(typeof(name.value[i])=='number'){
+      post.value.plate=name.value[i];
+      name.value[i]=constname[i];
+      console.log("数组2取出是",constname[post.value.plate]);
+
+    }
+}
+ // post.value.plate=name.value[1];
   console.log("post=",post.value);
   console.log("uploadfile=",uploadFile);
   if(ImageData.value)
@@ -345,7 +366,13 @@ const submitpost = async (res, uploadFile) => {
       );
       console.log("更新封面的回复",responce.data);
     }
-    if ((post.value.content !== params.content)||(post.value.title !== params.title)||post.value.plate !== params.plate) {
+    
+    
+    console.log(postpre.value.title)
+    console.log(postpre.value.content)
+    console.log(postpre.value.plate)
+   
+    if (((post.value.content !== postpre.value.content)||(post.value.title !== postpre.value.title)||post.value.plate !== postpre.value.plate)) {
       const responce = await DataService.Update_Blog(
         post.value.post_id,
         post.value.title,
@@ -354,13 +381,36 @@ const submitpost = async (res, uploadFile) => {
       );
       console.log(post.value.content)
       console.log(responce.data);
+      ElMessage.success('修改成功！');
+      window.location.reload();
     }
-    ElMessage.success('修改成功！');
-   // window.location.reload();
+    else{
+      ElMessage.warning('您还没有修改过捏！');
+    }
+
   }
   
   }
 };
+
+// 加载修改前的博文,以判断是否修改
+const loading = ref(true);
+onMounted (async  () => {
+  loading.value = true;
+  const response =await DataService.Get_Blog_Detail(post.value.post_id);
+  console.log("要查找的博文是：",post.value.post_id)
+   console.log('response=', response.data);
+  // console.log('status=',response.data.status)
+  // console.log('post=', response.data.post);
+  
+  if (response.data.status != 'fail') {
+    loading.value = false;
+    postpre.value.title = response.data.post.title;
+    postpre.value.content = response.data.post.content;
+    postpre.value.plate =response.data.post.plate.plateID;
+    post.value.plate= postpre.value.plate;
+  }
+});
 </script>
 
   
@@ -376,9 +426,6 @@ const submitpost = async (res, uploadFile) => {
   margin-left: 0px;
   margin-top: 0px;
   border-color: #e6e6e6;
-}
-.v-md-editor{
-  color: black;
 }
 </style>
   

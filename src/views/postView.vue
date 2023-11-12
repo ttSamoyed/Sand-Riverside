@@ -35,8 +35,8 @@
                           text
                           type="success"
                           @click="toggleValues" 
-                        ><el-icon size="20" v-if="post.is_essence"><StarFilled /></el-icon 
-                      ><el-icon size="20" v-if="!post.is_essence"><Star /></el-icon
+                        ><el-icon size="25" v-if="post.is_essence"><StarFilled /></el-icon 
+                      ><el-icon size="22" v-if="!post.is_essence"><Star /></el-icon
                         >
                     </el-button>
                         </div>
@@ -295,7 +295,7 @@ const isActive = ref(false);
 const dialogVisible = ref(false);
 const showDeleteBox = ref(false);
 const showEditBox = ref(false);
-const setperfect=ref(false)
+const setperfect=ref(false)//是否显示加精的提示框
 const showDeleteBox1 = ref(false);
 const showEditBox1 = ref(false);
 const setperfect1=ref(false)
@@ -310,8 +310,11 @@ const comments = ref({});
 //console.log([user_id.value, state.value]);
 
 const toggleValues = async () => {
-    setperfect.value=!post.is_essence;
-    cancelperfect.value= post.is_essence
+    setperfect.value=!post.value.is_essence;
+    cancelperfect.value=!setperfect.value
+    // console.log("当前的帖子是精华贴：",post.value.is_essence);
+    // console.log("当前的帖子是精华贴：",!setperfect.value);
+    // console.log("当前的帖子是精华贴：",cancelperfect.value);
  }
 
 // 加载博文
@@ -501,16 +504,19 @@ const handleDeleteAndNavigate=async () => {
   //set perfect
 const handleset=async() => {
  // const responce = await DataService.设置精华(post.value.postID);
- setperfect.value=false;
+ const responce = await DataService.Manage_Blog(post.value.postID, post.value.title, post.value.content, post.value.plate.plateID, post.value.tags, true);
+ setperfect.value=!setperfect.value;
   console.log('responce=',responce);
   console.log('status=',responce.status);
   
     if (responce.status=== 200) {
         ElMessage.success('设置成功！');
         post.value.is_essence=true;
+        setperfect.value=false;
        // window.location.reload();
+       //router.push({name:'post',params: {postid:p.postID}})
     }
-    if (responce.status=== 400|responce.status=== 500) {
+    else {
     ElMessage.warning('设置失败！')
     }
 
@@ -519,17 +525,19 @@ const handleset=async() => {
 //cancel perfect
 const handlecancel=async() => {
  // const responce = await DataService.取消精华(post.value.postID);
-    setperfect.value=false;
+    const responce = await DataService.Manage_Blog(post.value.postID, post.value.title, post.value.content, post.value.plate.plateID, post.value.tags, false);
+    
     console.log('responce=',responce);
     console.log('status=',responce.status);
   
     if (responce.status=== 200) {
         ElMessage.success('取消成功！');
-        post.value.is_essence=true;
-       // window.location.reload();
+        post.value.is_essence=false;
+        cancelperfect.value=false;
+
     }
-    if (responce.status=== 400|responce.status=== 500) {
-    ElMessage.warning('设置失败！')
+    else {
+    ElMessage.warning('取消失败！')
     };
     };
 
