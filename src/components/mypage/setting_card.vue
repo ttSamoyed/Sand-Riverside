@@ -101,12 +101,32 @@ import { useStore } from 'vuex';
 import map_select from '../mypage/map_select.vue'
 import DataService from '@/components/services/DataService'
 import avatar_upload from './avatar_upload.vue';
+import { usePreferredColorScheme, useRafFn } from '@vueuse/core';
 
 
 
 const state = useStore().state
 const loading = ref(true)
 const user = ref({
+    address: null,
+    avatar: null,
+    birth_date: null,
+    college: null,
+    date_joined: null,
+    email: null,
+    groups: null,
+    is_active: null,
+    is_superuser: false,
+    last_login: null,
+    major: null,
+    phone: null,
+    sex: null,
+    status: null,
+    stuID: null,
+    userID: null,
+    username: null,
+})
+const userpre = ref({
     address: null,
     avatar: null,
     birth_date: null,
@@ -145,7 +165,13 @@ const getPersonalInfo = async () => {
         else {
             console.log('status=',response.data.status)
             user.value = response.data.user_info;
+            for (const key in user.value) {
+                if (user.value.hasOwnProperty(key)) {
+                    userpre.value[key] = user.value[key];
+                }
+            }
             address.value=response.data.user_info.address;
+            console.log("addressuserpre...",userpre.value.address);
             console.log('userinfonew:', user.value)
             console.log('username:',user.value.username)
         }
@@ -182,18 +208,38 @@ const updateInfo = async () => {
     const provinceValue = mapselect.value.getSelectedValue().province;
     if(((regionValue!=''&cityValue!=''&provinceValue!='')|(regionValue==''&cityValue==''&provinceValue==''))&(user.value.sex=='男'|user.value.sex=='女')&user.value.college!=''&user.value.major!='')
    { 
-    if(user.value.address=='--')
-   { user.value.address = provinceValue + '-' + cityValue + '-' + regionValue;
-   }
-    const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
-    console.log('status=',responce.status);
-    if (responce.status=== 200) {
-        ElMessage.success('修改成功！');
-        window.location.reload();
+         // if(user.value.address=='--')
+
+         console.log("addressuserpre.",userpre.value.address);
+         console.log("省份是",province.value);
+         if((regionValue.value==''&cityValue.value==''&provinceValue.value=='')){
+            user.value.address = province.value + '-' + city.value + '-' + district.value;
+            console.log("这里执行了");
+         }
+         else
+        user.value.address = provinceValue + '-' + cityValue + '-' + regionValue;
+        console.log("addressuser",user.value.address);
+        console.log("addressuserpre",userpre.value.address);
+
+         if(user.value.sex==userpre.value.sex&&user.value.college==userpre.value.college&&user.value.status==userpre.value.status&&user.value.major==userpre.value.major&&(user.value.address==userpre.value.address||user.value.address=='--'))
+            {
+                ElMessage.warning('您还没有修改过捏！');
+                console.log("addressuser",user.value.address);
+                console.log("addressuserpre",userpre.value.address);
+                return;
+            }
+        if(user.value.address=='--')
+        user.value.address=userpre.value.address;
+        const responce = await DataService.Update_Personal_Info(user.value.userID, user.value.sex, user.value.status, user.value.stuID, user.value.college, user.value.major, user.value.birth_date, user.value.address, user.value.phone)
+        console.log('status=',responce.status);
+        if (responce.status=== 200) {
+            ElMessage.success('修改成功！');
+           window.location.reload();
+        }
+        else {
+        ElMessage.warning('修改失败！')
+        }
     }
-    if (responce.status=== 400||responce.status=== 500||responce.status=== 404) {
-    ElMessage.warning('修改失败！')
-    }}
     else if(user.value.status!=null&&user.value.status.length>20){
         ElMessage.warning('签名太长了，重新试试吧！')
     }
