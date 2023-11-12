@@ -177,7 +177,7 @@
                 :avatar='h'
                 ></postComment> -->
             <!-- 调用评论子模块 -->
-            <postComment v-for="(comment,index) in comments" :key="comment.commentID" :c="comment"></postComment>
+            <postComment v-for="(comment, index) in comments" :key="comment.commentID" :c="comment" :id1="Post_ID_C" :id2="Plate_ID_C"></postComment>
            
           </ul>
         </div>
@@ -263,7 +263,9 @@ const router = useRouter();
 const storedUser = ref(null);
 const route = useRoute();
 const postId = ref(route.params.postid);
-const myIdentity = JSON.parse(localStorage.getItem('user'))
+const myIdentity = JSON.parse(localStorage.getItem('user'));
+const Post_ID_C = ref(123);
+const Plate_ID_C = ref(456);
 
 const post = ref({
   title:'标题',
@@ -321,7 +323,7 @@ const toggleValues = async () => {
 const loadpost = async () => {
   loading.value = true;
   const response = await DataService.Get_Blog_Detail(postId.value);
-  console.log('response=', response.data);
+  console.log('加载博文response=', response.data);
   console.log('status=',response.data.status)
   console.log('post=', response.data.post);
   
@@ -332,17 +334,19 @@ const loadpost = async () => {
     let readableDate = date.toLocaleString();
     console.log('time=', readableDate);
     post.value.created = readableDate;
+    Post_ID_C.value = post.value.author.userID;
     isActive.value = post.value.has_liked;
     const u = JSON.parse(localStorage.getItem('user'));
     showEditBox1.value=(post.value.author.userID==u.userID);
   
     //Get_Plate_Detail(plateid)
     const response2 = await DataService.Get_Plate_Detail(post.value.plate.plateID);
-    console.log('response2=',  response2);
+    console.log('判断是否有权限response2=',  response2);
     if( response2.data.plate.moderators.length!=0)
     {
     console.log('response2=',  response2.data.plate.moderators[0].userID);
-   showDeleteBox1.value=response2.data.plate.moderators[0].userID==u.userID|post.value.author.userID==u.userID|3==u.groups[1];
+    showDeleteBox1.value=response2.data.plate.moderators[0].userID==u.userID|post.value.author.userID==u.userID|3==u.groups[1];
+    Plate_ID_C.value = response2.data.plate.moderators[0].userID;
     }
     else
     showDeleteBox1.value=post.value.author.userID==u.userID|3==u.groups[1];
@@ -369,7 +373,7 @@ const loadcomments = async () => {
   try {  
     loading.value = true;  
     const response = await DataService.Get_Blog_Comments(postId.value);  
-    console.log('response=',response);  
+    console.log('加载评论response=',response);  
     loading.value = false;  
     comments.value = response.data.comments;  
     console.log('comments=',comments.value)  
@@ -381,10 +385,10 @@ const loadcomments = async () => {
 };
 
 // 初始化  
-onMounted(async () => {  
-  loadpost();
-  loadcomments();
-});  
+onMounted(async () => {
+  await loadpost(); // 先等待loadpost函数完成
+  await loadcomments(); // 然后执行loadcomments函数
+});
 
 //获取用户信息
 const getPersonalInfo = async () => {
