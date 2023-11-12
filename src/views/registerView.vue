@@ -19,7 +19,7 @@
         <el-col :span="9">
           <el-form
             ref="form"
-            :model="{username,email,password,confirmpassword}"
+            :model="{username,email,password,confirmpassword,code}"
             :rules="rules"
             status-icon
             label-position="top"
@@ -34,10 +34,15 @@
               <el-input v-model="email" placeholder="请填写您的邮箱"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-              <el-input v-model="password" placeholder="密码长度为1-15，由数字、字母组成"></el-input>
+              <el-input v-model="password"  type="password" placeholder="密码长度为1-15，由数字、字母组成"></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="confirmpassword">
-              <el-input v-model="confirmpassword" placeholder="请确认您的密码"></el-input>
+              <el-input v-model="confirmpassword"  type="password" placeholder="请确认您的密码"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱验证码" prop="code">
+              <el-input v-model="code" placeholder="请输入验证码"></el-input>
+              <el-button  style="margin-top: 10px" round plain size="large" :disabled="!disabled" @click="sendCode">发送验证码</el-button>
+              <el-tag  v-if="!disabled"  type="success" style="margin-top: 10px ">{{ countdownTime }}秒后重新发送</el-tag>
             </el-form-item>
             <el-form-item >
               <el-col :span="24" style="text-align: center;">
@@ -85,6 +90,10 @@ const rules = {
         callback()
       }
     },trigger:'blur'}
+  ],
+  captcha: [
+  { required: true, message: '请输入验证码', trigger: 'blur' },
+  { min: 6, max: 6, message: '长度为6位数字', trigger: 'blur' }
   ]
 }
 const store=useStore()
@@ -93,19 +102,22 @@ const password=ref('')
 const username=ref('')
 const email=ref('')
 const confirmpassword=ref('')
+const code=ref('')
+const realcode=ref('')
 
 const postData = async () => {
   try {
-    const response = await DataService.Register(username.value,password.value,email.value);
+    const response = await DataService.Register(username.value,password.value,email.value,code.value);
     console.log(response.data);
     store.commit("Register", response.data);
-    router.push({ path: '/login' });
-    if (response.status=== 200) {
+    
+    if (response.data.status==='success') {
         ElMessage.success('注册成功！');
-        window.location.reload();
+       // window.location.reload();
+       router.push({ path: '/login' });
     }
-    if (response.status=== 400|response.status=== 500) {
-    ElMessage.warning('注册失败！')
+    if (response.data.status==='failed') {
+    ElMessage.warning('验证码错误或用户名重复！')
     }
   } catch (error) {
     console.error(error);
@@ -114,7 +126,7 @@ const postData = async () => {
 };
 
 const submit = () => {
-  if (!username.value || !password.value || !email.value) {
+  if (!username.value || !password.value || !email.value||!code.value) {
     ElMessage.warning('Please fill in all the required fields');
     return;
   }
@@ -126,6 +138,36 @@ const submit = () => {
 //  console.log(userData);
   postData();
 };
+
+
+const countdown=ref(null);
+const countdownTime=ref(60);
+const disabled=ref(true);
+
+const sendCode = async () => {
+      if (!email.value) {
+        ElMessage.warning('Please fill the email field');
+        return;
+      }
+
+      // 实现发送验证码的逻辑，例如调用后端接口
+      console.log('发送验证码');
+      const reponse=await DataService.Get_Register_Code(email.value);
+      console.log("realcode=",reponse);
+      disabled.value=false;
+      // 开始倒计时
+      countdown.value = setInterval(() => {
+        countdownTime.value--;
+      //  console.log("countdowntime=",countdownTime.value);
+        if (countdownTime.value <= 0) {
+          clearInterval(countdown.value);
+          countdown.value = null;
+         // console.log("现在置零");
+          countdownTime.value = 60;
+          disabled.value=true;
+        }
+      }, 1000);
+    };
 </script>
 
 <style scoped>
