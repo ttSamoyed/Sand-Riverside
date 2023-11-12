@@ -28,7 +28,9 @@ import topBar from "@/components/home/topBar.vue"
 
 
 <style scoped>
-
+.body {
+  font-family: PingFang;
+}
 
 .container{
   margin:0 !important;

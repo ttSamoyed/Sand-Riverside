@@ -46,7 +46,7 @@ const readableDate = date.toLocaleString()
   mardin-bottom:30px;
 }
 .image {
-  width: 310px;
+  width: 100%;
   height: 300px;
   object-fit: cover;
   display:block;
