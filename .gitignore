@@ -29,3 +29,4 @@ coverage
 
 # 忽略package.json
 package.json
+nohup.out
