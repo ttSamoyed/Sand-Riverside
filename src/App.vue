@@ -24,7 +24,7 @@
 
 <script setup>
 import topBar from "@/components/home/topBar.vue"
-import PingFang from "@/assets/font.css"
+import PingFang from "@/assets/font.css?inline"
 </script>
 
 

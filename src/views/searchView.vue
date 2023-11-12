@@ -9,7 +9,7 @@
         <div class="nopost" v-if="posts.length==0">
         <el-text style="font-size:16px;">未搜索到有关帖子哦😯！快去发一篇吧</el-text>
     </div>
-    <post_card v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
+    <post_card class="post" v-for="(post,index) in posts" :key="post.postID" :p="post"></post_card>
     </el-row>
     <div class="center">
           <el-divider></el-divider>
@@ -66,6 +66,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.post{
+  width: 53%;
+}
 .info{
   margin-left: 360px;
   padding-left: 20px;
