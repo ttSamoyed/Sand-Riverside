@@ -45,21 +45,16 @@
 
   // 初始化  
 onMounted(async () => {
-    //Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone)
-    const response = await DataService.Search_Users();
-    console.log("alluser=",response.data);
-    usernum.value=response.data.count;
-    const response2 = await DataService.Search_Users2('男');
-    console.log("male=",response2.data);
-    usermale.value=response2.data.count;
+    //Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone
 
-    const response3 = await DataService.Search_Users2('女');
-    console.log("female=",response3.data);
-    userfemale.value=response3.data.count;
-
-    const response4 = await DataService.Get_All_Blogs();
-    console.log("All_Blogs=",response4.data);
-    postnum.value=response4.data.count;
+    const response = await DataService.Get_Home_Info();
+    console.log("互动",response.data);
+    usernum.value=response.data.home_info.active_user_count;
+    usermale.value=response.data.home_info.male_count;
+    userfemale.value=response.data.home_info.female_count;
+    postnum.value=response.data.home_info.post_count;
+    internum.value=response.data.home_info.interact_count;
+    
 
 
 });
