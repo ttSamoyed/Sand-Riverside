@@ -15,14 +15,14 @@
                   <span v-if = "show_reply_number" style="font-size: large;">{{ c.reply_count }}</span>
                 </el-button>
 
-                <el-button v-if = "!has_liked" type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="23"><ArrowUpBold /></el-icon>
+                <el-button v-if = "!has_liked" type="text" class="icon-button"  @click = "Clikc_Like_Comment"><el-icon  size="23"><ArrowUpBold /></el-icon>
                   <span style="font-size: large;">{{ c.like_count }}</span>
                 </el-button>
-                <el-button v-else type="text" class="icon-button"  @click = "Like_Comment"><el-icon  size="23"><CaretTop/></el-icon>
+                <el-button v-else type="text" class="icon-button"  @click = "Clikc_Like_Comment"><el-icon  size="23"><CaretTop/></el-icon>
                   <span style="font-size: large;">{{ c.like_count }}</span>
                 </el-button>
                 
-                <el-button v-if = "can_delete" type="text" style="margin-left: 15px;" @click = "Delete_Comment"><el-icon  size="20"><Delete /></el-icon></el-button>
+                <el-button v-if = "Show_delete_Icon" type="text" style="margin-left: 15px;" @click = "Show_delete_Box = true"><el-icon  size="20"><Delete /></el-icon></el-button>
                 
             </div>
         </div>
@@ -38,8 +38,20 @@
         </div>
       
     </div>
+
+    <el-dialog v-model="Show_delete_Box" title="提示" width="350px">
+      <span>您确认要删除此条评论吗？</span>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="Show_delete_Box = false">取消</el-button>
+        <el-button type="primary" @click="Delete_Comment" >删除</el-button>
+      </span>
+  </template>
+</el-dialog>
     
 </template>
+
+
 
 <script setup>
 import { defineProps,onMounted,ref,computed } from 'vue';
@@ -66,8 +78,11 @@ const time = ref('2023-9-20');
 
 const props = defineProps({
   c: Object, // 指定c属性的类型
+  id1: Number, // ID1 = post.value.author.userID;
+  id2: Number, // ID2 = response2.data.plate.moderators[0].userID;
 });
-const { c } = props;
+const { c, id1, id2 } = props;
+
 //时间
 function formatTime(timestamp) {
   const date = new Date(timestamp);
@@ -84,7 +99,6 @@ const lastModified = c.last_modified;
 const formattedTime = formatTime(lastModified);
 
 //回复评论
-
 const input_reply = ref('');
 const showReplyBox = ref(false);
 const show_reply_number = ref(false);
@@ -124,47 +138,58 @@ const Reply_Comment = async() => {
 
 //点赞评论
 const has_liked = ref(false);
+has_liked.value = c.has_liked;
 
 
-const Like_Comment = async() => {
-  if(has_liked.value){
+const Clikc_Like_Comment = async() => {
+  const status = localStorage.getItem('status');
+  if (status) {
+    if(has_liked.value){
     has_liked.value = false;
     c.like_count -= 1;
-  }
-  else{
+    const response = await DataService.Unlike_Comment(c.commentID);
+    console.log("取消点赞返回状态：" + response.status);
+    }
+    else{
     has_liked.value = true;
     c.like_count += 1;
-    //const response = await DataService.Like_Comment();
-    //console.log(response.status);
-    
-  }
+    const response = await DataService.Like_Comment(c.commentID);
+    console.log("点赞返回状态：" + response.status);
+    }
+    }else{
+      ElMessage({
+        type: "error",
+        message: "您还没有登录，请先登录！",
+      });
+    }
 
-  console.log('点赞评论');
+  
+
 }
-  // /**
-  //  * 点赞评论
-  //  * @param {Number} commentid - 评论ID
-  //  * @returns {JSON} - 返回点赞评论结果
-  //  */
-  //  Like_Comment(commentid) {
-  //   const url = '/comment/like/' + commentid + '/';
-  //   return apiClient.get(url);
-  // },
-
-  // /**
-  //  * 取消点赞评论
-  //  * @param {Number} commentid - 评论ID
-  //  * @returns {JSON} - 返回取消点赞评论结果
-  //  */
-  // Unlike_Comment(commentid) {
-  //   const url = '/comment/like/' + commentid + '/';
-  //   return apiClient.delete(url);
-  // },
 
 //删除评论，博客作者，评论作者，管理员可以删
-const can_delete = ref(true);
-const Delete_Comment = () => {
+const Show_delete_Icon = ref(false);
+const Show_delete_Box = ref(false);
+
+
+const s = localStorage.getItem('status');
+if (s) {
+  const u = JSON.parse(localStorage.getItem('user'));
+  if(u.userID === c.author.userID || 3===u.groups[1] || u.userID === id1 || u.userID === id2)
+    Show_delete_Icon.value = true;
+  }else{
+    ElMessage({
+      type: "error",
+      message: "您还没有登录，请先登录！",
+    });
+  }
+
+
+const Delete_Comment = async() => {
   console.log("删除评论");
+  const response = await DataService.Delete_Comment(c.commentID);
+  console.log("删除ID为"+c.commentID+"的评论："+response.status);
+  Show_delete_Box.value = false;
 }
 
 </script>

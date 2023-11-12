@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "push":"npm run build && scp -r dist/* root@114.116.105.57:/home/Sand_Riverside/dist"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
