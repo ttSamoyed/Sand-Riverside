@@ -6,8 +6,8 @@
         <el-col :span="5">
             <el-row>
                 <a href="https://github.com/ttSamoyed/Sand-Riverside">
-                <img style="height:30px;" 
-                src="https://img1.baidu.com/it/u=2626381969,3909549426&fm=253&fmt=auto&app=138&f=JPEG?w=588&h=401"
+                <img style="height:40px;" 
+                src="@/assets/github.png"
                 alt="Fork me on GitHub" >
                 </a>
             </el-row>
