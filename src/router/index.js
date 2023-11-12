@@ -8,7 +8,7 @@ import mypageView from '../views/mypageView.vue'
 import registerView from '../views/registerView.vue'
 import writePost from '../views/writePost.vue'
 import searchView from '../views/searchView.vue'
-import aboutusView from '../views/aboutUSView.vue'
+import aboutusView from '../views/aboutusView.vue'
 const routes = [
     {
         path: '/',
