@@ -242,6 +242,25 @@ export default {
     }
     );
   },
+  //上面这个接口在传参数的时候有点问题，为了避免冲突，暂时这里重新写了一个，先别删
+  Search_Users2(sex,page = 1, page_size = 10, userID, username, email,  stuID, college, major, phone) {
+    return apiClient.post('user/list/', {
+      userID: userID,
+      username: username,
+      email: email,
+      sex: sex,
+      stuID: stuID,
+      college: college,
+      major: major,
+      phone: phone,
+    }, {
+      params: {
+        page: page,
+        page_size: page_size
+      }
+    }
+    );
+  },
 
   /**
    * 获取用户头像
