@@ -58,6 +58,15 @@ apiClient.interceptors.response.use(response => {
 
 // 定义一个用于获取数据的函数
 export default {
+  
+  /**
+   * Home Info
+   * @returns {JSON} - 返回首页信息
+   */
+  Get_Home_Info() {
+    return apiClient.get('home/');
+  },
+
   /**
    * 登录
    * @param {String} username
@@ -242,7 +251,6 @@ export default {
     }
     );
   },
-
   /**
    * 获取用户头像
    * @param {Number} userID

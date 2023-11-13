@@ -34,13 +34,30 @@
   
   <script lang="ts" setup>
   import { ChatLineRound, Male } from '@element-plus/icons-vue'
-  import { ref } from 'vue';
+  import { ref,onMounted} from 'vue';
+  import DataService from '@/components/services/DataService';  
 
   const usernum = ref(0);
   const usermale = ref(0)
   const userfemale = ref(0)
   const postnum = ref(0)
   const internum = ref(0)
+
+  // 初始化  
+onMounted(async () => {
+    //Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone
+
+    const response = await DataService.Get_Home_Info();
+    console.log("互动",response.data);
+    usernum.value=response.data.home_info.active_user_count;
+    usermale.value=response.data.home_info.male_count;
+    userfemale.value=response.data.home_info.female_count;
+    postnum.value=response.data.home_info.post_count;
+    internum.value=response.data.home_info.interact_count;
+    
+
+
+});
 
   </script>
   
