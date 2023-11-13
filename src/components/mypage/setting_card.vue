@@ -20,14 +20,7 @@
                     <el-input v-model="user.sex" placeholder="请输入性别"></el-input>
                 </el-col>
             </el-row>
-                <!-- <el-col span="8">
-                    <el-text> 头像 </el-text>
-                </el-col>
-                <el-col span="16" style="margin-left: 80px;">
-                    <avatar_upload :userID="user.userID"></avatar_upload>
-                </el-col> -->
             <el-divider></el-divider>
-
             <el-row>
                 <el-col span="8">
                     <el-text> 学院 </el-text>
@@ -44,9 +37,7 @@
             </el-row>
 
             <el-divider></el-divider>
-
             <map_select :p="province" :c="city" :r="district" ref="mapselect" style="margin-left: -36px;"></map_select>
-            <!-- 为啥这里改为map_select就不显示了 -->
             <el-divider></el-divider>
 
             <el-row>
@@ -60,38 +51,36 @@
 
             <el-divider></el-divider>
 
-            <el-row>
-                <div>
-                <el-button type="primary" plain round @click="updateInfo">修改信息</el-button>
-                <el-button type="primary" plain round @click="showPasswordDialog = true " >修改密码</el-button>
-                <el-dialog 
-                  v-model="showPasswordDialog"
-                  title="修改密码" 
-                  width="30%"
-                  :before-close="handleClose"
-                  custom-class="password-dialog"
-                >
-                    <div class="input-section">
-                        <span class="input-label">请输入旧密码：</span>
-                        <el-input v-model="input_oldPassword" type="password" placeholder="请输入旧密码"></el-input>
-                    </div>
-                    <div class="input-section">
-                        <span class="input-label">请输入新密码：</span>
-                        <el-input v-model="newPassword" type="password" placeholder="请输入新密码"></el-input>
-                    </div>
-                    <div class="input-section">
-                        <span class="input-label">请再次输入新密码：</span>
-                        <el-input v-model="confirmPassword" type="password" placeholder="请输入再次新密码"></el-input>
-                    </div>
-                    <span slot="footer" class="dialog-footer">
-                        <el-button @click="showPasswordDialog = false">取消</el-button>
-                        <el-button type="primary" @click="updatePassword">修改</el-button>
-                    </span>
-                </el-dialog>
-                </div>
+            <el-row div class="center">
+                <el-button type="primary" plain @click="updateInfo">修改信息</el-button>
+                <el-button type="primary" plain @click="showPasswordDialog = true " >修改密码</el-button>
             </el-row>
         </div>
     </div>
+    <el-dialog 
+        v-model="showPasswordDialog"
+        title="修改密码" 
+        width="30%"
+        :before-close="handleClose"
+        custom-class="password-dialog"
+    >
+        <div class="input-section">
+            <span class="input-label">请输入旧密码：</span>
+            <el-input v-model="input_oldPassword" type="password" placeholder="请输入旧密码"></el-input>
+        </div>
+        <div class="input-section">
+            <span class="input-label">请输入新密码：</span>
+            <el-input v-model="newPassword" type="password" placeholder="请输入新密码"></el-input>
+        </div>
+        <div class="input-section">
+            <span class="input-label">请再次输入新密码：</span>
+            <el-input v-model="confirmPassword" type="password" placeholder="请输入再次新密码"></el-input>
+        </div>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="showPasswordDialog = false">取消</el-button>
+            <el-button type="primary" @click="updatePassword">修改</el-button>
+        </span>
+    </el-dialog>
 </template>
 
 <script setup>
@@ -336,7 +325,9 @@ const updatePassword = async() => {
 
 .password-dialog .dialog-footer {
   display: flex;
-  justify-content: flex-end;
+  display: flex;
+justify-content: center;
+align-items: center;
 }
 
 </style>
