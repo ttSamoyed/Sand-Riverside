@@ -1,14 +1,15 @@
 <template>
-    <el-row style="margin-top: 30px;">
-        <el-col :span="5">
+    <el-row style="margin-top: 15px;">
+        <el-col :span="4">
 
         </el-col>
-        <el-col :span="5">
+        <el-col :span="6">
             <el-row>
                 <a href="https://github.com/ttSamoyed/Sand-Riverside">
                 <img style="height:40px;" 
                 src="@/assets/github.png"
                 alt="Fork me on GitHub" >
+                <el-text style="zoom: 0.8;">Visit Us on Github</el-text>
                 </a>
             </el-row>
             <el-row style="margin-top: 20px;">
@@ -22,6 +23,9 @@
             </el-row>
             <el-row style="margin-top: 20px;">
                 <img alt="Static Badge" src="https://img.shields.io/badge/%E4%B8%8A%E7%BA%BF%E6%97%A5%E6%9C%9F-2023.11.13-green">
+            </el-row>
+            <el-row style="margin-top: 30px; margin-left: -230px;">
+                <img src="@/assets/coding.png" class="image">
             </el-row>
         </el-col>
         <el-col :span="14">
@@ -59,5 +63,11 @@
 .timeline{
     margin-top: 50px;
     width: 80%;
+}
+.image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display:block;
 }
 </style>

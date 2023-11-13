@@ -55,19 +55,27 @@
                     <div style="padding-top: 45px;"></div>
                     <div v-if="user.groups">
                         <div v-if="user.groups.length==1 && user.groups[0]==1">
-                        <el-row class="center">
-                            <el-icon size="30"><UserFilled /></el-icon>
-                        </el-row>
-                        <el-row class="center" style="margin-top: 10px;">
-                            <el-text style="width: 100%; font-weight: 500; text-align: center;">普通用户</el-text>
-                        </el-row>
-                    </div>
-                    <div v-if="user.groups.length==2 && user.groups[1]==3">
-                        <el-row class="center">
-                            <el-icon size="30"><HelpFilled /></el-icon>
-                        </el-row>
-                        <el-row class="center" style="margin-top: 10px;">
-                            <el-text style="width: 100%; font-weight: 500; text-align: center;">河畔管理员</el-text>
+                            <el-row class="center">
+                                <el-icon size="30"><UserFilled /></el-icon>
+                            </el-row>
+                            <el-row class="center" style="margin-top: 10px;">
+                                <el-text style="width: 100%; font-weight: 500; text-align: center;">普通用户</el-text>
+                            </el-row>
+                        </div>
+                        <div v-if="user.groups.length==2 && user.groups[1]==2">
+                            <el-row class="center">
+                                <el-icon size="30"><Guide /></el-icon>
+                            </el-row>
+                            <el-row class="center" style="margin-top: 10px;">
+                                <el-text style="width: 100%; font-weight: 500; text-align: center;">版主</el-text>
+                            </el-row>
+                        </div>
+                        <div v-if="user.groups.length==2 && user.groups[1]==3">
+                            <el-row class="center">
+                                <el-icon size="30"><HelpFilled /></el-icon>
+                            </el-row>
+                            <el-row class="center" style="margin-top: 10px;">
+                                <el-text style="width: 100%; font-weight: 500; text-align: center;">河畔管理员</el-text>
                         </el-row>
                     </div>
                     </div>
