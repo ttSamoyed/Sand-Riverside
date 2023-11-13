@@ -2,8 +2,7 @@
     <div class="page">
         <div class="box-card" v-loading="loading" element-loading-text="Loading...">
         <el-card :body-style="{ padding: '0px' }">
-            <template #header>
-                
+            <template #header>  
                 <el-tooltip v-if="showEditBox1" content="点击更换封面" placement="top">
                   <el-upload  
                   class="coverImg_uploader"
@@ -29,7 +28,8 @@
                     <div class="card-header1">
                     <div class="title">
                         <el-row class="row">
-                        <h2>{{ post.title }}</h2>
+                        <h2 v-if="post.plate.name=='鹊桥'" style="color:rgb(249, 139, 158)">{{ post.title }}</h2>
+                        <h2 v-else>{{ post.title }}</h2>
                           <!--编辑帖子、删除帖子和设为精华帖子-->
                         <div style="margin-left: 10px;">
                           <el-button
@@ -64,7 +64,8 @@
                         <el-row style="margin-top: -10px;">
                             
                         <el-text>分类：</el-text>
-                        <el-tag effect="plain"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
+                        <el-tag  v-if="post.plate.name=='鹊桥'" effect="plain" style="color: rgb(236, 149, 163);border-color:rgb(246, 162, 176);"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
+                        <el-tag v-else effect="plain"><el-icon><Flag /></el-icon> {{ post.plate.name }} </el-tag>
                         <el-text style="margin-left: 10px;">创建时间：</el-text>
                         <el-tag type="info" effect="plain"><el-icon><Clock /></el-icon> {{post.created}}</el-tag>
                         <el-tag  v-if="post.is_essence" type="success"  effect="dark" style="margin-left: 15px;">精华</el-tag>

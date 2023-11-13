@@ -62,7 +62,7 @@
 <style>
 .timeline{
     margin-top: 50px;
-    width: 80%;
+    width: 85%;
 }
 .image {
   width: 100%;

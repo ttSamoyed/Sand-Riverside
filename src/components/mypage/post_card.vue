@@ -6,7 +6,8 @@
     </el-row>
     <el-row style="margin-top: 10px;">
         <el-col :span="6">
-            <img src="@/assets/login3.png" class="image"/>
+          <img v-if="p.coverImg" :src="p.coverImg" class="image" />
+          <img v-else src="@/assets/login3.png" class="image" />
         </el-col>
         <el-col :span="18">
                 <el-row>

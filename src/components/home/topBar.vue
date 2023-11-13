@@ -21,23 +21,26 @@
           :prefix-icon="Search" @blur="searchByblur"
           @keyup.enter="search"
         />
-
       </div>
       <div class="dark">
         <Dark></Dark>
       </div>
       <div class="message">
-
         <el-button text>
           <router-link to="/writePost" v-if="isLogin">
-            <el-icon size="large" style="margin-top:2.5px;color: var(--el-color-primary);"><Edit /></el-icon>
+            <el-icon size="22" style="margin-top:2.5px;color: var(--el-color-primary);"><Edit /></el-icon>
           </router-link>
         </el-button>
         <el-button text @click="drawer = true" v-if="isLogin">
-          <el-icon size="large" style="color: var(--el-color-success);"><ChatDotSquare /></el-icon>
+          <el-icon size="22" style="color: var(--el-color-success);"><ChatDotSquare /></el-icon>
         </el-button>
       </div>
       <div class="user" >
+        <a href="https://github.com/ttSamoyed/Sand-Riverside" style="margin-right: 20px;">
+                <img style="height:30px;" 
+                src="@/assets/github.png"
+                alt="Fork me on GitHub" >
+        </a>
         <el-dropdown v-if="isLogin">
           <el-avatar  @click="handleAvatarClick" :size="30" :src="user.avatar" shape="square"/>
           <template #dropdown>
@@ -220,12 +223,12 @@ onMounted(async () => {
 
   .message {
     padding-left: 10px;
-    margin-right:10px;
+    margin-right:7px;
     order: 2;
   }
 
   .dark{
-    margin-left: 40px;
+    margin-left: 30px;
     padding-left: 20px;
     margin-right:-10px;
     order: 2;

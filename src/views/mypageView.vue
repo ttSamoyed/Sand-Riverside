@@ -41,10 +41,10 @@
                     <setting_card></setting_card>
                 </div>
                 <div v-if="label=='4'">
-                    <div class="center" v-if="user.groups.length!=2 || !user.groups[1]!=3">
+                    <managePart v-if="user.groups.length==2 && user.groups[1]==3"></managePart>
+                    <div class="center" v-else>
                         <el-text style="padding-top:50px;font-size: 15px;">你不是沙河畔版主 请联系河畔管理员以获得管理权限</el-text>
                     </div>
-                    <managePart v-else></managePart>
                 </div>
             </ul>
         </div>

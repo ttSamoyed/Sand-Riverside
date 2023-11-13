@@ -10,7 +10,8 @@
         />
         <div style="padding: 10px">
           <div class="title">
-            <el-text style="font-size: 17px; font-weight: 500;">{{p.title}}</el-text>
+            <el-text v-if="p.plate.name=='鹊桥'" style="color:rgb(255, 144, 162);font-size: 17px; font-weight: 500;">{{p.title}}</el-text>
+            <el-text v-else style="font-size: 17px; font-weight: 500;">{{p.title}}</el-text>
             <el-tag><el-icon><Guide /></el-icon>{{ p.plate.name }}</el-tag>
           </div>
           <div class="bottom">

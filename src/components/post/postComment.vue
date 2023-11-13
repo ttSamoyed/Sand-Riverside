@@ -231,8 +231,8 @@ const Delete_Comment = async() => {
 .comment_main {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     font-weight: light;
-    margin-top: 4px;
-    margin-left: 95px;
+    margin-top: -10px;
+    margin-left: 97px;
     text-align: start;
     font-size: 13px;
 }
