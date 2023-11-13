@@ -64,7 +64,7 @@
 
 <script setup>
 import Dark from './dark.vue'
-import { computed, ref,onMounted } from 'vue';
+import { computed, ref,onMounted,watchEffect } from 'vue';
 import { Search, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
@@ -96,6 +96,7 @@ const logOut = async () => {
     localStorage.clear();
     router.push({ path: '/' });
     ElMessage.success('退出登录成功');
+    window.location.reload();
   } catch (error) {
     console.error('Failed to log out:', error);
     ElMessage.error('退出登录失败');
@@ -143,6 +144,7 @@ const loadNotification = async () => {
 onMounted(async () => {  
     loadNotification();
 });  
+
 
 </script>
 

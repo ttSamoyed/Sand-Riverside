@@ -17,26 +17,31 @@
                     <div class="center">
                         <el-divider></el-divider>
                         <el-pagination v-model:currentPage="currentPage"
-                        layout="prev, pager, next" :total="totalcounts" :page-size="5"
+                        layout="prev, pager, next" :total="totalcounts" :page-size="10"
                         @current-change="loadMyBlog"
                         />
                     </div>
                 </div>  
                 <div v-if="label=='2'">
-                    <message_card v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message_card>
-                    <div class="center">
-                        <el-divider></el-divider>
-                        <el-pagination v-model:currentPage="currentPageMessage"
-                        layout="prev, pager, next" :total="totalcountsMessage" :page-size="4"
-                        @current-change="loadNotification"
-                        />
+                    <div class="center" v-if="totalcountsMessage==0">
+                        <el-text style="padding-top:50px;font-size: 15px;">您还没有新消息哦！多多发帖吧</el-text>
+                    </div>
+                    <div v-else>
+                        <message_card v-for="(notification,index) in notifications" :key="notification.id" :n="notification"></message_card>
+                        <div class="center">
+                            <el-divider></el-divider>
+                            <el-pagination v-model:currentPage="currentPageMessage"
+                            layout="prev, pager, next" :total="totalcountsMessage" :page-size="4"
+                            @current-change="loadNotification"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div v-if="label=='3'">
                     <setting_card></setting_card>
                 </div>
                 <div v-if="label=='4'">
-                    <div class="center" v-if="!user.groups.length==2 || !user.groups[1]==3">
+                    <div class="center" v-if="user.groups.length!=2 || !user.groups[1]!=3">
                         <el-text style="padding-top:50px;font-size: 15px;">你不是沙河畔版主 请联系河畔管理员以获得管理权限</el-text>
                     </div>
                     <managePart v-else></managePart>
@@ -110,7 +115,7 @@ const loadNotification = async () => {
     }
     catch (error) {        
       loading.value = false;  
-      ElMessage.error('获取信息失败，请检查网络并重新登录');  
+      ElMessage.error('此页面无法加载，请稍后重试');  
       console.error(error);  
   }  
 }
@@ -119,6 +124,7 @@ onMounted(async () => {
     // 初始化  
     loadMyBlog();
     loadNotification();
+    console.log('user',user.value)
 });  
 
 watch(label.value, () => {

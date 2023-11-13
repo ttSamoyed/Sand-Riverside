@@ -15,8 +15,9 @@
           <el-row style="margin-top: 6px;margin-left: 31px;">
             <el-space wrap>
               <span style="zoom:0.9;font-size:xx-small;">{{ n.description }}</span>
-              <el-text type="info" @click="router.push({name:'post',params: {postid:n.target.postID}})"
-               style="zoom:0.9;font-size:xx-small;">{{ n.target.title }}{{ n.target.postID }}</el-text>
+              <el-text v-if="n.target.name" type="primary" style="zoom:0.9;font-size:xx-small;"> <el-text>恭喜你🎉！</el-text>{{ n.target.name }}板块 <el-text>现在由您管理，去尝试吧</el-text></el-text>
+              <el-text type="primary" @click="router.push({name:'post',params: {postid:n.target.postID}})"
+               style="zoom:0.9;font-size:xx-small;">{{ n.target.title }}</el-text>
             </el-space>
           </el-row>
       </el-col>

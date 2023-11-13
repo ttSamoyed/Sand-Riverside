@@ -68,10 +68,6 @@ const loading = ref(false)
 
 const submit = async () => {
     loading.value = true;
-    if (username.value == 'test' && password.value == '123') {
-    loading.value = false;
-    router.push({ path: '/mypage' });
-    }
     const response = await DataService.Login(username.value, password.value)
     console.log(response.data)
 
@@ -92,6 +88,9 @@ const submit = async () => {
     localStorage.setItem('refresh_token', response.data.refresh_token)
         localStorage.setItem('status', true);   
         router.push({ path: '/mypage' })
+        setTimeout(() => {
+            window.location.reload();
+        }, 1);
     }
 }
 </script>
