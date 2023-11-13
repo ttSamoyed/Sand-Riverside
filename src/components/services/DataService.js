@@ -224,7 +224,7 @@ export default {
    * @returns 搜索用户结果
    * @description 只有用户名是模糊搜索, 其他都是精确搜索
    */
-  Search_Users(page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone) {
+  Search_Users({page = 1, page_size = 10, userID, username, email, sex, stuID, college, major, phone}) {
     return apiClient.post('user/list/', {
       userID: userID,
       username: username,
