@@ -3,8 +3,28 @@
         <div class="box-card" v-loading="loading" element-loading-text="Loading...">
         <el-card :body-style="{ padding: '0px' }">
             <template #header>
-                <img v-if="post.coverImg" :src="post.coverImg" class="image"/>
-                <img v-else src="@/assets/login3.png" class="image"/>
+                
+                <el-tooltip v-if="showEditBox1" content="点击更换封面" placement="top">
+                  <el-upload  
+                  class="coverImg_uploader"
+                  :action="url"
+                  :data="ImageData"
+                  :show-file-list="false" 
+                  :headers="headers"
+                  method="post"
+                  :auto-upload="true"
+                  :on-success="handlecoverImgSuccess"
+                  :before-upload="beforecoverImgUpload"
+                  name="coverImg"
+                  >
+                  <img v-if="post.coverImg" :src="post.coverImg" style=" width: 900px; margin-top: -18px; margin-left: -20px" class="image"/>
+                  <img v-else src="@/assets/login3.png" style=" width: 850px; " class="image"/>
+                  </el-upload>
+              </el-tooltip>
+              <div v-if="!showEditBox1"> 
+                <img v-if="post.coverImg" :src="post.coverImg" style=" width: 900px; margin-top: -18px; margin-left: -20px" class="image"/>
+                <img v-else src="@/assets/login3.png" style=" width: 850px; " class="image"/>
+              </div>
                 <div class="card-header">
                     <div class="card-header1">
                     <div class="title">
@@ -544,6 +564,59 @@ const handlecancel=async() => {
     ElMessage.warning('取消失败！')
     };
     };
+
+
+//上传封面
+const ImageData = ref()
+ 
+const headers = computed(() => {
+    const accessToken = localStorage.getItem('access_token');
+    return {
+          Authorization: `Bearer ${accessToken}`,
+    };
+  });
+const url = computed(() => {
+    return "http://124.222.42.111:8000/api/post/coverImg/" + post.value.postID + '/'
+})
+ 
+ // 上传之前
+ const beforecoverImgUpload = async (rawFile) => {
+   if (rawFile.type !== "image/jpeg"&&rawFile.type !== "image/png"&&rawFile.type !== "image/jpg") {
+     ElMessage({
+       showClose:true,
+       message:'图片只能是JPG或PNG格式！',
+       type:'warning'
+     });
+     return;
+   }
+   if (rawFile.size / 1024 / 1024 > 5) {
+     ElMessage({
+       showClose:true,
+       message:'图片大小不能超过5MB！',
+       type:'warning'
+     });
+     return;
+   }
+   ImageData.value = new FormData();
+   // 'avatar'是修改后的字段名
+     ImageData.value.append('coverImg', rawFile);
+     console.log('ImageData=',ImageData.value);
+     console.log('url=',url.value);
+   // const response = await DataService.Upload_Blog_Cover(post.value.postID,rawFile)
+ };
+  
+ // 上传成功回调
+ const handlecoverImgSuccess = async (res, uploadFile) => {
+     post.value.coverImg = URL.createObjectURL(uploadFile.raw);
+    //postcoverImg();
+    //Upload_Blog_Cover(blogid, formData)
+    // const responce= DataService.Upload_Blog_Cover(post.value.postID, uploadFile);
+    // console.log("上传封面的返回值",responce);
+     console.log(post.value.coverImg);
+ };
+
+
+
 
 </script>
 
