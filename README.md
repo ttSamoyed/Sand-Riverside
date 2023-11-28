@@ -1,8 +1,9 @@
 # 沙河畔-电子科技大学校园论坛
 ![Uploading IMG_5577.JPEG…]()
 
-* 于2023年9月创建，目前主要存放正在开发的前端页面
+* 于2023年9月创建，此仓库存放正在开发的前端页面
 * 灵感来源：[清水河畔](https://bbs.uestc.edu.cn/)
+* 后端仓库：https://github.com/4ever-xxxl/ShaForum_backend.git
 
 ## 建议使用的IDE
 
